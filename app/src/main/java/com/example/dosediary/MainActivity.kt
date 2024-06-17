@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.DoseDiary.ui.theme.DoseDiaryTheme
 import androidx.compose.foundation.layout.Box
+import com.example.dosediary.MedicationHistory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,15 +28,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DoseDiaryTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = { SmallTopBar()}
-                    ) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MedicationHistory()
             }
         }
     }
