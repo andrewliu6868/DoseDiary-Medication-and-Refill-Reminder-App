@@ -21,6 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.DoseDiary.ui.theme.DoseDiaryTheme
 import androidx.compose.foundation.layout.Box
 import com.example.dosediary.MedicationHistory
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.dosediary.EditMedication
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,11 +32,32 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DoseDiaryTheme {
-                MedicationHistory()
+                MainScreen()
             }
         }
     }
 }
+
+@Composable
+fun MainScreen() {
+    val navController = rememberNavController()
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        content = {
+            NavHost(navController = navController, startDestination = "medicationHistory") {
+                composable("medicationHistory") {
+                    MedicationHistory(onNavigateToAddMedication = {
+                        navController.navigate("editMedication")
+                    })
+                }
+                composable("editMedication") {
+                    EditMedication()
+                }
+            }
+        }
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SmallTopBar() {
