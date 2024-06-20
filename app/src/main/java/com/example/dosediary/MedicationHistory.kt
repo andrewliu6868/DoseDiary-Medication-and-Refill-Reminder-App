@@ -2,6 +2,8 @@ package com.example.dosediary
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -16,6 +18,9 @@ import com.example.DoseDiary.ui.theme.DoseDiaryTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
+
 
 @Composable
 fun MedicationHistory(onNavigateToAddMedication: () -> Unit) {
@@ -34,11 +39,20 @@ fun MedicationHistory(onNavigateToAddMedication: () -> Unit) {
 @Composable
 fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
     TopAppBar(
+        modifier = Modifier
+            .height(60.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             titleContentColor = MaterialTheme.colorScheme.primary,
         ),
-        title = { Text("Medication History") },
+        title = {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ){
+                Text("Medication History")
+            }
+        },
         actions = {
             IconButton(onClick = onAddClicked) {
                 Icon(Icons.Filled.Add, contentDescription = "Add Medication")
@@ -49,7 +63,7 @@ fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
 
 @Composable
 fun MedicationHistoryContent(modifier: Modifier = Modifier) {
-    Box(modifier = modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
         Text("Place to add Medication History entries")
     }
 }

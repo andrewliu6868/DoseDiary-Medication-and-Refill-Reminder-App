@@ -43,8 +43,8 @@ fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        content = {
-            NavHost(navController = navController, startDestination = "medicationHistory") {
+        content = { innerPadding ->
+            NavHost(navController = navController, startDestination = "medicationHistory", modifier = Modifier.padding(innerPadding)) {
                 composable("medicationHistory") {
                     MedicationHistory(onNavigateToAddMedication = {
                         navController.navigate("editMedication")

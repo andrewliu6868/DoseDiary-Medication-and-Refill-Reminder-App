@@ -11,6 +11,6 @@ import androidx.compose.runtime.Composable
 fun EditMedication() {
     Scaffold(
         topBar = { TopAppBar(title = { Text("Edit Medication") }) },
-        content = { /* Content for editing or adding medication */ }
+        content = { }
     )
 }
