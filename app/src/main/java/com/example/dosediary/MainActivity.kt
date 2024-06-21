@@ -20,11 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.DoseDiary.ui.theme.DoseDiaryTheme
 import androidx.compose.foundation.layout.Box
-import com.example.dosediary.MedicationHistory
+import com.example.dosediary.view.MedicationHistory
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.dosediary.EditMedication
+import com.example.dosediary.view.EditMedication
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
