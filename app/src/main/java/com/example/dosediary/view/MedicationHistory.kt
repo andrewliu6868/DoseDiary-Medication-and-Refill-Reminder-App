@@ -18,20 +18,28 @@ import com.example.DoseDiary.ui.theme.DoseDiaryTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun MedicationHistory(onNavigateToAddMedication: () -> Unit) {
+fun MedicationHistory() {
+    val showEditMedication = remember { mutableStateOf(false) }
+
     DoseDiaryTheme {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = { MedicationHistoryTopBar(onAddClicked = onNavigateToAddMedication) },
-            content = { innerPadding ->
-                MedicationHistoryContent(Modifier.padding(innerPadding))
-            }
-        )
+        if (showEditMedication.value) {
+            EditMedication()
+        } else {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                topBar = { MedicationHistoryTopBar { showEditMedication.value = true } },
+                content = { innerPadding ->
+                    MedicationHistoryContent(Modifier.padding(innerPadding))
+                }
+            )
+        }
     }
 }
 
@@ -39,8 +47,7 @@ fun MedicationHistory(onNavigateToAddMedication: () -> Unit) {
 @Composable
 fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
     TopAppBar(
-        modifier = Modifier
-            .height(60.dp),
+        modifier = Modifier.height(60.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             titleContentColor = MaterialTheme.colorScheme.primary,
