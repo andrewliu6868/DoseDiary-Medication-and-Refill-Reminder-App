@@ -32,30 +32,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DoseDiaryTheme {
-                MainScreen()
+                MedicationHistory()
             }
         }
     }
-}
-
-@Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        content = { innerPadding ->
-            NavHost(navController = navController, startDestination = "medicationHistory", modifier = Modifier.padding(innerPadding)) {
-                composable("medicationHistory") {
-                    MedicationHistory(onNavigateToAddMedication = {
-                        navController.navigate("editMedication")
-                    })
-                }
-                composable("editMedication") {
-                    EditMedication()
-                }
-            }
-        }
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
