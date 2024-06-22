@@ -23,6 +23,7 @@ import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.model.Medicine
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -31,13 +32,15 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.DoseDiary.EditMedication
+import com.example.dosediary.ui.theme.Background
 
-
+@Preview
 @Composable
 fun MedicationHistory() {
     val showEditMedication = remember { mutableStateOf(false) }
+    val showReportGeneration = remember { mutableStateOf(false) }
 
     DoseDiaryTheme {
         if (showEditMedication.value) {
@@ -45,23 +48,15 @@ fun MedicationHistory() {
         } else {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                topBar = { MedicationHistoryTopBar { showEditMedication.value = true } },
+                topBar = {
+                    MedicationHistoryTopBar(
+                        onAddClicked = { showEditMedication.value = true },  // Only toggles the Edit Medication screen
+                        onGenerateReportClicked = { showReportGeneration.value = true }  // Only toggles the Generate Report screen
+                    )
+                },
                 content = { innerPadding ->
                     MedicationHistoryContent(Modifier.padding(innerPadding))
                 },
-                bottomBar = {
-                    Button(
-                        onClick = { /* Handle generate report */ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Primary
-                        )
-                    ) {
-                        Text("Generate Report")
-                    }
-                }
             )
         }
     }
@@ -69,12 +64,12 @@ fun MedicationHistory() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
+fun MedicationHistoryTopBar(onAddClicked: () -> Unit, onGenerateReportClicked: () -> Unit) {
     TopAppBar(
         modifier = Modifier.height(60.dp),
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary,
+            containerColor = Background,
+            titleContentColor = Primary,
         ),
         title = {
             Box(
@@ -87,6 +82,9 @@ fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
         actions = {
             IconButton(onClick = onAddClicked) {
                 Icon(Icons.Filled.Add, contentDescription = "Add Medication")
+            }
+            IconButton(onClick = onGenerateReportClicked) {
+                Icon(Icons.Filled.FileDownload, contentDescription = "Generate Report")
             }
         }
     )
