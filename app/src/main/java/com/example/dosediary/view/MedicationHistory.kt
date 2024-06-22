@@ -1,5 +1,6 @@
 package com.example.dosediary.view
 
+import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,20 +28,22 @@ import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.DoseDiary.EditMedication
 import com.example.dosediary.ui.theme.Background
 
 @Preview
 @Composable
 fun MedicationHistory() {
     val showEditMedication = remember { mutableStateOf(false) }
-    val showReportGeneration = remember { mutableStateOf(false) }
 
     DoseDiaryTheme {
         if (showEditMedication.value) {
@@ -50,8 +53,7 @@ fun MedicationHistory() {
                 modifier = Modifier.fillMaxSize(),
                 topBar = {
                     MedicationHistoryTopBar(
-                        onAddClicked = { showEditMedication.value = true },  // Only toggles the Edit Medication screen
-                        onGenerateReportClicked = { showReportGeneration.value = true }  // Only toggles the Generate Report screen
+                        onAddClicked = { showEditMedication.value = true },
                     )
                 },
                 content = { innerPadding ->
@@ -64,7 +66,9 @@ fun MedicationHistory() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MedicationHistoryTopBar(onAddClicked: () -> Unit, onGenerateReportClicked: () -> Unit) {
+fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
+    val context = LocalContext.current
+
     TopAppBar(
         modifier = Modifier.height(60.dp),
         colors = TopAppBarDefaults.topAppBarColors(
@@ -74,21 +78,26 @@ fun MedicationHistoryTopBar(onAddClicked: () -> Unit, onGenerateReportClicked: (
         title = {
             Box(
                 modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.TopCenter
+                contentAlignment = Alignment.Center
             ){
-                Text("Medication History")
+                Text("Medication History",
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.End,)
             }
         },
         actions = {
             IconButton(onClick = onAddClicked) {
                 Icon(Icons.Filled.Add, contentDescription = "Add Medication")
             }
-            IconButton(onClick = onGenerateReportClicked) {
+            IconButton(onClick = { generatePDF(context, sampleMedications) }) {
                 Icon(Icons.Filled.FileDownload, contentDescription = "Generate Report")
             }
         }
     )
 }
+
+fun generatePDF(context: Context, medications: List<Medicine>) {}
 
 val sampleMedications = listOf(
     Medicine("Ibuprofen", "Wednesday 6:00 PM", "Effective"),
@@ -128,9 +137,18 @@ fun MedicationItem(medication: Medicine) {
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
-            Text(text = medication.name, style = MaterialTheme.typography.titleLarge)
-            Text(text = "Taken: ${medication.timeTaken}", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "Effectiveness: ${medication.effectiveness}", style = MaterialTheme.typography.bodyMedium)
+            Text(text = medication.name, 
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.End,)
+            Text(text = "Taken: ${medication.timeTaken}",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.End,)
+            Text(text = " ${medication.effectiveness}",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.End,)
         }
     }
 }
