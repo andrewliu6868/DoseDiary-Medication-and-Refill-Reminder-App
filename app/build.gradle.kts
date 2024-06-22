@@ -1,14 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
 }
 
 android {
-    namespace = "com.example.DoseDiary"
+    namespace = "com.example.dosediary"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.DoseDiary"
+        applicationId = "com.example.dosediary"
         minSdk = 21
         targetSdk = 34
         versionCode = 1
@@ -50,7 +51,7 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.material:material:1.11.0-alpha01")
+    implementation("com.google.android.material:material:1.12.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -59,6 +60,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")            // Serialization
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,5 +69,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")           // Extended Icons
 
 }
