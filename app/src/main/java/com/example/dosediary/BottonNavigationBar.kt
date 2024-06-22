@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.model.BottomNavigation
+import com.example.dosediary.ui.theme.Background
 
 
 val items = listOf(
@@ -46,7 +47,7 @@ val items = listOf(
 fun BottomNavigationBar() {
     NavigationBar {
         Row(
-            modifier = Modifier.background(color = ContainerBackground)
+            modifier = Modifier.background(color = Background)
         ) {
 
             items.forEachIndexed { index, item ->

@@ -33,8 +33,6 @@ import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.MedicationListScreen
 import com.example.dosediary.ui.theme.Background
 
-//import com.example.dosediary.view.EditMedication
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
