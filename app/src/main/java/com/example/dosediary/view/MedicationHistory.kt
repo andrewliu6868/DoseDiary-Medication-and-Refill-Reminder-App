@@ -22,6 +22,7 @@ import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.model.Medicine
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -36,7 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.dosediary.view.EditMedication
 import com.example.dosediary.ui.theme.Background
 
 @Preview
@@ -53,6 +53,9 @@ fun MedicationHistory() {
                 topBar = {
                     MedicationHistoryTopBar(
                         onAddClicked = { showEditMedication.value = true },
+                        onBackClicked = {
+                            //navigate to MedicationListScreen
+                        }
                     )
                 },
                 content = { innerPadding ->
@@ -65,15 +68,20 @@ fun MedicationHistory() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
+fun MedicationHistoryTopBar(onAddClicked: () -> Unit, onBackClicked: () -> Unit ) {
     val context = LocalContext.current
 
     TopAppBar(
-        modifier = Modifier.height(60.dp),
+        modifier = Modifier.height(40.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Background,
             titleContentColor = Color.Black,
         ),
+        navigationIcon = {
+            IconButton(onClick = onBackClicked) {
+                Icon(Icons.Filled.ArrowBack, contentDescription = "Go Back")
+            }
+        },
         title = {
             Box(
                 modifier = Modifier.fillMaxWidth(),
@@ -111,9 +119,10 @@ val sampleMedications = listOf(
 @Composable
 fun MedicationHistoryContent(modifier: Modifier = Modifier) {
     LazyColumn(
-            modifier = modifier.fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
-            contentPadding = PaddingValues(bottom = 60.dp)
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            contentPadding = PaddingValues(bottom = 20.dp)
     ) {
         items(sampleMedications) { medication ->
             MedicationItem(medication)
