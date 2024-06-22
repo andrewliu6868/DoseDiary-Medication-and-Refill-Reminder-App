@@ -1,4 +1,4 @@
-package com.example.DoseDiary
+package com.example.dosediary
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -94,13 +94,13 @@ fun DailyMedicationChecklist() {
             "Tylenol - 3:00 pm" to true,
             "Tylenol - 4:00 pm" to true,
             "Tylenol - 5:00 pm" to true,
-            "Tylenol - 6:00 pm" to true,
-            "Tylenol - 7:00 pm" to true,
-            "Tylenol - 8:00 pm" to true,
-            "Tylenol - 9:00 pm" to true,
-            "Tylenol - 10:00 pm" to true,
-            "Tylenol - 11:00 pm" to true,
-            "Tylenol - 12:00 pm" to true
+            "Tylenol - 6:00 pm" to true
+//            "Tylenol - 7:00 pm" to true,
+//            "Tylenol - 8:00 pm" to true,
+//            "Tylenol - 9:00 pm" to true,
+//            "Tylenol - 10:00 pm" to true,
+//            "Tylenol - 11:00 pm" to true,
+//            "Tylenol - 12:00 pm" to true
         )
     }
 

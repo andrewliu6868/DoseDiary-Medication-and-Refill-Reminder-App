@@ -1,4 +1,4 @@
-package com.example.DoseDiary
+package com.example.dosediary
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,13 +18,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.DoseDiary.ui.theme.DoseDiaryTheme
 import androidx.compose.foundation.layout.Box
-import com.example.dosediary.view.MedicationHistory
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.dosediary.view.EditMedication
+
+import com.example.dosediary.ui.theme.DoseDiaryTheme
+import com.example.dosediary.view.MedicationHistory
+import com.example.dosediary.MedicationListScreen
+//import com.example.dosediary.view.EditMedication
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +34,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DoseDiaryTheme {
-                MainScreen()
+                MedicationListScreen()
             }
         }
     }
@@ -51,7 +53,7 @@ fun MainScreen() {
                     })
                 }
                 composable("editMedication") {
-                    EditMedication()
+                    //EditMedication()
                 }
             }
         }

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.DoseDiary"
+    namespace = "com.example.dosediary"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.DoseDiary"
+        applicationId = "com.example.dosediary"
         minSdk = 21
         targetSdk = 34
         versionCode = 1
