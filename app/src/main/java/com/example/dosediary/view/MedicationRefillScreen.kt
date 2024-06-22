@@ -78,7 +78,7 @@ fun MedicationRefillScreen() {
             Medication("Medication 4", "Subhead")
         )
 
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(modifier = Modifier.padding(innerPadding).padding(horizontal = 16.dp)) {
             Text(
                 text = "Upcoming Medication Refills"
             )

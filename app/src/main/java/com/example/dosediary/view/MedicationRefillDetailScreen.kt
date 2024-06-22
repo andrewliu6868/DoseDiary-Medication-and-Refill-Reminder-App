@@ -49,7 +49,7 @@ fun MedicationRefillDetailScreen(navController: NavController, medicationName: S
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
+                    .padding(innerPadding).padding(horizontal = 16.dp)
             ) {
                 item {
                     MedicationDetailContent(medicationName)
