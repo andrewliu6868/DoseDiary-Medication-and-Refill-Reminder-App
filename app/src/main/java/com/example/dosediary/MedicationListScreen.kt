@@ -8,23 +8,28 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.dosediary.ui.theme.ContainerBackground
+import com.example.dosediary.ui.theme.Primary
 
 @Composable
 fun MedicationListScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .background(Color.White)
+            .padding(16.dp)
     ) {
         Header()
         LazyColumn(
@@ -47,12 +52,14 @@ fun Header() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        BasicText(
+        Text(
             text = "2024-05-06",
-            style = LocalTextStyle.current.copy(fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.End,
         )
         IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Default.Notifications, contentDescription = null)
+            Icon(imageVector = Icons.Outlined.Person, contentDescription = null)
         }
     }
 }
@@ -77,7 +84,10 @@ fun MedicationReminder() {
                 )
                 BasicText(text = "Tylenol")
             }
-            Button(onClick = { /*TODO*/ }) {
+            Button(
+                onClick = { /*TODO*/ },
+                colors = ButtonDefaults.buttonColors(containerColor = Primary)
+            ) {
                 Text("View")
             }
         }
@@ -106,6 +116,7 @@ fun DailyMedicationChecklist() {
 
     Card(
         shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)

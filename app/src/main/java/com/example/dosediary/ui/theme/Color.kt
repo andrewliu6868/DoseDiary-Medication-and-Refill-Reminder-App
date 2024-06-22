@@ -12,4 +12,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val Primary = Color(0xFF18A0FB)             //Blue
 val Background = Color(0xFFFFFFFF)          //White
-val ContainerBackground =Color(0xFFFAFAFA)  //Grey
+val ContainerBackground = Color(0xFFFAFAFA)  //Grey
