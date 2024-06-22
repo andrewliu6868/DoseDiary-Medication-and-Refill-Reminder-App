@@ -1,5 +1,6 @@
 package com.example.dosediary
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
@@ -15,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,7 +71,7 @@ fun Header() {
 fun MedicationReminder() {
     Card(
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFA07A)),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFFF7676)),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -86,7 +89,7 @@ fun MedicationReminder() {
             }
             Button(
                 onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(containerColor = Primary)
+                colors = ButtonDefaults.buttonColors(containerColor = Primary),
             ) {
                 Text("View")
             }
@@ -115,7 +118,7 @@ fun DailyMedicationChecklist() {
     }
 
     Card(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(35.dp),
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
@@ -138,6 +141,7 @@ fun DailyMedicationChecklist() {
                     )
                     Checkbox(
                         checked = item.second,
+                        colors = CheckboxDefaults.colors(Primary),
                         onCheckedChange = { checked ->
                             checklistItems[index] = item.first to checked
                         }
@@ -145,7 +149,10 @@ fun DailyMedicationChecklist() {
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Button(onClick = { /*TODO*/ },
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                colors = ButtonDefaults.buttonColors(containerColor = Primary)
+            ) {
                 Text("View All Medication Details")
             }
         }
@@ -155,7 +162,8 @@ fun DailyMedicationChecklist() {
 @Composable
 fun UpcomingMedicationRefills() {
     Card(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(35.dp),
+        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -169,7 +177,10 @@ fun UpcomingMedicationRefills() {
             MedicationRefillItem("Today, Jun 13, Thursday", "Medication 1", 2)
             MedicationRefillItem("Tomorrow, Jun 14, Friday", "Medication 1", 2)
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Button(onClick = { /*TODO*/ },
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                colors = ButtonDefaults.buttonColors(containerColor = Primary)
+            ) {
                 Text("View All Medication Details")
             }
         }
@@ -179,7 +190,8 @@ fun UpcomingMedicationRefills() {
 @Composable
 fun TomorrowsRefills() {
     Card(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(35.dp),
+        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -193,7 +205,10 @@ fun TomorrowsRefills() {
             MedicationRefillItem("Tomorrow, Jun 14, Friday", "Medication 1", 2)
             MedicationRefillItem("Tomorrow, Jun 14, Friday", "Medication 2", 1)
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Button(onClick = { /*TODO*/ },
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                colors = ButtonDefaults.buttonColors(containerColor = Primary)
+            ) {
                 Text("View All Medication Details")
             }
         }
@@ -210,14 +225,18 @@ fun MedicationRefillItem(date: String, medication: String, pills: Int) {
                 .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(Icons.Default.Info, contentDescription = null, modifier = Modifier.size(40.dp))
+            Image(
+                painter = painterResource(id = R.drawable.icon),
+                contentDescription = "Pill Pics",
+                modifier = Modifier.width(40.dp)
+            )
             Spacer(modifier = Modifier.width(8.dp))
             Column(modifier = Modifier.weight(1f)) {
                 BasicText(text = medication)
                 BasicText(text = "$pills Pills")
             }
             IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Default.Info, contentDescription = null)
+                Icon(Icons.Outlined.Info, contentDescription = null)
             }
         }
     }
