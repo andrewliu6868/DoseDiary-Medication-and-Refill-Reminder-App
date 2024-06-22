@@ -20,6 +20,9 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 
 @Composable
@@ -67,3 +70,22 @@ fun MedicationHistoryContent(modifier: Modifier = Modifier) {
         Text("Place to add Medication History entries")
     }
 }
+
+
+
+//val navController = rememberNavController()
+//Scaffold(
+//modifier = Modifier.fillMaxSize(),
+//content = { innerPadding ->
+//    NavHost(navController = navController, startDestination = "medicationHistory", modifier = Modifier.padding(innerPadding)) {
+//        composable("medicationHistory") {
+//            MedicationHistory(onNavigateToAddMedication = {
+//                navController.navigate("editMedication")
+//            })
+//        }
+//        composable("editMedication") {
+//            //EditMedication()
+//        }
+//    }
+//}
+//)

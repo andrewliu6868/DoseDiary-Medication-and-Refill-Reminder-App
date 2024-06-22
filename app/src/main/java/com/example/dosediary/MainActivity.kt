@@ -19,6 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Surface
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -26,82 +31,38 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.MedicationListScreen
+import com.example.dosediary.ui.theme.Background
+
 //import com.example.dosediary.view.EditMedication
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             DoseDiaryTheme {
-                MedicationListScreen()
+                Surface(modifier = Modifier.fillMaxSize(), color = Background) {
+                    HomeScreen()
+                }
             }
         }
     }
-}
-
-@Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        content = { innerPadding ->
-            NavHost(navController = navController, startDestination = "medicationHistory", modifier = Modifier.padding(innerPadding)) {
-                composable("medicationHistory") {
-                    MedicationHistory(onNavigateToAddMedication = {
-                        navController.navigate("editMedication")
-                    })
-                }
-                composable("editMedication") {
-                    //EditMedication()
-                }
-            }
-        }
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun SmallTopBar() {
+fun HomeScreen() {
     Scaffold(
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Text("Dashboard")
-                    }
-                }
-            )
-        },
-    ) { innerPadding -> ScrollContent(innerPadding)
-    }
-}
-
-@Composable
-fun ScrollContent(innerPadding: PaddingValues){
-
-
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DoseDiaryTheme {
-        Greeting("Android")
+        bottomBar = {
+            BottomNavigationBar()
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            MedicationListScreen()
+        }
     }
 }
