@@ -1,4 +1,4 @@
-package com.example.DoseDiary
+package com.example.dosediary.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -47,9 +47,11 @@ fun EditMedication() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        var expanded by remember { mutableStateOf(false) }
+
         ExposedDropdownMenuBox(
-            expanded = false,
-            onExpandedChange = { }
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
         ) {
             OutlinedTextField(
                 value = selectedEffectiveness.value,
@@ -57,19 +59,23 @@ fun EditMedication() {
                 readOnly = true,
                 label = { Text("Effectiveness") },
                 trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = false)
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor()
+                    .clickable { expanded = !expanded }
             )
             ExposedDropdownMenu(
-                expanded = false,
-                onDismissRequest = { }
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
             ) {
                 effectivenessOptions.forEach { effectiveness ->
                     DropdownMenuItem(
                         text = { Text(effectiveness) },
                         onClick = {
                             selectedEffectiveness.value = effectiveness
+                            expanded = false
                         }
                     )
                 }
