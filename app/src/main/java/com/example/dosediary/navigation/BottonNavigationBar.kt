@@ -1,4 +1,4 @@
-package com.example.dosediary
+package com.example.dosediary.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.model.BottomNavigation
 import com.example.dosediary.ui.theme.Background
 
