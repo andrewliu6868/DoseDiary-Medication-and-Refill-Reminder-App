@@ -15,6 +15,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,11 +28,29 @@ import com.example.DoseDiary.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
-data class Medication(
-    val name: String,
-    val info: String
+data class MedicationRefill(
+    val medicationName: String,
+    val dosage: String,
+    val quantity: Int,
+    val refillQuantity: Int,
+    val refillDate: String, // Could use LocalDate for date handling
+    val nextRefillDate: String, // Could use LocalDate for date handling
+    val refillFrequency: Int, // Number of days between refills
+    val pharmacyName: String,
+    val pharmacyContact: String,
+    val pharmacyAddress: String,
+    val prescriptionNumber: String,
+    val prescribingDoctor: String,
+    val doctorContact: String,
+    val reminderSettings: String, // Could use a more complex type for detailed reminders
+    val currentStock: Int,
+    val insuranceInformation: String,
+    val notes: String
 )
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
@@ -71,11 +90,70 @@ fun MedicationRefillScreen() {
             }
         }
     ) { innerPadding ->
+
+        val medicationRefill1 = MedicationRefill(
+            medicationName = "Lisinopril",
+            dosage = "10 mg",
+            quantity = 90,
+            refillQuantity = 90,
+            refillDate = "2024-06-01",
+            nextRefillDate = "2024-09-01",
+            refillFrequency = 90, // Every 90 days
+            pharmacyName = "Pharmacy One",
+            pharmacyContact = "555-1234",
+            pharmacyAddress = "123 Main St, Springfield",
+            prescriptionNumber = "RX123456",
+            prescribingDoctor = "Dr. John Smith",
+            doctorContact = "555-5678",
+            reminderSettings = "2 days before refill date",
+            currentStock = 30,
+            insuranceInformation = "Insurance Company A",
+            notes = "Take with food."
+        )
+
+        val medicationRefill2 = MedicationRefill(
+            medicationName = "Metformin",
+            dosage = "500 mg",
+            quantity = 60,
+            refillQuantity = 60,
+            refillDate = "2024-06-15",
+            nextRefillDate = "2024-08-15",
+            refillFrequency = 60, // Every 60 days
+            pharmacyName = "Pharmacy Two",
+            pharmacyContact = "555-2345",
+            pharmacyAddress = "456 Oak St, Springfield",
+            prescriptionNumber = "RX654321",
+            prescribingDoctor = "Dr. Jane Doe",
+            doctorContact = "555-6789",
+            reminderSettings = "3 days before refill date",
+            currentStock = 20,
+            insuranceInformation = "Insurance Company B",
+            notes = "Avoid alcohol."
+        )
+
+        val medicationRefill3 = MedicationRefill(
+            medicationName = "Atorvastatin",
+            dosage = "20 mg",
+            quantity = 30,
+            refillQuantity = 30,
+            refillDate = "2024-06-20",
+            nextRefillDate = "2024-07-20",
+            refillFrequency = 30, // Every 30 days
+            pharmacyName = "Pharmacy Three",
+            pharmacyContact = "555-3456",
+            pharmacyAddress = "789 Pine St, Springfield",
+            prescriptionNumber = "RX789012",
+            prescribingDoctor = "Dr. Emily Brown",
+            doctorContact = "555-7890",
+            reminderSettings = "1 day before refill date",
+            currentStock = 10,
+            insuranceInformation = "Insurance Company C",
+            notes = "Take in the evening."
+        )
         val medicationList = listOf(
-            Medication("Medication 1", "2 Pills"),
-            Medication("Medication 2", "3 Pills Left"),
-            Medication("Medication 3", "Subhead"),
-            Medication("Medication 4", "Subhead")
+            medicationRefill1,
+            medicationRefill2,
+            medicationRefill3
         )
 
         Column(modifier = Modifier.padding(innerPadding).padding(horizontal = 16.dp)) {
@@ -89,19 +167,19 @@ fun MedicationRefillScreen() {
 }
 
 @Composable
-fun MedicationList(medications: List<Medication>) {
+fun MedicationList(medications: List<MedicationRefill>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        items(medications) { medication: Medication ->
+        items(medications) { medication: MedicationRefill ->
             MedicationItem(medication)
         }
     }
 }
 
 @Composable
-fun MedicationItem(medication: Medication) {
+fun MedicationItem(medication: MedicationRefill) {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
@@ -127,12 +205,12 @@ fun MedicationItem(medication: Medication) {
                     .weight(1f)
             ) {
                 Text(
-                    text = medication.name,
+                    text = medication.medicationName,
                     fontSize = 20.sp,
                     color = Color.Black
                 )
                 Text(
-                    text = medication.info,
+                    text = "Refill date: " + medication.nextRefillDate,
                     fontSize = 16.sp,
                     color = Color.Gray
                 )
@@ -140,9 +218,15 @@ fun MedicationItem(medication: Medication) {
             IconButton(onClick = { }) {
                 Icon(Icons.Filled.Edit, contentDescription = null)
             }
-            IconButton(onClick = { }) {
-                Icon(Icons.Filled.Delete, contentDescription = null)
-            }
+//            IconButton(onClick = { }) {
+//                Icon(Icons.Filled.Delete, contentDescription = null)
+//            }
+            val checkedState = remember { mutableStateOf(true) }
+
+            Checkbox(
+                checked = checkedState.value,
+                onCheckedChange = { checkedState.value = it }
+            )
         }
     }
 }
