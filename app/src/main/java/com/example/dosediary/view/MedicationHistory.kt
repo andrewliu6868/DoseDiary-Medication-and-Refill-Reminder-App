@@ -18,10 +18,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.DoseDiary.ui.theme.DoseDiaryTheme
-import com.example.DoseDiary.ui.theme.Primary
-import com.example.dosediary.model.Medicine
 import com.example.dosediary.ui.theme.DoseDiaryTheme
+import com.example.dosediary.ui.theme.Primary
+import com.example.dosediary.model.Medicine
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
