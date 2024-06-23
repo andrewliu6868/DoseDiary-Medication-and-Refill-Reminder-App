@@ -29,6 +29,7 @@ fun EditMedication(navController: NavHostController) {
     calendar.set(2023, Calendar.MAY, 10, 10, 30)
     val date = remember { mutableStateOf("06/24/2024") }
     val time = remember { mutableStateOf("10:30") }
+    val text = remember { mutableStateOf("Enter Information") }
 
     Column(
         modifier = Modifier
@@ -43,6 +44,8 @@ fun EditMedication(navController: NavHostController) {
         DateField(date)
         Spacer(modifier = Modifier.height(16.dp))
         TimeField(time)
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(text)
         Spacer(modifier = Modifier.height(16.dp))
         ButtonRow(navController)
     }
@@ -166,6 +169,16 @@ fun TimeField(time: MutableState<String>) {
     OutlinedTextField(
         value = time.value,
         onValueChange = { time.value = it },
+        label = { Text("Select Time") },
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+fun TextField(text: MutableState<String>) {
+    OutlinedTextField(
+        value = text.value,
+        onValueChange = { text.value = it },
         label = { Text("Select Time") },
         modifier = Modifier.fillMaxWidth()
     )
