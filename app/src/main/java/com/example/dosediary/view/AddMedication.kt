@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import java.util.Date
 
 data class Medication(
@@ -57,9 +58,8 @@ data class Medication(
 )
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun AddMedicationMain(){
+fun AddMedicationMain(navController: NavHostController){
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text(text = "Add Medication", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)) })
@@ -98,7 +98,7 @@ fun AddMedicationMain(){
                 Spacer(modifier = Modifier.height(16.dp))
                 AddRefillDays()
                 Spacer(modifier = Modifier.height(16.dp))
-                SaveDeleteRow()
+                SaveDeleteRow(navController)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -234,7 +234,7 @@ fun AddRefillDays(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SaveDeleteRow() {
+fun SaveDeleteRow(navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -242,7 +242,7 @@ fun SaveDeleteRow() {
         horizontalArrangement = Arrangement.SpaceEvenly
     ){
         Button(
-            onClick = {null},
+            onClick = {navController.navigate("home")},
             modifier = Modifier.weight(1f)
         ){
             Text("Save")

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.internal.composableLambda
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,9 +26,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.ui.theme.Background
+import com.example.dosediary.view.AddMedicationMain
 import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
+import com.example.dosediary.view.MedicationRefillScreen
+import com.example.dosediary.view.MedicationRefillDetailScreen
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -69,16 +73,13 @@ fun HomeScreen() {
 fun MainContent(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = "home") {
-        composable("home") { MedicationListScreen() } // You need to define this Composable
-        composable("refill") { MedicationRefillScreen() } // Define this
+        composable("home") { MedicationListScreen(navController) } // You need to define this Composable
+        composable("refill") { MedicationRefillScreen(navController) } // Define this
         composable("history") { MedicationHistory(navController) } // Define this
         composable("profile") { Profile() } // Define this
+        composable("Add Medication") { AddMedicationMain(navController) }
+        composable("refillDetails") { MedicationRefillDetailScreen(navController) } // Define this
+
     }
 }
 
-@Composable
-fun MedicationRefillScreen() {
-    Row {
-        Text(text = "Medication Refill Page")
-    }
-}

@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
@@ -23,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
@@ -31,20 +34,31 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MedicationListScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(16.dp)
-    ) {
-        Header()
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
+fun MedicationListScreen(navController: NavController) {
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navController.navigate("Add Medication") },
+                containerColor = Color(0xFF7DCBFF)
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = "Add Medication")
+            }
+        }
+    ){ padding -> Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(16.dp)
+                .padding(padding)
         ) {
-            item { MedicationReminder() }
-            item { DailyMedicationChecklist() }
-            item { UpcomingMedicationRefills() }
+            Header()
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                item { MedicationReminder() }
+                item { DailyMedicationChecklist() }
+                item { UpcomingMedicationRefills() }
+            }
         }
     }
 }
@@ -225,8 +239,8 @@ fun MedicationRefillItem(date: String, medication: String, pills: Int) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MedicationScreenPreview() {
-    MedicationListScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun MedicationScreenPreview() {
+//    MedicationListScreen()
+//}
