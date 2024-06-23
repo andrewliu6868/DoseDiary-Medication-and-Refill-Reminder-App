@@ -217,9 +217,6 @@ fun MedicationRefillDetailedItem(medication: MedicationRefill, onItemClick: () -
                     text = "${medication.quantity} Pills",
                 )
             }
-            IconButton(onClick = { }) {
-                Icon(Icons.Filled.Edit, contentDescription = null)
-            }
 
             val checkedState = remember { mutableStateOf(true) }
             Checkbox(
