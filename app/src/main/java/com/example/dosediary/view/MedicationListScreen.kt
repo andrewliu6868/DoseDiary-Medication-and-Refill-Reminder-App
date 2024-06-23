@@ -29,6 +29,7 @@ import com.example.dosediary.ui.theme.Primary
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MedicationListScreen() {
     Column(
@@ -44,7 +45,6 @@ fun MedicationListScreen() {
             item { MedicationReminder() }
             item { DailyMedicationChecklist() }
             item { UpcomingMedicationRefills() }
-            item { TomorrowsRefills() }
         }
     }
 }
@@ -187,34 +187,6 @@ fun UpcomingMedicationRefills() {
             Spacer(modifier = Modifier.height(8.dp))
             MedicationRefillItem("Today, Jun 13, Thursday", "Medication 1", 2)
             MedicationRefillItem("Tomorrow, Jun 14, Friday", "Medication 1", 2)
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { /*TODO*/ },
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                colors = ButtonDefaults.buttonColors(containerColor = Primary)
-            ) {
-                Text("View All Medication Details")
-            }
-        }
-    }
-}
-
-@Composable
-fun TomorrowsRefills() {
-    Card(
-        shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            BasicText(
-                text = "Tomorrow's Medication Refills",
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            MedicationRefillItem("Tomorrow, Jun 14, Friday", "Medication 1", 2)
-            MedicationRefillItem("Tomorrow, Jun 14, Friday", "Medication 2", 1)
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = { /*TODO*/ },
                 modifier = Modifier.align(Alignment.CenterHorizontally),
