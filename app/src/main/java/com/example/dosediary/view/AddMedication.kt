@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,30 +41,27 @@ import com.example.DoseDiary.R
 fun AddMedicationMain(){
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "Dashboard") })
+            CenterAlignedTopAppBar(title = { Text(text = "Add Medication") })
         }
     ) {
         innerPadding ->
         Column (modifier = Modifier
-            .fillMaxWidth()
             .padding(innerPadding)
         ){
-            Text(text = "Add Medication", fontSize =  24.sp)
-            Spacer(modifier = Modifier.height(8.dp))
             Text(text = "Medication Name", fontSize = 16.sp)
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             AddName()
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Text("Start/End Dates")
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             AddMedDuration()
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Intake Frequency")
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             AddMedFrequency()
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Refill Days")
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             AddRefillDays()
         }
     }
@@ -93,8 +92,6 @@ fun DropDownMenu(
                 colors = OutlinedTextFieldDefaults.colors(),
                 modifier = Modifier
                     .menuAnchor()
-                    .fillMaxWidth()
-
                 )
                 ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     optionItems.forEach {item: String ->
@@ -124,12 +121,20 @@ fun AddMedDuration(){
     var startDateState by remember { mutableStateOf("") }
     var endDateState by remember { mutableStateOf("") }
         Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ){
-            OutlinedTextField(value = startDateState, onValueChange = {startDateState = it}, label = {Text("Start Date")} )
-            OutlinedTextField(value = endDateState, onValueChange = {endDateState = it}, label = {Text("End Date")} )
+            OutlinedTextField(value = startDateState,
+                onValueChange = {startDateState = it},
+                label = {Text("Start Date")},
+                modifier = Modifier.weight(1f))
+            OutlinedTextField(value = endDateState,
+                onValueChange = {endDateState = it},
+                label = {Text("End Date")},
+                modifier = Modifier.weight(1f))
         }
 }
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -143,14 +148,54 @@ fun AddMedFrequency(){
     var freqRate by remember {
         mutableStateOf("Hourly")
     }
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            DropDownMenu(selectedValue = freqNum, optionItems = frequencyNum  , label = "Times", onValueChangedEvent = {freqNum = it} )
-            Text(text = "Per")
-            DropDownMenu(selectedValue = freqRate, optionItems = frequncyRate, label = "Frequency", onValueChangedEvent = {freqRate = it})
+            DropDownMenu(selectedValue = freqNum,
+                optionItems = frequencyNum,
+                label = "Times",
+                onValueChangedEvent = {freqNum = it},
+                modifier = Modifier.weight(1f))
+            Text(text = "Per", modifier = Modifier.weight(1f))
+            DropDownMenu(selectedValue = freqRate,
+                optionItems = frequncyRate,
+                label = "Frequency",
+                onValueChangedEvent = {freqRate = it},
+                modifier = Modifier.weight(1f))
         }
 }
+
+/*
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddMedFrequency(){
+    val frequencyNum = remember { mutableListOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") }
+    val frequncyRate = remember{ mutableListOf("Hourly", "Daily", "Weekly", "Monthly", "Yearly") }
+    var freqNum by remember {
+        mutableStateOf("0")
+    }
+    var freqRate by remember {
+        mutableStateOf("Hourly")
+    }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            DropDownMenu(selectedValue = freqNum,
+                optionItems = frequencyNum,
+                label = "Times",
+                onValueChangedEvent = {freqNum = it},
+                modifier = Modifier.weight(1f))
+            Text(text = "Per", modifier = Modifier.weight(1f))
+            DropDownMenu(selectedValue = freqRate,
+                optionItems = frequncyRate,
+                label = "Frequency",
+                onValueChangedEvent = {freqRate = it},
+                modifier = Modifier.weight(1f))
+        }
+}
+* */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
