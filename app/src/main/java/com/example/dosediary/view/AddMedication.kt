@@ -47,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.dosediary.components.Header
 import java.util.Date
 
 data class Medication(
@@ -60,24 +61,21 @@ data class Medication(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddMedicationMain(navController: NavHostController){
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(title = { Text(text = "Add Medication", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)) })
-        },
-        modifier = Modifier.statusBarsPadding()
+    Column(
+        modifier = Modifier.padding(16.dp)
     ) {
+        Header(text = "Add Medication")
         Card(
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .padding(vertical = 50.dp),
+                .padding(10.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFFEBFAFF))
         ){
             Column(modifier = Modifier
-                .padding(top = 20.dp)
-                .padding(horizontal = 10.dp)
+//                .padding(top = 20.dp)
+                .padding(10.dp)
             ){
-                Spacer(modifier = Modifier.height(16.dp))
+//                Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "Medication Name",
                     style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
                 Spacer(modifier = Modifier.height(16.dp))

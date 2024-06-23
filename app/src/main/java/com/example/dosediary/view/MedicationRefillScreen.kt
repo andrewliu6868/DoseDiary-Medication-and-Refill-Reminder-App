@@ -16,6 +16,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,8 +27,10 @@ import androidx.compose.ui.unit.sp
 import com.example.dosediary.R
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
+import com.example.dosediary.components.Header
 import com.example.dosediary.ui.theme.MedicationRefillDetailedItem
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
@@ -63,6 +66,7 @@ fun MedicationRefillScreen(navController: NavController) {
             .background(Color.White)
             .padding(16.dp)
     ) {
+        RefillHeader()
         BasicText(
             text = "Upcoming Medication Refills",
             style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
@@ -70,6 +74,11 @@ fun MedicationRefillScreen(navController: NavController) {
         MedicationRefillTodayList(navController)
         MedicationRefillNextWeekList(navController)
     }
+}
+
+@Composable
+fun RefillHeader() {
+    Header(text = "Medication Refill")
 }
 
 val medicationRefill1 = MedicationRefill(

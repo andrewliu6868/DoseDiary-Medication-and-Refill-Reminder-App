@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dosediary.ui.theme.Background
 import androidx.navigation.NavHostController
+import com.example.dosediary.components.Header
 
 import com.example.dosediary.ui.theme.ContainerBackground
 
@@ -73,34 +74,35 @@ fun MedicationHistory(navController: NavHostController) {
 @Composable
 fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
     val context = LocalContext.current
+    Header(text = "Medication History")
 
-    TopAppBar(
-        modifier = Modifier.height(55.dp),
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Background,
-            titleContentColor = Color.Black,
-        ),
-        title = {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-                .padding(vertical = 8.dp),
-            contentAlignment = Alignment.Center
-            ){
-                Text("Medication History",
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.End,)
-            }
-        },
-        actions = {
-            IconButton(onClick = onAddClicked) {
-                Icon(Icons.Filled.Add, contentDescription = "Add Medication")
-            }
-            IconButton(onClick = { generatePDF(context, sampleMedications) }) {
-                Icon(Icons.Filled.FileDownload, contentDescription = "Generate Report")
-            }
-        }
-    )
+//    TopAppBar(
+//        modifier = Modifier.height(55.dp),
+//        colors = TopAppBarDefaults.topAppBarColors(
+//            containerColor = Background,
+//            titleContentColor = Color.Black,
+//        ),
+//        title = {
+//            Box(
+//                modifier = Modifier.fillMaxWidth()
+//                .padding(vertical = 8.dp),
+//            contentAlignment = Alignment.Center
+//            ){
+//                Text("Medication History",
+//                    fontSize = 25.sp,
+//                    fontWeight = FontWeight.Bold,
+//                    textAlign = TextAlign.End,)
+//            }
+//        },
+//        actions = {
+//            IconButton(onClick = onAddClicked) {
+//                Icon(Icons.Filled.Add, contentDescription = "Add Medication")
+//            }
+//            IconButton(onClick = { generatePDF(context, sampleMedications) }) {
+//                Icon(Icons.Filled.FileDownload, contentDescription = "Generate Report")
+//            }
+//        }
+//    )
 }
 
 fun generatePDF(context: Context, medications: List<Medicine>) {}
