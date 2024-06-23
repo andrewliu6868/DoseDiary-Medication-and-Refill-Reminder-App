@@ -1,11 +1,14 @@
 package com.example.dosediary.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.example.DoseDiary.R
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
@@ -44,9 +49,9 @@ fun AddMedicationMain(){
             CenterAlignedTopAppBar(title = { Text(text = "Add Medication") })
         }
     ) {
-        innerPadding ->
         Column (modifier = Modifier
-            .padding(innerPadding)
+            .padding(horizontal = 8.dp)
+            .statusBarsPadding()
         ){
             Text(text = "Medication Name", fontSize = 16.sp)
             Spacer(modifier = Modifier.height(16.dp))
@@ -63,6 +68,8 @@ fun AddMedicationMain(){
             Text(text = "Refill Days")
             Spacer(modifier = Modifier.height(16.dp))
             AddRefillDays()
+            Spacer(modifier = Modifier.height(16.dp))
+            SaveDeleteRow()
         }
     }
 
@@ -211,3 +218,29 @@ fun AddRefillDays(){
     }
     Text(text = sliderPosition.toString(), )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SaveDeleteRow() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ){
+        Button(
+            onClick = {null},
+            modifier = Modifier.weight(1f)
+        ){
+            Text("Save")
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Button(
+            onClick = { null },
+            modifier = Modifier.weight(1f)
+        ) {
+            Text("Delete")
+        }
+    }
+}
+
