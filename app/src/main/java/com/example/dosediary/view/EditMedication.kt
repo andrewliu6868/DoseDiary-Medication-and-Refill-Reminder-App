@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
 package com.example.dosediary.view
 
 import androidx.compose.foundation.clickable
@@ -35,6 +37,8 @@ fun EditMedication() {
         DateField(date)
         Spacer(modifier = Modifier.height(16.dp))
         TimeField(time)
+        Spacer(modifier = Modifier.height(16.dp))
+        ButtonRow()
     }
 }
 
@@ -99,7 +103,7 @@ fun EffectivenessDropdown(
 @Composable
 fun DateField(date: MutableState<Date>) {
     val dateFormat = remember { SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()) }
-    var datePickerVisible by remember { mutableStateOf(false) }
+    var datePickerVisible by remember { mutableStateOf(true) }
 
     if (datePickerVisible) {
         DatePicker(
@@ -120,7 +124,7 @@ fun DateField(date: MutableState<Date>) {
 @Composable
 fun TimeField(time: MutableState<Date>) {
     val timeFormat = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
-    var timePickerVisible by remember { mutableStateOf(false) }
+    var timePickerVisible by remember { mutableStateOf(true) }
 
     if (timePickerVisible) {
         TimePicker(
@@ -139,6 +143,28 @@ fun TimeField(time: MutableState<Date>) {
 }
 
 @Composable
+fun ButtonRow() {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Button(
+            onClick = {null},
+            modifier = Modifier.weight(1f)
+        ) {
+            Text("Save")
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Button(
+            onClick = {null},
+            modifier = Modifier.weight(1f)
+        ) {
+            Text("Delete")
+        }
+    }
+}
+
+@Composable
 fun DatePicker(
     date: Date
 ) {
@@ -154,3 +180,4 @@ fun TimePicker(
     val calendar = Calendar.getInstance()
     calendar.time = time
 }
+
