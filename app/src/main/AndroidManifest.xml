@@ -13,6 +13,11 @@
         android:theme="@style/Theme.DoseDiary"
         tools:targetApi="31">
         <activity
+            android:name="com.example.dosediary.view.AddMedication"
+            android:exported="false"
+            android:label="@string/title_activity_add_medication"
+            android:theme="@style/Theme.DoseDiary" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
