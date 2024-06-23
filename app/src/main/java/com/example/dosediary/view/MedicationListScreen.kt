@@ -1,5 +1,7 @@
 package com.example.dosediary.view
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +26,8 @@ import androidx.compose.ui.unit.sp
 import com.example.dosediary.R
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun MedicationListScreen() {
@@ -44,24 +49,32 @@ fun MedicationListScreen() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Header() {
+    val currentDate = LocalDate.now()
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val formattedDate = currentDate.format(formatter)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.icon),
+            contentDescription = "Pill Pics",
+            modifier = Modifier.width(25.dp)
+        )
+        Spacer(modifier = Modifier.width(10.dp))
         Text(
-            text = "2024-05-06",
+            text = formattedDate,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.End,
+            fontFamily = FontFamily.Serif
         )
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Outlined.Person, contentDescription = null)
-        }
     }
 }
 
@@ -226,7 +239,7 @@ fun MedicationRefillItem(date: String, medication: String, pills: Int) {
             Image(
                 painter = painterResource(id = R.drawable.icon),
                 contentDescription = "Pill Pics",
-                modifier = Modifier.width(40.dp)
+                modifier = Modifier.width(30.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column(modifier = Modifier.weight(1f)) {
