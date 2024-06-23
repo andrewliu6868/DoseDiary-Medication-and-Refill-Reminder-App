@@ -68,6 +68,7 @@ fun MedicationRefillScreen(navController: NavController) {
             style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
         )
         MedicationRefillTodayList(navController)
+        MedicationRefillNextWeekList(navController)
     }
 }
 
@@ -162,10 +163,10 @@ fun MedicationRefillTodayList(navController: NavController) {
 }
 
 @Composable
-fun MedicationRefillNextWeekList() {
+fun MedicationRefillNextWeekList(navController: NavController) {
     Card(
         shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = MedicationRefillDetailedItem),
+        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -176,7 +177,12 @@ fun MedicationRefillNextWeekList() {
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-//            MedicationRefillDetailedItem()
+            for (medication in medicationList) {
+                MedicationRefillDetailedItem(medication, onItemClick = {
+                    // Navigate to MedicationRefillDetailScreen
+                    navController.navigate("refillDetails")
+                })
+            }
         }
     }
 }
@@ -218,7 +224,7 @@ fun MedicationRefillDetailedItem(medication: MedicationRefill, onItemClick: () -
                 )
             }
 
-            val checkedState = remember { mutableStateOf(true) }
+            val checkedState = remember { mutableStateOf(false) }
             Checkbox(
                 checked = checkedState.value,
                 colors = CheckboxDefaults.colors(Primary),
