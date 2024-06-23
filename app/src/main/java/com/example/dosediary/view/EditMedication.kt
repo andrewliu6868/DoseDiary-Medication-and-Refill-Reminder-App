@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.dosediary.ui.theme.Primary
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -151,6 +152,7 @@ fun ButtonRow() {
     ) {
         Button(
             onClick = {null},
+            colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ) {
             Text("Save")
@@ -158,6 +160,7 @@ fun ButtonRow() {
         Spacer(modifier = Modifier.width(16.dp))
         Button(
             onClick = {null},
+            colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ) {
             Text("Delete")
