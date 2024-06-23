@@ -249,7 +249,7 @@ fun SaveDeleteRow(navController: NavHostController) {
         }
         Spacer(modifier = Modifier.width(16.dp))
         Button(
-            onClick = { null },
+            onClick = { navController.navigate("home") },
             modifier = Modifier.weight(1f)
         ) {
             Text("Delete")

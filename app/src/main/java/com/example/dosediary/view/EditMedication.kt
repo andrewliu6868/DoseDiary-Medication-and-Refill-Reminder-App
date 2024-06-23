@@ -201,7 +201,7 @@ fun ButtonRow(navController: NavHostController) {
         }
         Spacer(modifier = Modifier.width(16.dp))
         Button(
-            onClick = {null},
+            onClick = {navController.navigate("history")},
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ) {

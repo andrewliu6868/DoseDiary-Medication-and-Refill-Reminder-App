@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.ui.theme.ContainerBackground
+import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.ui.theme.Primary
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -47,7 +48,7 @@ fun MedicationListScreen(navController: NavController) {
     ){ padding -> Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(ContainerBackground)
                 .padding(16.dp)
                 .padding(padding)
         ) {
@@ -144,7 +145,7 @@ fun DailyMedicationChecklist() {
 
     Card(
         shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
+        colors = CardDefaults.cardColors(containerColor = Background),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -188,7 +189,7 @@ fun DailyMedicationChecklist() {
 fun UpcomingMedicationRefills() {
     Card(
         shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
+        colors = CardDefaults.cardColors(containerColor = Background),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)

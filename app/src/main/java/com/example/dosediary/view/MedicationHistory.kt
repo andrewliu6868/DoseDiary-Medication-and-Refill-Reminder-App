@@ -55,7 +55,7 @@ fun MedicationHistory(navController: NavHostController) {
         } else {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                containerColor = ContainerBackground,
+                containerColor = Background,
                 topBar = {
                     MedicationHistoryTopBar(
                         onAddClicked = { showEditMedication.value = true },
