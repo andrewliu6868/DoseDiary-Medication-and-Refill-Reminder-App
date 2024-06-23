@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.internal.composableLambda
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.ui.theme.Background
+import com.example.dosediary.view.AddMedicationMain
 import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
@@ -68,10 +70,12 @@ fun HomeScreen() {
 @Composable
 fun MainContent(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
-        composable("home") { MedicationListScreen() } // You need to define this Composable
+        composable("home") { MedicationListScreen(navController) } // You need to define this Composable
         composable("refill") { MedicationRefillScreen() } // Define this
         composable("history") { MedicationHistory() } // Define this
         composable("profile") { Profile() } // Define this
+        composable("Add Medication") { AddMedicationMain(navController) }
+
     }
 }
 

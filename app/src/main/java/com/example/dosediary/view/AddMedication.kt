@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import java.util.Date
 
 data class Medication(
@@ -50,7 +51,7 @@ data class Medication(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun AddMedicationMain(){
+fun AddMedicationMain(navController: NavHostController){
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text(text = "Add Medication") })
