@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -45,7 +46,6 @@ fun MedicationListScreen(navController: NavController) {
     ){ padding -> Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(ContainerBackground)
                 .padding(16.dp)
                 .padding(padding)
         ) {
@@ -122,7 +122,7 @@ fun DailyMedicationChecklist() {
 
     Card(
         shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = Background),
+        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -166,7 +166,7 @@ fun DailyMedicationChecklist() {
 fun UpcomingMedicationRefills() {
     Card(
         shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = Background),
+        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -177,8 +177,15 @@ fun UpcomingMedicationRefills() {
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            MedicationRefillItem("Today, Jun 13, Thursday", "Medication 1", 2)
-            MedicationRefillItem("Tomorrow, Jun 14, Friday", "Medication 1", 2)
+
+            BasicText(text = "Today, Jun 13, Thursday", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold))
+            Spacer(modifier = Modifier.height(4.dp))
+            MedicationRefillDetailedItem(medicationRefill1 ,{})
+            Spacer(modifier = Modifier.height(8.dp))
+
+            BasicText(text = "Tomorrow, Jun 14, Friday", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold))
+            Spacer(modifier = Modifier.height(4.dp))
+            MedicationRefillDetailedItem(medicationRefill2 ,{})
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = { /*TODO*/ },
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -192,8 +199,18 @@ fun UpcomingMedicationRefills() {
 
 @Composable
 fun MedicationRefillItem(date: String, medication: String, pills: Int) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        BasicText(text = date, style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold))
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
+        colors = CardDefaults.cardColors(containerColor = Background),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clickable {
+//                onItemClick()
+            }
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
