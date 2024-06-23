@@ -23,7 +23,6 @@ import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.model.Medicine
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -57,9 +56,6 @@ fun MedicationHistory(navController: NavHostController) {
                 topBar = {
                     MedicationHistoryTopBar(
                         onAddClicked = { showEditMedication.value = true },
-                        onBackClicked = {
-                            //navigate to MedicationListScreen
-                        }
                     )
                 },
                 content = { innerPadding ->
@@ -72,24 +68,20 @@ fun MedicationHistory(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MedicationHistoryTopBar(onAddClicked: () -> Unit, onBackClicked: () -> Unit ) {
+fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
     val context = LocalContext.current
 
     TopAppBar(
-        modifier = Modifier.height(40.dp),
+        modifier = Modifier.height(55.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Background,
             titleContentColor = Color.Black,
         ),
-        navigationIcon = {
-            IconButton(onClick = onBackClicked) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "Go Back")
-            }
-        },
         title = {
             Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxWidth()
+                .padding(vertical = 8.dp),
+            contentAlignment = Alignment.Center
             ){
                 Text("Medication History",
                     fontSize = 25.sp,
