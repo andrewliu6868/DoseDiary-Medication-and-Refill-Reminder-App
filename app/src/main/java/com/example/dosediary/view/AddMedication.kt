@@ -6,14 +6,18 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -33,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,11 +46,11 @@ import com.example.DoseDiary.R
 import java.util.Date
 
 data class Medication(
-    val medicationName: String,
-    val startDate: Date,
-    val endDate: Date,
-    val refillDays: Number,
-    val owner: String
+    var medicationName: String,
+    var startDate: Date,
+    var endDate: Date,
+    var refillDays: Number,
+    var owner: String
 )
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,31 +59,45 @@ data class Medication(
 fun AddMedicationMain(){
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = { Text(text = "Add Medication") })
+            CenterAlignedTopAppBar(title = { Text(text = "Add Medication", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)) })
         },
         modifier = Modifier.statusBarsPadding()
     ) {
-        Column(modifier = Modifier
-            .padding(top = 80.dp)
-            .padding(horizontal = 10.dp)
+        Card(
+            shape = RoundedCornerShape(24.dp),
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .padding(vertical = 50.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFEBFAFF))
         ){
-            Text(text = "Medication Name", fontSize = 16.sp)
-            Spacer(modifier = Modifier.height(16.dp))
-            AddName()
-            Spacer(modifier = Modifier.height(16.dp))
-            Text("Start/End Dates")
-            Spacer(modifier = Modifier.height(16.dp))
-            AddMedDuration()
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Intake Frequency")
-            Spacer(modifier = Modifier.height(16.dp))
-            AddMedFrequency()
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Refill Days")
-            Spacer(modifier = Modifier.height(16.dp))
-            AddRefillDays()
-            Spacer(modifier = Modifier.height(16.dp))
-            SaveDeleteRow()
+            Column(modifier = Modifier
+                .padding(top = 20.dp)
+                .padding(horizontal = 10.dp)
+            ){
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Medication Name",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+                Spacer(modifier = Modifier.height(16.dp))
+                AddName()
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Start/End Dates",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+                Spacer(modifier = Modifier.height(16.dp))
+                AddMedDuration()
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Intake Frequency",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+                Spacer(modifier = Modifier.height(16.dp))
+                AddMedFrequency()
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Refill Days",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+                Spacer(modifier = Modifier.height(16.dp))
+                AddRefillDays()
+                Spacer(modifier = Modifier.height(16.dp))
+                SaveDeleteRow()
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 
@@ -169,7 +188,7 @@ fun AddMedFrequency(){
     }
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            //horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Column(
                 modifier = Modifier.weight(1f)
@@ -179,14 +198,16 @@ fun AddMedFrequency(){
                     optionItems = frequencyNum,
                     label = "Times")
             }
+            Spacer(modifier = Modifier.width(8.dp))
             Text(text = "Per")
+            Spacer(modifier = Modifier.width(8.dp))
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 DropDownMenu(
                     //selectedChoice = freqRate,
                     optionItems = frequncyRate,
-                    label = "Frequency")
+                    label = "Rate")
             }
         }
 }
@@ -205,7 +226,7 @@ fun AddRefillDays(){
             steps = 100
         )
     }
-    Text(text = sliderPosition.toString(), )
+    Text(text = sliderPosition.toString(), textAlign = TextAlign.Center )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
