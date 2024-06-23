@@ -30,6 +30,8 @@ import com.example.dosediary.view.AddMedicationMain
 import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
+import com.example.dosediary.view.MedicationRefillScreen
+import com.example.dosediary.view.MedicationRefillDetailScreen
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -72,17 +74,12 @@ fun MainContent(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { MedicationListScreen(navController) } // You need to define this Composable
-        composable("refill") { MedicationRefillScreen() } // Define this
+        composable("refill") { MedicationRefillScreen(navController) } // Define this
         composable("history") { MedicationHistory(navController) } // Define this
         composable("profile") { Profile() } // Define this
         composable("Add Medication") { AddMedicationMain(navController) }
+        composable("refillDetails") { MedicationRefillDetailScreen(navController) } // Define this
 
     }
 }
 
-@Composable
-fun MedicationRefillScreen() {
-    Row {
-        Text(text = "Medication Refill Page")
-    }
-}

@@ -2,25 +2,17 @@ package com.example.dosediary.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -29,21 +21,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dosediary.R
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
 import com.example.dosediary.ui.theme.MedicationRefillDetailedItem
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.ui.theme.Background
-import com.example.dosediary.view.Header
 
 data class MedicationRefill(
     val medicationName: String,
@@ -66,21 +54,20 @@ data class MedicationRefill(
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
+//@Preview
 @Composable
-fun MedicationRefillScreen() {
+fun MedicationRefillScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
             .padding(16.dp)
     ) {
-        Header()
         BasicText(
             text = "Upcoming Medication Refills",
             style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
         )
-        MedicationRefillTodayList()
+        MedicationRefillTodayList(navController)
     }
 }
 
@@ -149,7 +136,7 @@ val medicationList = listOf(
     medicationRefill3
 )
 @Composable
-fun MedicationRefillTodayList() {
+fun MedicationRefillTodayList(navController: NavController) {
     Card(
         shape = RoundedCornerShape(35.dp),
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
@@ -165,9 +152,11 @@ fun MedicationRefillTodayList() {
             Spacer(modifier = Modifier.height(8.dp))
             // for medication in medication list render MedicationRefillDetailedItem(medication)
             for (medication in medicationList) {
-                MedicationRefillDetailedItem(medication)
+                MedicationRefillDetailedItem(medication, onItemClick = {
+                    // Navigate to MedicationRefillDetailScreen
+                    navController.navigate("refillDetails")
+                })
             }
-//            MedicationRefillDetailedItem(medicationRefill3)
         }
     }
 }
@@ -193,7 +182,7 @@ fun MedicationRefillNextWeekList() {
 }
 
 @Composable
-fun MedicationRefillDetailedItem(medication: MedicationRefill) {
+fun MedicationRefillDetailedItem(medication: MedicationRefill, onItemClick: () -> Unit) {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
@@ -202,6 +191,9 @@ fun MedicationRefillDetailedItem(medication: MedicationRefill) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
+            .clickable {
+                onItemClick()
+            }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -228,11 +220,8 @@ fun MedicationRefillDetailedItem(medication: MedicationRefill) {
             IconButton(onClick = { }) {
                 Icon(Icons.Filled.Edit, contentDescription = null)
             }
-//            IconButton(onClick = { }) {
-//                Icon(Icons.Filled.Delete, contentDescription = null)
-//            }
-            val checkedState = remember { mutableStateOf(true) }
 
+            val checkedState = remember { mutableStateOf(true) }
             Checkbox(
                 checked = checkedState.value,
                 colors = CheckboxDefaults.colors(Primary),
