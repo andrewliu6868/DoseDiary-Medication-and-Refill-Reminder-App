@@ -27,8 +27,8 @@ fun EditMedication(navController: NavHostController) {
     val selectedEffectiveness = remember { mutableStateOf(effectivenessOptions[0]) }
     val calendar = Calendar.getInstance()
     calendar.set(2023, Calendar.MAY, 10, 10, 30)
-    val date = remember { mutableStateOf("06/24/2024") }
-    val time = remember { mutableStateOf("10:30") }
+    val date = remember { mutableStateOf("06/19/2024") }
+    val time = remember { mutableStateOf("6:00") }
     val text = remember { mutableStateOf("Enter Information") }
 
     Column(

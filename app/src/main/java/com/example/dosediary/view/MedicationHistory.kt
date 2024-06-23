@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import com.example.dosediary.ui.theme.Background
 import androidx.navigation.NavHostController
 import com.example.dosediary.components.Header
+import com.example.dosediary.view.EditMedication
 
 import com.example.dosediary.ui.theme.ContainerBackground
 
@@ -63,7 +64,7 @@ fun MedicationHistory(navController: NavHostController) {
                     )
                 },
                 content = { innerPadding ->
-                    MedicationHistoryContent(Modifier.padding(innerPadding))
+                    MedicationHistoryContent(Modifier.padding(innerPadding), navController)
                 },
             )
         }
@@ -118,7 +119,7 @@ val sampleMedications = listOf(
 )
 
 @Composable
-fun MedicationHistoryContent(modifier: Modifier = Modifier) {
+fun MedicationHistoryContent(modifier: Modifier = Modifier, navController: NavHostController) {
     LazyColumn(
             modifier = modifier
                 .fillMaxSize()
@@ -127,13 +128,13 @@ fun MedicationHistoryContent(modifier: Modifier = Modifier) {
             contentPadding = PaddingValues(bottom = 20.dp)
     ) {
         items(sampleMedications) { medication ->
-            MedicationItem(medication)
+            MedicationItem(medication, navController)
         }
     }
 }
 
 @Composable
-fun MedicationItem(medication: Medicine) {
+fun MedicationItem(medication: Medicine, navController: NavHostController) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Background,
@@ -160,7 +161,7 @@ fun MedicationItem(medication: Medicine) {
             Text(text = medication.effectiveness,
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp))
         }
-        IconButton(onClick = { }) {
+        IconButton(onClick = {navController.navigate("editMedication")}) {
             Icon(Icons.Filled.Edit, contentDescription = "Edit")
         }
     }

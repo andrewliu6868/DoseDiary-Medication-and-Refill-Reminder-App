@@ -27,6 +27,7 @@ import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.view.AddMedicationMain
+import com.example.dosediary.view.EditMedication
 import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
@@ -79,7 +80,7 @@ fun MainContent(navController: NavHostController) {
         composable("profile") { Profile() } // Define this
         composable("Add Medication") { AddMedicationMain(navController) }
         composable("refillDetails") { MedicationRefillDetailScreen(navController) } // Define this
-
+        composable("editMedication") { EditMedication(navController) }
     }
 }
 
