@@ -38,15 +38,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dosediary.ui.theme.Background
+import androidx.navigation.NavHostController
 
-@Preview
+
 @Composable
-fun MedicationHistory() {
+fun MedicationHistory(navController: NavHostController) {
     val showEditMedication = remember { mutableStateOf(false) }
 
     DoseDiaryTheme {
         if (showEditMedication.value) {
-            EditMedication()
+            EditMedication(navController)
         } else {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
@@ -159,6 +160,9 @@ fun MedicationItem(medication: Medicine) {
                 textAlign = TextAlign.End,)
         }
     }
+
 }
+
+
 
 
