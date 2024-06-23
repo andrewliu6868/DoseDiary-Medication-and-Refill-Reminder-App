@@ -38,8 +38,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.DoseDiary.R
+import java.util.Date
 
-
+data class Medication(
+    val medicationName: String,
+    val startDate: Date,
+    val endDate: Date,
+    val refillDays: Number,
+    val owner: String
+)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -48,11 +55,12 @@ fun AddMedicationMain(){
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text(text = "Add Medication") })
-        }
+        },
+        modifier = Modifier.statusBarsPadding()
     ) {
         Column(modifier = Modifier
-            .padding(horizontal = 8.dp)
-            .statusBarsPadding()
+            .padding(top = 80.dp)
+            .padding(horizontal = 10.dp)
         ){
             Text(text = "Medication Name", fontSize = 16.sp)
             Spacer(modifier = Modifier.height(16.dp))
