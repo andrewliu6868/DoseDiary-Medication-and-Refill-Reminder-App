@@ -16,6 +16,7 @@ import java.util.*
 import com.example.dosediary.view.MedicationHistory
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import com.example.dosediary.ui.theme.Primary
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -180,6 +181,7 @@ fun ButtonRow(navController: NavHostController) {
     ) {
         Button(
             onClick = {navController.navigate("history")},
+            colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ) {
             Text("Save")
@@ -187,6 +189,7 @@ fun ButtonRow(navController: NavHostController) {
         Spacer(modifier = Modifier.width(16.dp))
         Button(
             onClick = {null},
+            colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ) {
             Text("Delete")
