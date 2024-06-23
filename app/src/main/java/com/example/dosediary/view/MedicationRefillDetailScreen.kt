@@ -2,145 +2,265 @@ package com.example.dosediary.view
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Directions
+import androidx.compose.material.icons.outlined.MedicalServices
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.DoseDiary.R
+import com.example.dosediary.R
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.dosediary.ui.theme.ContainerBackground
+import com.example.dosediary.ui.theme.Primary
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun MedicationRefillDetailScreen(navController: NavController, medicationName: String?) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Medication Refill Info") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { /* TODO: Handle language change */ }) {
-                        Icon(Icons.Filled.Info, contentDescription = "Language")
-                    }
-                    IconButton(onClick = { /* TODO: Handle calendar event */ }) {
-                        Icon(Icons.Filled.DateRange, contentDescription = "Calendar")
-                    }
-                    IconButton(onClick = { /* TODO: Handle more options */ }) {
-                        Icon(Icons.Filled.MoreVert, contentDescription = "More")
-                    }
-                }
-            )
-        },
-        content = { innerPadding ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding).padding(horizontal = 16.dp)
-            ) {
-                item {
-                    MedicationDetailContent(medicationName)
-                }
-            }
-        }
-    )
-}
-
-@Composable
-fun MedicationDetailContent(medicationName: String?) {
+fun MedicationRefillDetailScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
+            .padding(16.dp)
     ) {
-        Card(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 4.dp
-            ),
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        Header()
+        BasicText(
+            text = "Medication Refill Detail",
+            style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        )
+        MedicationRefillDetail()
+    }
+}
+
+val medicationRefill = MedicationRefill(
+    medicationName = "Lisinopril",
+    dosage = "10 mg",
+    quantity = 90,
+    refillQuantity = 90,
+    refillDate = "2024-06-01",
+    nextRefillDate = "2024-09-01",
+    refillFrequency = 90, // Every 90 days
+    pharmacyName = "Pharmacy One",
+    pharmacyContact = "555-1234",
+    pharmacyAddress = "123 Main St, Springfield",
+    prescriptionNumber = "RX123456",
+    prescribingDoctor = "Dr. John Smith",
+    doctorContact = "555-5678",
+    reminderSettings = "2 days before refill date",
+    currentStock = 30,
+    insuranceInformation = "Insurance Company A",
+    notes = "Take with food."
+)
+
+@Composable
+fun MedicationRefillDetail() {
+    Card(
+        shape = RoundedCornerShape(35.dp),
+        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            BasicText(
+                text = medicationRefill.medicationName + ": " + medicationRefill.currentStock + " pills left",
+                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Image(
+                painter = painterResource(id = R.drawable.img),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(10.dp))
+                    .height(200.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row() {
+                Button(onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                    modifier = Modifier.height(40.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Directions,
+                        tint = Color.White,
+                        contentDescription = "Direction"
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "Direction")
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                    modifier = Modifier.height(40.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Phone,
+                        tint = Color.White,
+                        contentDescription = "Call"
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "Call")
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(vertical = 8.dp)
             ) {
-                Row() {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_medication),
-                        contentDescription = null,
-                        modifier = Modifier.size(48.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Column {
-                        Text(
-                            text = medicationName ?: "Medication",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "2 Pills Left",
-                            fontSize = 16.sp,
-                            color = Color.Gray
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /* TODO: Handle more options */ }) {
-                        Icon(Icons.Filled.MoreVert, contentDescription = "More")
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.ic_profile),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
+                BasicText(
+                    text = "Refill Information:",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Medium, fontSize = 14.sp)
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+
                 Text(
-                    text = "Location:",
-                    fontWeight = FontWeight.Bold
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Next Refill Date: ")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.nextRefillDate)
+                        }
+                    }
                 )
                 Text(
-                    text = "Shoppers Drug Mart (75 King St S Unit 42/43)",
-                    color = Color.Gray
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Pharmacy Name: ")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.pharmacyName)
+                        }
+                    }
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Button(
-                        onClick = { /* TODO: Handle edit click */ }
-                    ) {
-                        Text("Edit")
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Pharmacy Contact: ")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.pharmacyContact)
+                        }
                     }
-                    Button(
-                        onClick = { /* TODO: Handle refill complete click */ }
-                    ) {
-                        Text("Refill Complete", color = Color.White)
+                )
+
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Pharmacy Address:")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.pharmacyAddress)
+                        }
                     }
-                }
+                )
+
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Prescription Number: ")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.prescriptionNumber)
+                        }
+                    }
+                )
+
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Prescribing Doctor: ")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.prescribingDoctor)
+                        }
+                    }
+                )
+
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Doctor Contact: ")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.doctorContact)
+                        }
+                    }
+                )
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                BasicText(
+                    text = "More information about the medication:",
+                    style = LocalTextStyle.current.copy(
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 14.sp
+                    )
+                )
+
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Dosage: ")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.dosage)
+                        }
+                    }
+                )
+
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Quantity: ")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.quantity.toString())
+                        }
+                    }
+                )
+
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append("Notes: ")
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationRefill.notes.toString())
+                        }
+                    }
+                )
+
+            }
+
         }
     }
-}
-@Preview
-@Composable
-fun MedicationRefillDetailScreenPreview() {
-    // Preview the MedicationRefillDetailScreen
-     val navController = rememberNavController()
-    MedicationRefillDetailScreen(navController = navController, medicationName = "Medication Name")
 }
