@@ -1,6 +1,7 @@
 package com.example.dosediary.view
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dosediary.ui.theme.Background
+import com.example.dosediary.ui.theme.ContainerBackground
 
 @Preview
 @Composable
@@ -50,6 +52,7 @@ fun MedicationHistory() {
         } else {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
+                containerColor = ContainerBackground,
                 topBar = {
                     MedicationHistoryTopBar(
                         onAddClicked = { showEditMedication.value = true },
@@ -121,7 +124,8 @@ fun MedicationHistoryContent(modifier: Modifier = Modifier) {
     LazyColumn(
             modifier = modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 10.dp),
+                .padding(horizontal = 20.dp, vertical = 10.dp)
+                .background(ContainerBackground),
             contentPadding = PaddingValues(bottom = 20.dp)
     ) {
         items(sampleMedications) { medication ->
@@ -133,11 +137,14 @@ fun MedicationHistoryContent(modifier: Modifier = Modifier) {
 @Composable
 fun MedicationItem(medication: Medicine) {
     Card(
+        colors = CardDefaults.cardColors(
+            containerColor = Background,
+        ),
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp
+            defaultElevation = 5.dp
         )
     ) {
         Column(
