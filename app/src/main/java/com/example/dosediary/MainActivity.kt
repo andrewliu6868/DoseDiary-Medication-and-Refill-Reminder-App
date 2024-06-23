@@ -1,105 +1,84 @@
-package com.example.DoseDiary
+package com.example.dosediary
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.DoseDiary.ui.theme.DoseDiaryTheme
-import androidx.compose.foundation.layout.Box
-import com.example.dosediary.view.MedicationHistory
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.dosediary.view.EditMedication
+
+import com.example.dosediary.ui.theme.DoseDiaryTheme
+import com.example.dosediary.navigation.BottomNavigationBar
+import com.example.dosediary.ui.theme.Background
+import com.example.dosediary.view.MedicationHistory
+import com.example.dosediary.view.MedicationListScreen
+import com.example.dosediary.view.Profile
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             DoseDiaryTheme {
-                MainScreen()
+                Surface(modifier = Modifier.fillMaxSize(), color = Background) {
+                    HomeScreen()
+                }
             }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun MainScreen() {
+fun HomeScreen() {
     val navController = rememberNavController()
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        content = { innerPadding ->
-            NavHost(navController = navController, startDestination = "medicationHistory", modifier = Modifier.padding(innerPadding)) {
-                composable("medicationHistory") {
-                    MedicationHistory(onNavigateToAddMedication = {
-                        navController.navigate("editMedication")
-                    })
-                }
-                composable("editMedication") {
-                    EditMedication()
-                }
-            }
+        bottomBar = {
+            BottomNavigationBar(navController)
         }
-    )
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            MainContent(navController)
+        }
+    }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SmallTopBar() {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Text("Dashboard")
-                    }
-                }
-            )
-        },
-    ) { innerPadding -> ScrollContent(innerPadding)
+fun MainContent(navController: NavHostController) {
+
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") { MedicationListScreen() } // You need to define this Composable
+        composable("refill") { MedicationRefillScreen() } // Define this
+        composable("history") { MedicationHistory(navController) } // Define this
+        composable("profile") { Profile() } // Define this
     }
 }
 
 @Composable
-fun ScrollContent(innerPadding: PaddingValues){
-
-
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DoseDiaryTheme {
-        Greeting("Android")
+fun MedicationRefillScreen() {
+    Row {
+        Text(text = "Medication Refill Page")
     }
 }
