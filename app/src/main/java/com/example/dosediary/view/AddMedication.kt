@@ -23,6 +23,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +50,7 @@ fun AddMedicationMain(){
             CenterAlignedTopAppBar(title = { Text(text = "Add Medication") })
         }
     ) {
-        Column (modifier = Modifier
+        Column(modifier = Modifier
             .padding(horizontal = 8.dp)
             .statusBarsPadding()
         ){
@@ -78,38 +79,42 @@ fun AddMedicationMain(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDownMenu(
-    selectedValue: String,
+    //selectedChoice: MutableState<String>,
     optionItems: List<String>,
-    label: String,
-    onValueChangedEvent: (String) -> Unit,
-    modifier: Modifier = Modifier
+    label: String
 ){
-    var expanded by remember {mutableStateOf(false)}
-
-    ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = {expanded = !expanded},
-        modifier = modifier
-        ) {
-            OutlinedTextField(readOnly = true,
-                value = selectedValue,
+    var isExpanded by remember { mutableStateOf(false) }
+    var selected by remember{ mutableStateOf("") }
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 8.dp)
+    ){
+        ExposedDropdownMenuBox(
+            expanded = isExpanded,
+            onExpandedChange = {isExpanded = !isExpanded}) {
+            TextField(
+                modifier = Modifier.menuAnchor(),
+                label = {Text(label)},
+                //value = selectedChoice.value,
+                value = selected,
                 onValueChange = {},
-                label={ Text(text = label)},
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                },
-                colors = OutlinedTextFieldDefaults.colors(),
-                modifier = Modifier
-                    .menuAnchor()
-                )
-                ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    optionItems.forEach {item: String ->
-                        DropdownMenuItem(text = { Text(text = item) },
-                            onClick = {
-                                expanded = false
-                                onValueChangedEvent(item)
-                            }
-                        )
-                    }
+                readOnly = true,
+                trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) }
+            )
+            ExposedDropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false}) {
+                optionItems.forEachIndexed { index, text ->
+                    DropdownMenuItem(
+                        text = {Text(text = text) },
+                        onClick = {
+                            selected = optionItems[index]
+                            isExpanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
                 }
+            }
+            //Text("Selected option is: " + selected)
+        }
     }
 }
 
@@ -143,77 +148,53 @@ fun AddMedDuration(){
 }
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddMedFrequency(){
     val frequencyNum = remember { mutableListOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") }
     val frequncyRate = remember{ mutableListOf("Hourly", "Daily", "Weekly", "Monthly", "Yearly") }
     var freqNum by remember {
-        mutableStateOf("0")
+        mutableStateOf(frequencyNum[0])
     }
     var freqRate by remember {
-        mutableStateOf("Hourly")
-    }
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            DropDownMenu(selectedValue = freqNum,
-                optionItems = frequencyNum,
-                label = "Times",
-                onValueChangedEvent = {freqNum = it},
-                modifier = Modifier.weight(1f))
-            Text(text = "Per", modifier = Modifier.weight(1f))
-            DropDownMenu(selectedValue = freqRate,
-                optionItems = frequncyRate,
-                label = "Frequency",
-                onValueChangedEvent = {freqRate = it},
-                modifier = Modifier.weight(1f))
-        }
-}
-
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AddMedFrequency(){
-    val frequencyNum = remember { mutableListOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") }
-    val frequncyRate = remember{ mutableListOf("Hourly", "Daily", "Weekly", "Monthly", "Yearly") }
-    var freqNum by remember {
-        mutableStateOf("0")
-    }
-    var freqRate by remember {
-        mutableStateOf("Hourly")
+        mutableStateOf(frequncyRate[0])
     }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            DropDownMenu(selectedValue = freqNum,
-                optionItems = frequencyNum,
-                label = "Times",
-                onValueChangedEvent = {freqNum = it},
-                modifier = Modifier.weight(1f))
-            Text(text = "Per", modifier = Modifier.weight(1f))
-            DropDownMenu(selectedValue = freqRate,
-                optionItems = frequncyRate,
-                label = "Frequency",
-                onValueChangedEvent = {freqRate = it},
-                modifier = Modifier.weight(1f))
+            Column(
+                modifier = Modifier.weight(1f)
+            ){
+                DropDownMenu(
+                    //selectedChoice = frequencyNum[0],
+                    optionItems = frequencyNum,
+                    label = "Times")
+            }
+            Text(text = "Per")
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                DropDownMenu(
+                    //selectedChoice = freqRate,
+                    optionItems = frequncyRate,
+                    label = "Frequency")
+            }
         }
 }
-* */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddRefillDays(){
-    var sliderPosition by remember {mutableFloatStateOf(0f)}
+    var sliderPosition by remember {mutableStateOf(0)}
     Box(modifier = Modifier) {
         Slider(
-            value = sliderPosition,
-            onValueChange = {sliderPosition = it},
-            steps = 1,
-            valueRange=0f..100f
+            value = sliderPosition.toFloat(),
+            onValueChange = {newValue ->
+                sliderPosition = newValue.toInt()
+                            },
+            valueRange=0f..100f,
+            steps = 100
         )
     }
     Text(text = sliderPosition.toString(), )
