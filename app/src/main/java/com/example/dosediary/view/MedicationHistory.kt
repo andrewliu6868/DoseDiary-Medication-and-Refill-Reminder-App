@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,10 +24,12 @@ import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.model.Medicine
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -139,27 +142,27 @@ fun MedicationItem(medication: Medicine) {
         elevation = CardDefaults.cardElevation(
             defaultElevation = 5.dp
         )
+    ) {Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
+            modifier = Modifier.weight(1f)  // This makes the column take up all space except for the button
         ) {
-            Text(text = medication.name, 
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.End,)
+            Text(text = medication.name,
+                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp))
             Text(text = "Taken: ${medication.timeTaken}",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.End,)
-            Text(text = " ${medication.effectiveness}",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.End,)
+                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp))
+            Text(text = medication.effectiveness,
+                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp))
+        }
+        IconButton(onClick = { }) {
+            Icon(Icons.Filled.Edit, contentDescription = "Edit")
         }
     }
-
+    }
 }
 
 
