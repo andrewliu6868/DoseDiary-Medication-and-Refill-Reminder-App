@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import java.text.SimpleDateFormat
@@ -46,7 +47,7 @@ fun EditMedication() {
 fun HeaderText() {
     Text(
         text = "Edit Medication History",
-        style = MaterialTheme.typography.titleLarge,
+        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
         modifier = Modifier.padding(bottom = 16.dp)
     )
 }
@@ -168,7 +169,6 @@ fun ButtonRow() {
 fun DatePicker(
     date: Date
 ) {
-
     val calendar = Calendar.getInstance()
     calendar.time = date
 }
@@ -180,4 +180,3 @@ fun TimePicker(
     val calendar = Calendar.getInstance()
     calendar.time = time
 }
-
