@@ -58,7 +58,6 @@ data class Medication(
 )
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
 fun AddMedicationMain(navController: NavHostController){
     Scaffold(
@@ -99,7 +98,7 @@ fun AddMedicationMain(navController: NavHostController){
                 Spacer(modifier = Modifier.height(16.dp))
                 AddRefillDays()
                 Spacer(modifier = Modifier.height(16.dp))
-                SaveDeleteRow()
+                SaveDeleteRow(navController)
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -235,7 +234,7 @@ fun AddRefillDays(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SaveDeleteRow() {
+fun SaveDeleteRow(navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -243,7 +242,7 @@ fun SaveDeleteRow() {
         horizontalArrangement = Arrangement.SpaceEvenly
     ){
         Button(
-            onClick = {null},
+            onClick = {navController.navigate("home")},
             modifier = Modifier.weight(1f)
         ){
             Text("Save")
