@@ -11,12 +11,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.ui.theme.Background
+import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.view.MedicationListScreen
+import com.example.dosediary.view.Profile
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +44,10 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun HomeScreen() {
+    val navController = rememberNavController()
     Scaffold(
         bottomBar = {
-            BottomNavigationBar()
+            BottomNavigationBar(navController)
         }
     ) { padding ->
         Column(
@@ -45,7 +55,24 @@ fun HomeScreen() {
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            MedicationListScreen()
+            MainContent(navController)
         }
+    }
+}
+
+@Composable
+fun MainContent(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") { MedicationListScreen() } // You need to define this Composable
+        composable("refill") { MedicationRefillScreen() } // Define this
+        composable("history") { MedicationHistory() } // Define this
+        composable("profile") { Profile() } // Define this
+    }
+}
+
+@Composable
+fun MedicationRefillScreen() {
+    Row {
+        Text(text = "Medication Refill Page")
     }
 }
