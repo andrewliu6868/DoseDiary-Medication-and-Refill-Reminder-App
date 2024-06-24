@@ -67,10 +67,11 @@ fun HomeScreen() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainContent(navController: NavHostController) {
+
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { MedicationListScreen() } // You need to define this Composable
         composable("refill") { MedicationRefillScreen() } // Define this
-        composable("history") { MedicationHistory() } // Define this
+        composable("history") { MedicationHistory(navController) } // Define this
         composable("profile") { Profile() } // Define this
     }
 }
