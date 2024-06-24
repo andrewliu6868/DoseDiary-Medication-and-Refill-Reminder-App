@@ -179,7 +179,7 @@ fun TextField(text: MutableState<String>) {
     OutlinedTextField(
         value = text.value,
         onValueChange = { text.value = it },
-        label = { Text("Select Time") },
+        label = { Text("Other Information") },
         modifier = Modifier.fillMaxWidth()
     )
 }
