@@ -29,7 +29,7 @@ fun EditMedication(navController: NavHostController) {
     val calendar = Calendar.getInstance()
     calendar.set(2024, Calendar.JUNE, 24, 10, 30)
     val date = remember { mutableStateOf(calendar.time) }
-    val time = remember { mutableStateOf("10:30") }
+    val time = remember { mutableStateOf(calendar.time) }
 
     Column(
         modifier = Modifier
@@ -161,36 +161,56 @@ fun DateField(date: MutableState<Date>) {
 //    )
 //}
 
-//@Composable
-//fun TimeField(time: MutableState<Date>) {
-//    val timeFormat = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
-//    var timePickerVisible by remember { mutableStateOf(true) }
-//
-//    if (timePickerVisible) {
-//        TimePicker(
-//            time = time.value
-//        )
-//    }
-//
-//    OutlinedTextField(
-//        value = timeFormat.format(time.value),
-//        onValueChange = { },
-//        label = { Text("Select Time") },
-//        readOnly = true,
-//        modifier = Modifier.fillMaxWidth().clickable { timePickerVisible = true },
-//        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
-//    )
-//}
-
 @Composable
-fun TimeField(time: MutableState<String>) {
+fun TimeField(time: MutableState<Date>) {
+    val timeFormat = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
+    val calendar = Calendar.getInstance()
+
+    val context = LocalContext.current
+
+    val timePickerDialog = remember {
+        android.app.TimePickerDialog(
+            context,
+            { _, hourOfDay, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+                time.value = calendar.time
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            false
+        )
+    }
+
     OutlinedTextField(
-        value = time.value,
-        onValueChange = { time.value = it },
+        value = timeFormat.format(time.value),
+        onValueChange = { },
         label = { Text("Select Time") },
-        modifier = Modifier.fillMaxWidth()
+        readOnly = true,
+        modifier = Modifier.fillMaxWidth(),
+        interactionSource = remember { MutableInteractionSource() }
+            .also { interactionSource ->
+                LaunchedEffect(interactionSource) {
+                    interactionSource.interactions.collect {
+                        if (it is PressInteraction.Release) {
+                            timePickerDialog.show()
+                        }
+                    }
+                }
+            }
     )
 }
+
+
+//@Composable
+//fun TimeField(time: MutableState<String>) {
+//    OutlinedTextField(
+//        value = time.value,
+//        onValueChange = { time.value = it },
+//        label = { Text("Select Time") },
+//        modifier = Modifier.fillMaxWidth()
+//    )
+//}
 
 @Composable
 fun ButtonRow(navController: NavHostController) {
