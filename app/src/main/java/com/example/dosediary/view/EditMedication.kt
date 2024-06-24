@@ -16,6 +16,7 @@ import java.util.*
 import com.example.dosediary.view.MedicationHistory
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import com.example.dosediary.components.Header
 import com.example.dosediary.ui.theme.Primary
 
 
@@ -36,7 +37,7 @@ fun EditMedication(navController: NavHostController) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        HeaderText()
+        EditMedHistoryHeader()
         MedicationNameField(medicationName)
         Spacer(modifier = Modifier.height(16.dp))
         EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
@@ -52,12 +53,8 @@ fun EditMedication(navController: NavHostController) {
 }
 
 @Composable
-fun HeaderText() {
-    Text(
-        text = "Edit Medication History",
-        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(bottom = 16.dp)
-    )
+fun EditMedHistoryHeader() {
+    Header(text = "Edit Medication History")
 }
 
 @Composable

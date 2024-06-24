@@ -64,22 +64,21 @@ fun HomeScreen() {
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            MainContent(navController)
+            Navigation(navController)
         }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainContent(navController: NavHostController) {
-
+fun Navigation (navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
-        composable("home") { MedicationListScreen(navController) } // You need to define this Composable
-        composable("refill") { MedicationRefillScreen(navController) } // Define this
-        composable("history") { MedicationHistory(navController) } // Define this
-        composable("profile") { Profile() } // Define this
+        composable("home") { MedicationListScreen(navController)}
+        composable("refill") { MedicationRefillScreen(navController) }
+        composable("history") { MedicationHistory(navController) }
+        composable("profile") { Profile() }
         composable("Add Medication") { AddMedicationMain(navController) }
-        composable("refillDetails") { MedicationRefillDetailScreen(navController) } // Define this
+        composable("refillDetails") { MedicationRefillDetailScreen(navController) }
         composable("editMedication") { EditMedication(navController) }
     }
 }

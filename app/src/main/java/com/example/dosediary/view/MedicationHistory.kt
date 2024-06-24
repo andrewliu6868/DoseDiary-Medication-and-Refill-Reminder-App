@@ -56,7 +56,7 @@ fun MedicationHistory(navController: NavHostController) {
             EditMedication(navController)
         } else {
             Scaffold(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().padding(16.dp),
                 containerColor = Background,
                 topBar = {
                     MedicationHistoryTopBar(

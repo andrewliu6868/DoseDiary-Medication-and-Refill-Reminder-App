@@ -75,10 +75,10 @@ fun BottomNavigationBar(navController: NavHostController) {
                     onClick = {
                         selectedItem = index
                         when (item.title) {
-                            "Home" -> navController.navigate("home") // Change "home_route" to your actual route
-                            "Refill" -> navController.navigate("refill") // Change to actual route
-                            "History" -> navController.navigate("history") // Change to actual route
-                            "Profile" -> navController.navigate("profile") // Change to actual route
+                            "Home" -> navController.navigate("home")
+                            "Refill" -> navController.navigate("refill")
+                            "History" -> navController.navigate("history")
+                            "Profile" -> navController.navigate("profile")
                         }
                     }
                 )

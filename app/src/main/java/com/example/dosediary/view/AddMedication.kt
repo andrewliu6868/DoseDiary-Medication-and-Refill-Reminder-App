@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.dosediary.components.Header
+import com.example.dosediary.ui.theme.Primary
 import java.util.Date
 
 data class Medication(
@@ -241,6 +243,7 @@ fun SaveDeleteRow(navController: NavHostController) {
     ){
         Button(
             onClick = {navController.navigate("home")},
+            colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ){
             Text("Save")
@@ -248,6 +251,7 @@ fun SaveDeleteRow(navController: NavHostController) {
         Spacer(modifier = Modifier.width(16.dp))
         Button(
             onClick = { navController.navigate("home") },
+            colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ) {
             Text("Delete")
