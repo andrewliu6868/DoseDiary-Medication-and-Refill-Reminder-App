@@ -24,7 +24,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dosediary.R
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
