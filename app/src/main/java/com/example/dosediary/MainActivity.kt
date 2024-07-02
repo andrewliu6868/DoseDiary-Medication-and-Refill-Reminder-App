@@ -48,13 +48,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground =true, name = "HomeScreen Preview")
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun MedRefillDetailPreview(){
-    HomeScreen();
-}
-
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -88,5 +81,12 @@ fun Navigation (navController: NavHostController) {
         composable("refillDetails") { MedicationRefillDetailScreen(navController) }
         composable("editMedication") { EditMedication(navController) }
     }
+}
+
+@Preview(showBackground =true, name = "HomeScreen Preview")
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun HomeScreenPreview(){
+    HomeScreen();
 }
 

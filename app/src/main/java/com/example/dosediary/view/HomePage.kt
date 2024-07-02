@@ -71,7 +71,7 @@ fun MedicationListScreen(navController: NavController) {
 
 @Composable
 fun MedicationReminder() {
-    var isVisible = true
+    var isVisible = false
     if (isVisible){
         Card(
             shape = RoundedCornerShape(8.dp),

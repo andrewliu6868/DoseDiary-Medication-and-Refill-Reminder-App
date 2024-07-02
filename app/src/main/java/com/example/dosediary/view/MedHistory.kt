@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,42 +33,46 @@ import androidx.compose.ui.unit.sp
 import com.example.dosediary.ui.theme.Background
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.dosediary.R
+import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.OldHeader
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 @Composable
 fun MedicationHistory(navController: NavHostController) {
-    val showEditMedication = remember { mutableStateOf(false) }
+//    val showEditMedication = remember { mutableStateOf(false) }
 
-    DoseDiaryTheme {
-        if (showEditMedication.value) {
-            EditMedication(navController)
-        } else {
-            Scaffold(
-                modifier = Modifier
-                    .fillMaxSize(),
-                containerColor = Background,
-                topBar = {
-                    MedicationHistoryTopBar(
-                        onAddClicked = { showEditMedication.value = true },
-                    )
-                },
-                content = { innerPadding ->
-                    MedicationHistoryContent(Modifier
-                        .padding(innerPadding),
-                        navController)
-                },
+    Scaffold(
+        topBar = {
+            CustomTopAppBar(
+                header = "Medication History",
+                showNavigationIcon = false,
+                navController = navController,
+                imageResId = R.drawable.icon,  // Customizable icon
+                imageDescription = "App Icon"
             )
+        }
+    ){ innerPadding ->
+        LazyColumn(
+            modifier = Modifier.padding(innerPadding)
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+        ) {
+            items(sampleMedications) { medication ->
+                MedicationItem(medication, navController)
+            }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
-    val context = LocalContext.current
-    OldHeader(header = "Medication History")
-
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
+//    val context = LocalContext.current
+//    OldHeader(header = "Medication History")
+//
 //    TopAppBar(
 //        modifier = Modifier.height(55.dp),
 //        colors = TopAppBarDefaults.topAppBarColors(
@@ -95,7 +100,7 @@ fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
 //            }
 //        }
 //    )
-}
+//}
 
 fun generatePDF(context: Context, medications: List<Medicine>) {}
 
@@ -109,19 +114,19 @@ val sampleMedications = listOf(
     Medicine("Oxaprozin", "Thursday 5:00 AM","2024/06/27", "Effective")
 )
 
-@Composable
-fun MedicationHistoryContent(modifier: Modifier = Modifier, navController: NavHostController) {
-    LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 10.dp),
-            contentPadding = PaddingValues(bottom = 20.dp)
-    ) {
-        items(sampleMedications) { medication ->
-            MedicationItem(medication, navController)
-        }
-    }
-}
+//@Composable
+//fun MedicationHistoryContent(modifier: Modifier = Modifier, navController: NavHostController) {
+//    LazyColumn(
+//            modifier = modifier
+//                .fillMaxSize()
+//                .padding(horizontal = 20.dp, vertical = 10.dp),
+//            contentPadding = PaddingValues(bottom = 20.dp)
+//    ) {
+//        items(sampleMedications) { medication ->
+//            MedicationItem(medication, navController)
+//        }
+//    }
+//}
 
 @Composable
 fun MedicationItem(medication: Medicine, navController: NavHostController) {
