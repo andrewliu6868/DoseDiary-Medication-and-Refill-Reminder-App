@@ -4,21 +4,18 @@ package com.example.dosediary.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import java.text.SimpleDateFormat
 import java.util.*
-import com.example.dosediary.view.MedicationHistory
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.dosediary.components.Header
+import com.example.dosediary.R
+import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.components.OldHeader
 import com.example.dosediary.ui.theme.Primary
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +35,13 @@ fun EditMedication(navController: NavHostController) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        EditMedHistoryHeader()
+        CustomTopAppBar(
+            header = "Edit Medication History",
+            showNavigationIcon = true,
+            navController = navController,
+            imageResId = R.drawable.icon,  // Customizable icon
+            imageDescription = "App Icon"
+        )
         MedicationNameField(medicationName)
         Spacer(modifier = Modifier.height(16.dp))
         EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
@@ -51,11 +54,6 @@ fun EditMedication(navController: NavHostController) {
         Spacer(modifier = Modifier.height(16.dp))
         ButtonRow(navController)
     }
-}
-
-@Composable
-fun EditMedHistoryHeader() {
-    Header(text = "Edit Medication History")
 }
 
 @Composable

@@ -3,7 +3,6 @@ package com.example.dosediary.view
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,7 +24,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
-import com.example.dosediary.components.Header
+import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.components.OldHeader
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.ui.theme.Primary
@@ -44,14 +43,22 @@ fun MedicationListScreen(navController: NavController) {
             ) {
                 Icon(Icons.Filled.Add, contentDescription = "Add Medication")
             }
+        },
+        topBar = {
+            CustomTopAppBar(
+                header = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                showNavigationIcon = false,
+                navController = navController,
+                imageResId = R.drawable.icon,  // Customizable icon
+                imageDescription = "App Icon"
+            )
         }
     ){ padding -> Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
                 .padding(padding)
+                .padding(horizontal = 16.dp,)
         ) {
-            HomeHeader()
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -63,40 +70,34 @@ fun MedicationListScreen(navController: NavController) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun HomeHeader() {
-    val currentDate = LocalDate.now()
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val formattedDate = currentDate.format(formatter)
-    Header(text = formattedDate)
-}
-
 @Composable
 fun MedicationReminder() {
-    Card(
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFF7676)),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+    var isVisible = true
+    if (isVisible){
+        Card(
+            shape = RoundedCornerShape(8.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFFF7676)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                BasicText(
-                    text = "Medication Reminder - 7:00pm",
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
-                )
-                BasicText(text = "Tylenol")
-            }
-            Button(
-                onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(containerColor = Primary),
+            Row(
+                modifier = Modifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("View")
+                Column(modifier = Modifier.weight(1f)) {
+                    BasicText(
+                        text = "Medication Reminder - 7:00pm",
+                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
+                    )
+                    BasicText(text = "Tylenol")
+                }
+                Button(
+                    onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                ) {
+                    Text("View")
+                }
             }
         }
     }
@@ -113,12 +114,6 @@ fun DailyMedicationChecklist() {
             "Tylenol - 4:00 pm" to true,
             "Tylenol - 5:00 pm" to true,
             "Tylenol - 6:00 pm" to true
-//            "Tylenol - 7:00 pm" to true,
-//            "Tylenol - 8:00 pm" to true,
-//            "Tylenol - 9:00 pm" to true,
-//            "Tylenol - 10:00 pm" to true,
-//            "Tylenol - 11:00 pm" to true,
-//            "Tylenol - 12:00 pm" to true
         )
     }
 
@@ -127,7 +122,7 @@ fun DailyMedicationChecklist() {
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(bottom = 8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             BasicText(

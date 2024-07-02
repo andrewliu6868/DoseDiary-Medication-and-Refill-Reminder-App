@@ -38,16 +38,18 @@ fun MedicationRefillDetailScreen(navController: NavController){
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                title = { Text("Medication Refill Detail") },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.navigateUp()
-                    }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
+
+
+//            TopAppBar(
+//                title = { Text("Medication Refill Detail") },
+//                navigationIcon = {
+//                    IconButton(onClick = {
+//                        navController.navigateUp()
+//                    }) {
+//                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+//                    }
+//                }
+//            )
         }
     ){padding ->
         Column(
