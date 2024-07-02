@@ -71,14 +71,15 @@ fun MedicationListScreen(navController: NavController) {
 
 @Composable
 fun MedicationReminder() {
-    var isVisible = false
+    var isVisible = true
     if (isVisible){
         Card(
             shape = RoundedCornerShape(8.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFFFF7676)),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp)
+                .padding(bottom = 8.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
         ) {
             Row(
                 modifier = Modifier.padding(16.dp),
@@ -121,7 +122,8 @@ fun DailyMedicationChecklist() {
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp)
+            .padding(bottom = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             BasicText(
@@ -165,7 +167,8 @@ fun UpcomingMedicationRefills() {
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             BasicText(
