@@ -15,7 +15,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
-import com.example.dosediary.components.OldHeader
 import com.example.dosediary.ui.theme.Primary
 
 @OptIn(ExperimentalMaterial3Api::class)
