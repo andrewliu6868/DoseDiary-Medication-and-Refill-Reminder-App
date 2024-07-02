@@ -2,6 +2,7 @@ package com.example.dosediary.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
+import com.example.dosediary.ui.theme.Background
 
 
 @Composable
@@ -65,7 +67,7 @@ fun CustomTopAppBar(
     imageDescription: String = "App Logo"
 ) {
     CenterAlignedTopAppBar(
-        modifier = Modifier.padding(vertical = 16.dp),
+        modifier = Modifier.padding(vertical = 16.dp).background(Background),
         title = {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
                 if (imageResId != null) {

@@ -1,9 +1,13 @@
 package com.example.dosediary.view
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Card
@@ -12,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +28,10 @@ import com.example.dosediary.R
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.OldHeader
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
@@ -53,25 +61,32 @@ data class MedicationRefill(
 //@Preview
 @Composable
 fun MedicationRefillScreen(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(16.dp)
-    ) {
-        RefillHeader()
-        BasicText(
-            text = "Upcoming Medication Refills",
-            style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-        )
-        MedicationRefillTodayList(navController)
-        MedicationRefillNextWeekList(navController)
+    Scaffold(
+        topBar = {
+            CustomTopAppBar(
+                header = "Medication Refill",
+                showNavigationIcon = false,
+                navController = navController,
+                imageResId = R.drawable.icon,  // Customizable icon
+                imageDescription = "App Icon"
+            )
+        }
+    ){ innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
+        ) {
+            BasicText(
+                text = "Upcoming Medication Refills",
+                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            )
+            MedicationRefillTodayList(navController)
+            MedicationRefillNextWeekList(navController)
+        }
     }
-}
-
-@Composable
-fun RefillHeader() {
-    OldHeader(header = "Medication Refill")
 }
 
 val medicationRefill1 = MedicationRefill(
@@ -234,4 +249,12 @@ fun MedicationRefillDetailedItem(medication: MedicationRefill, onItemClick: () -
             )
         }
     }
+}
+
+@Preview(showBackground =true, name = "Medication Refill Preview")
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun MedRefillPreview(){
+    val navController = rememberNavController()
+    MedicationRefillScreen(navController = navController);
 }
