@@ -47,10 +47,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dosediary.ui.theme.Background
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.components.Header
 import com.example.dosediary.view.EditMedication
 
 import com.example.dosediary.ui.theme.ContainerBackground
+
+@Preview(showBackground =true, name = "MedHistory Preview")
+@Composable
+fun MedHistoryPreview(){
+    val navController = rememberNavController()
+    MedicationHistory(navController = navController);
+}
 
 @Composable
 fun MedicationHistory(navController: NavHostController) {

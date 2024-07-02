@@ -15,10 +15,17 @@ import java.text.SimpleDateFormat
 import java.util.*
 import com.example.dosediary.view.MedicationHistory
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.components.Header
 import com.example.dosediary.ui.theme.Primary
-
+@Preview(showBackground =true, name = "EditMedication Preview")
+@Composable
+fun EditMedPreview(){
+    val navController = rememberNavController()
+    EditMedication(navController = navController);
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

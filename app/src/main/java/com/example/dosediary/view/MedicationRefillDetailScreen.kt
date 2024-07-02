@@ -1,6 +1,8 @@
 package com.example.dosediary.view
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,9 +28,16 @@ import androidx.compose.ui.unit.sp
 import com.example.dosediary.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 
+@Preview(showBackground =true, name = "Medication Refill Detail Preview")
+@Composable
+fun MedRefillDetailPreview(){
+    val navController = rememberNavController()
+    MedicationRefillDetailScreen(navController = navController);
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

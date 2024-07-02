@@ -20,9 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.Header
 import com.example.dosediary.ui.theme.ContainerBackground
@@ -30,6 +32,14 @@ import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.ui.theme.Primary
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
+@Preview(showBackground =true, name = "MedicationList Preview")
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun MedListPreview(){
+    val navController = rememberNavController()
+    MedicationListScreen(navController = navController);
+}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

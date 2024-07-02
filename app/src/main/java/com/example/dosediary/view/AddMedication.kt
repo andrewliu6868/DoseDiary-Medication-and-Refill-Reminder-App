@@ -48,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.components.Header
 import com.example.dosediary.ui.theme.Primary
 import java.util.Date
@@ -59,6 +60,14 @@ data class Medication(
     var refillDays: Number,
     var owner: String
 )
+
+@Preview(showBackground =true, name = "AddMedication Preview")
+@Composable
+fun AddMedPreview(){
+    val navController = rememberNavController()
+    AddMedicationMain(navController);
+}
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
