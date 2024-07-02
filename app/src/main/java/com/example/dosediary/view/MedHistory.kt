@@ -42,8 +42,6 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun MedicationHistory(navController: NavHostController) {
-//    val showEditMedication = remember { mutableStateOf(false) }
-
     Scaffold(
         topBar = {
             CustomTopAppBar(
@@ -67,41 +65,6 @@ fun MedicationHistory(navController: NavHostController) {
     }
 }
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
-//    val context = LocalContext.current
-//    OldHeader(header = "Medication History")
-//
-//    TopAppBar(
-//        modifier = Modifier.height(55.dp),
-//        colors = TopAppBarDefaults.topAppBarColors(
-//            containerColor = Background,
-//            titleContentColor = Color.Black,
-//        ),
-//        title = {
-//            Box(
-//                modifier = Modifier.fillMaxWidth()
-//                .padding(vertical = 8.dp),
-//            contentAlignment = Alignment.Center
-//            ){
-//                Text("Medication History",
-//                    fontSize = 25.sp,
-//                    fontWeight = FontWeight.Bold,
-//                    textAlign = TextAlign.End,)
-//            }
-//        },
-//        actions = {
-//            IconButton(onClick = onAddClicked) {
-//                Icon(Icons.Filled.Add, contentDescription = "Add Medication")
-//            }
-//            IconButton(onClick = { generatePDF(context, sampleMedications) }) {
-//                Icon(Icons.Filled.FileDownload, contentDescription = "Generate Report")
-//            }
-//        }
-//    )
-//}
-
 fun generatePDF(context: Context, medications: List<Medicine>) {}
 
 val sampleMedications = listOf(
@@ -113,20 +76,6 @@ val sampleMedications = listOf(
     Medicine("Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
     Medicine("Oxaprozin", "Thursday 5:00 AM","2024/06/27", "Effective")
 )
-
-//@Composable
-//fun MedicationHistoryContent(modifier: Modifier = Modifier, navController: NavHostController) {
-//    LazyColumn(
-//            modifier = modifier
-//                .fillMaxSize()
-//                .padding(horizontal = 20.dp, vertical = 10.dp),
-//            contentPadding = PaddingValues(bottom = 20.dp)
-//    ) {
-//        items(sampleMedications) { medication ->
-//            MedicationItem(medication, navController)
-//        }
-//    }
-//}
 
 @Composable
 fun MedicationItem(medication: Medicine, navController: NavHostController) {
