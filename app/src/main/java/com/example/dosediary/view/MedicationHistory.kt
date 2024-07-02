@@ -2,6 +2,8 @@ package com.example.dosediary.view
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -26,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -35,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,7 +61,8 @@ fun MedicationHistory(navController: NavHostController) {
             EditMedication(navController)
         } else {
             Scaffold(
-                modifier = Modifier.fillMaxSize().padding(16.dp),
+                modifier = Modifier
+                    .fillMaxSize(),
                 containerColor = Background,
                 topBar = {
                     MedicationHistoryTopBar(
@@ -64,7 +70,9 @@ fun MedicationHistory(navController: NavHostController) {
                     )
                 },
                 content = { innerPadding ->
-                    MedicationHistoryContent(Modifier.padding(innerPadding), navController)
+                    MedicationHistoryContent(Modifier
+                        .padding(innerPadding),
+                        navController)
                 },
             )
         }
@@ -109,13 +117,13 @@ fun MedicationHistoryTopBar(onAddClicked: () -> Unit) {
 fun generatePDF(context: Context, medications: List<Medicine>) {}
 
 val sampleMedications = listOf(
-    Medicine("Ibuprofen", "Wednesday 6:00 PM", "Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM", "Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM", "Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM", "Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM", "Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM", "Effective"),
-    Medicine("Oxaprozin", "Thursday 5:00 AM", "Effective")
+    Medicine("Ibuprofen", "Wednesday 6:00 PM", "2024/06/26", "Effective"),
+    Medicine("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26", "Effective"),
+    Medicine("Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
+    Medicine("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
+    Medicine("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
+    Medicine("Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
+    Medicine("Oxaprozin", "Thursday 5:00 AM","2024/06/27", "Effective")
 )
 
 @Composable
@@ -123,8 +131,7 @@ fun MedicationHistoryContent(modifier: Modifier = Modifier, navController: NavHo
     LazyColumn(
             modifier = modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 10.dp)
-                .background(ContainerBackground),
+                .padding(horizontal = 20.dp, vertical = 10.dp),
             contentPadding = PaddingValues(bottom = 20.dp)
     ) {
         items(sampleMedications) { medication ->
@@ -141,7 +148,8 @@ fun MedicationItem(medication: Medicine, navController: NavHostController) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { navController.navigate("editMedication")},
         elevation = CardDefaults.cardElevation(
             defaultElevation = 5.dp
         )
@@ -151,18 +159,28 @@ fun MedicationItem(medication: Medicine, navController: NavHostController) {
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(
-            modifier = Modifier.weight(1f)  // This makes the column take up all space except for the button
-        ) {
-            Text(text = medication.name,
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp))
-            Text(text = "Taken: ${medication.timeTaken}",
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp))
-            Text(text = medication.effectiveness,
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp))
-        }
-        IconButton(onClick = {navController.navigate("editMedication")}) {
-            Icon(Icons.Filled.Edit, contentDescription = "Edit")
+        Row (modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center){
+            Column(
+                modifier = Modifier.weight(1f)  // This makes the column take up all space except for the button
+            ) {
+                Text(text = medication.name,
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
+                Text(text = medication.timeTaken,
+                    style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
+                Text(text = medication.dateTaken,
+                    style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
+            }
+            Column (
+                modifier = Modifier
+                    .weight(1f),
+                horizontalAlignment = Alignment.End
+            ){
+                Text(text = medication.effectiveness,
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
+
+            }
         }
     }
     }

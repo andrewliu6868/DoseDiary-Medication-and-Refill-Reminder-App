@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 data class Medicine (
     val name: String,
     val timeTaken: String,
+    val dateTaken: String,
     val effectiveness: String
 )
