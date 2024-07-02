@@ -20,12 +20,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.components.Header
 import com.example.dosediary.ui.theme.Primary
-@Preview(showBackground =true, name = "EditMedication Preview")
-@Composable
-fun EditMedPreview(){
-    val navController = rememberNavController()
-    EditMedication(navController = navController);
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -228,4 +222,11 @@ fun TimePicker(
 ) {
     val calendar = Calendar.getInstance()
     calendar.time = time
+}
+
+@Preview(showBackground =true, name = "EditMedication Preview")
+@Composable
+fun EditMedPreview(){
+    val navController = rememberNavController()
+    EditMedication(navController = navController);
 }

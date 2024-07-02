@@ -33,14 +33,6 @@ import com.example.dosediary.ui.theme.Primary
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@Preview(showBackground =true, name = "MedicationList Preview")
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun MedListPreview(){
-    val navController = rememberNavController()
-    MedicationListScreen(navController = navController);
-}
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MedicationListScreen(navController: NavController) {
@@ -244,8 +236,10 @@ fun MedicationRefillItem(date: String, medication: String, pills: Int) {
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun MedicationScreenPreview() {
-//    MedicationListScreen()
-//}
+@Preview(showBackground =true, name = "MedicationList Preview")
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun MedListPreview(){
+    val navController = rememberNavController()
+    MedicationListScreen(navController = navController);
+}

@@ -32,13 +32,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 
-@Preview(showBackground =true, name = "Medication Refill Detail Preview")
-@Composable
-fun MedRefillDetailPreview(){
-    val navController = rememberNavController()
-    MedicationRefillDetailScreen(navController = navController);
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MedicationRefillDetailScreen(navController: NavController){
@@ -286,4 +279,11 @@ fun MedicationRefillDetail() {
 
         }
     }
+}
+
+@Preview(showBackground =true, name = "Medication Refill Detail Preview")
+@Composable
+fun MedRefillDetailPreview(){
+    val navController = rememberNavController()
+    MedicationRefillDetailScreen(navController = navController);
 }

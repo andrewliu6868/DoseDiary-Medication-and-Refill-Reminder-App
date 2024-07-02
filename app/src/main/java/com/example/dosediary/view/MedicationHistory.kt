@@ -53,12 +53,6 @@ import com.example.dosediary.view.EditMedication
 
 import com.example.dosediary.ui.theme.ContainerBackground
 
-@Preview(showBackground =true, name = "MedHistory Preview")
-@Composable
-fun MedHistoryPreview(){
-    val navController = rememberNavController()
-    MedicationHistory(navController = navController);
-}
 
 @Composable
 fun MedicationHistory(navController: NavHostController) {
@@ -158,40 +152,48 @@ fun MedicationItem(medication: Medicine, navController: NavHostController) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { navController.navigate("editMedication")},
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 5.dp
-        )
-    ) {Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
-        Row (modifier = Modifier.weight(1f),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center){
-            Column(
-                modifier = Modifier.weight(1f)  // This makes the column take up all space except for the button
-            ) {
-                Text(text = medication.name,
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
-                Text(text = medication.timeTaken,
-                    style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
-                Text(text = medication.dateTaken,
-                    style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
-            }
-            Column (
-                modifier = Modifier
-                    .weight(1f),
-                horizontalAlignment = Alignment.End
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row (
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ){
-                Text(text = medication.effectiveness,
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
+                Column(
+                    modifier = Modifier.weight(1f)  // This makes the column take up all space except for the button
+                ) {
+                    Text(text = medication.name,
+                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
+                    Text(text = medication.timeTaken,
+                        style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
+                    Text(text = medication.dateTaken,
+                        style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
+                }
+                Column (
+                    modifier = Modifier
+                        .weight(1f),
+                    horizontalAlignment = Alignment.End
+                ){
+                    Text(text = medication.effectiveness,
+                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
 
+                }
             }
         }
     }
-    }
+}
+
+@Preview(showBackground =true, name = "MedHistory Preview")
+@Composable
+fun MedHistoryPreview(){
+    val navController = rememberNavController()
+    MedicationHistory(navController = navController);
 }
 
 

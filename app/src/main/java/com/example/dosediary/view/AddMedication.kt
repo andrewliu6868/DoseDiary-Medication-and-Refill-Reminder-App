@@ -61,13 +61,6 @@ data class Medication(
     var owner: String
 )
 
-@Preview(showBackground =true, name = "AddMedication Preview")
-@Composable
-fun AddMedPreview(){
-    val navController = rememberNavController()
-    AddMedicationMain(navController);
-}
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -266,5 +259,12 @@ fun SaveDeleteRow(navController: NavHostController) {
             Text("Delete")
         }
     }
+}
+
+@Preview(showBackground =true, name = "AddMedication Preview")
+@Composable
+fun AddMedPreview(){
+    val navController = rememberNavController()
+    AddMedicationMain(navController);
 }
 

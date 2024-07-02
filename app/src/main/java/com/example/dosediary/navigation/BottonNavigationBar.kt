@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.model.BottomNavigation
 import com.example.dosediary.ui.theme.Background
 
@@ -85,4 +86,11 @@ fun BottomNavigationBar(navController: NavHostController) {
             }
         }
     }
+}
+
+@Preview(showBackground =true, name = "Bottom Navigation Preview")
+@Composable
+fun BottomNavigationBarPreview(){
+    val navController = rememberNavController()
+    BottomNavigationBar(navController)
 }
