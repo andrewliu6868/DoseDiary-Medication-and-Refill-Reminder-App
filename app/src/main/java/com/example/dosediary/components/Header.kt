@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -67,7 +68,7 @@ fun CustomTopAppBar(
     imageDescription: String = "App Logo"
 ) {
     CenterAlignedTopAppBar(
-        modifier = Modifier.padding(vertical = 16.dp).background(Background),
+        modifier = Modifier.padding(vertical = 16.dp).background(Color(0xFFFFFFFF)),
         title = {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
                 if (imageResId != null) {

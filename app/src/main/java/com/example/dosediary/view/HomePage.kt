@@ -56,7 +56,7 @@ fun MedicationListScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 16.dp,)
+                .padding(horizontal = 16.dp)
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()

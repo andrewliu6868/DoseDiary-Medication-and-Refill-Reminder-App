@@ -26,8 +26,11 @@ import com.example.dosediary.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,31 +38,23 @@ fun MedicationRefillDetailScreen(navController: NavController){
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-
-
-//            TopAppBar(
-//                title = { Text("Medication Refill Detail") },
-//                navigationIcon = {
-//                    IconButton(onClick = {
-//                        navController.navigateUp()
-//                    }) {
-//                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-//                    }
-//                }
-//            )
+            CustomTopAppBar(
+                header = "Medication Refill Detail",
+                showNavigationIcon = true,
+                navController = navController,
+                imageResId = R.drawable.icon,  // Customizable icon
+                imageDescription = "App Icon"
+            )
         }
     ){padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(16.dp)
+                .padding(padding)
+                .padding(horizontal = 16.dp)
 
         ) {
-            BasicText(
-                text = "Medication Refill Detail",
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            )
             MedicationRefillDetail()
         }
     }
@@ -93,7 +88,6 @@ fun MedicationRefillDetail() {
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Spacer(modifier = Modifier.height(8.dp))
