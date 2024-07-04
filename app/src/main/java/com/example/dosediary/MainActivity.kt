@@ -13,11 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.internal.composableLambda
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,7 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.ui.theme.Background
-import com.example.dosediary.view.AddMedicationMain
+import com.example.dosediary.view.AddMedicationPage
 import com.example.dosediary.view.EditMedication
 import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.view.MedicationListScreen
@@ -77,7 +73,7 @@ fun Navigation (navController: NavHostController) {
         composable("refill") { MedicationRefillScreen(navController) }
         composable("history") { MedicationHistory(navController) }
         composable("profile") { Profile() }
-        composable("Add Medication") { AddMedicationMain(navController) }
+        composable("Add Medication") { AddMedicationPage(navController) }
         composable("refillDetails") { MedicationRefillDetailScreen(navController) }
         composable("editMedication") { EditMedication(navController) }
     }

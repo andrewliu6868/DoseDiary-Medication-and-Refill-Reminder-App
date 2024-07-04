@@ -1,12 +1,14 @@
 package com.example.dosediary.view
 
-import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,11 +23,13 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,70 +44,46 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
-import com.example.dosediary.components.OldHeader
 import com.example.dosediary.ui.theme.Primary
-import java.util.Date
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-data class Medication(
-    var medicationName: String,
-    var startDate: Date,
-    var endDate: Date,
-    var refillDays: Number,
-    var owner: String
-)
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddMedicationMain(navController: NavHostController){
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        //OldHeader(header = "Add Medication")
-        CustomTopAppBar(
-            header = "Add Medication",
-            showNavigationIcon = true,
-            navController = navController,
-            imageResId = R.drawable.icon,  // Customizable icon
-            imageDescription = "App Icon"
-        )
-        Card(
-            shape = RoundedCornerShape(24.dp),
-            modifier = Modifier
-                .padding(10.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFEBFAFF))
+fun AddMedicationPage(navController: NavHostController){
+    var medicationName by remember { mutableStateOf("") }
+    var startDate by remember { mutableStateOf(LocalDate.now()) }
+    var endDate by remember { mutableStateOf(LocalDate.now().plusDays(30)) }
+    var daysUntilRefill by remember { mutableIntStateOf(50) }
+    val sideEffects = listOf("Nausea", "Vomiting", "Diarrhea", "Constipation", "Drowsiness", "Dizziness", "Headache", "Fatigue", "Dry Mouth", "Rash", "Insomnia")
+    val sideEffectsState = remember { sideEffects.map { it to mutableStateOf(false) }.toMap() }
+    val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+    Scaffold(
+        topBar = {
+            CustomTopAppBar(
+                header = "Add Medication",
+                showNavigationIcon = false,
+                navController = navController,
+                imageResId = R.drawable.icon,  // Customizable icon
+                imageDescription = "App Icon"
+            )
+        }
+    ){ innerPadding ->
+        Column(
+            modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp)
         ){
-            Column(modifier = Modifier
-//                .padding(top = 20.dp)
-                .padding(10.dp)
-            ){
-//                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Medication Name",
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
-                Spacer(modifier = Modifier.height(16.dp))
-                AddName()
-                Spacer(modifier = Modifier.height(16.dp))
-                Text("Start/End Dates",
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
-                Spacer(modifier = Modifier.height(16.dp))
-                AddMedDuration()
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Intake Frequency",
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
-                Spacer(modifier = Modifier.height(16.dp))
-                AddMedFrequency()
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Refill Days",
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
-                Spacer(modifier = Modifier.height(16.dp))
-                AddRefillDays()
-                Spacer(modifier = Modifier.height(16.dp))
-                SaveDeleteRow(navController)
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+            MedicationNameSection()
+            Spacer(modifier = Modifier.height(16.dp))
+            AddMedDuration()
+            Spacer(modifier = Modifier.height(16.dp))
+            AddMedFrequency()
+            Spacer(modifier = Modifier.height(16.dp))
+            AddRefillDays()
+            Spacer(modifier = Modifier.height(16.dp))
+            SaveDeleteRow(navController)
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -150,9 +130,12 @@ fun DropDownMenu(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddName(){
+fun MedicationNameSection(){
     var nameState by remember { mutableStateOf("")}
- Box {
+    Text(text = "Medication Name",
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+    Spacer(modifier = Modifier.height(16.dp))
+    Box {
         OutlinedTextField(value = nameState, onValueChange = {nameState = it}, label= {Text("Name")} )
     }
 }
@@ -162,19 +145,22 @@ fun AddName(){
 fun AddMedDuration(){
     var startDateState by remember { mutableStateOf("") }
     var endDateState by remember { mutableStateOf("") }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ){
-            OutlinedTextField(value = startDateState,
-                onValueChange = {startDateState = it},
-                label = {Text("Start Date")},
-                modifier = Modifier.weight(1f))
-            OutlinedTextField(value = endDateState,
-                onValueChange = {endDateState = it},
-                label = {Text("End Date")},
-                modifier = Modifier.weight(1f))
-        }
+    Text("Start/End Dates",
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+    Spacer(modifier = Modifier.height(16.dp))
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ){
+        OutlinedTextField(value = startDateState,
+            onValueChange = {startDateState = it},
+            label = {Text("Start Date")},
+            modifier = Modifier.weight(1f))
+        OutlinedTextField(value = endDateState,
+            onValueChange = {endDateState = it},
+            label = {Text("End Date")},
+            modifier = Modifier.weight(1f))
+    }
 }
 
 
@@ -183,42 +169,44 @@ fun AddMedDuration(){
 fun AddMedFrequency(){
     val frequencyNum = remember { mutableListOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") }
     val frequncyRate = remember{ mutableListOf("Hourly", "Daily", "Weekly", "Monthly", "Yearly") }
-    var freqNum by remember {
-        mutableStateOf(frequencyNum[0])
-    }
-    var freqRate by remember {
-        mutableStateOf(frequncyRate[0])
-    }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            //horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Column(
-                modifier = Modifier.weight(1f)
-            ){
-                DropDownMenu(
-                    //selectedChoice = frequencyNum[0],
-                    optionItems = frequencyNum,
-                    label = "Times")
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "Per")
-            Spacer(modifier = Modifier.width(8.dp))
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                DropDownMenu(
-                    //selectedChoice = freqRate,
-                    optionItems = frequncyRate,
-                    label = "Rate")
-            }
+    var freqNum by remember { mutableStateOf(frequencyNum[0]) }
+    var freqRate by remember { mutableStateOf(frequncyRate[0]) }
+    Text(text = "Intake Frequency",
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+    Spacer(modifier = Modifier.height(16.dp))
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        //horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Column(
+            modifier = Modifier.weight(1f)
+        ){
+            DropDownMenu(
+                //selectedChoice = frequencyNum[0],
+                optionItems = frequencyNum,
+                label = "Times")
         }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = "Per")
+        Spacer(modifier = Modifier.width(8.dp))
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            DropDownMenu(
+                //selectedChoice = freqRate,
+                optionItems = frequncyRate,
+                label = "Rate")
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddRefillDays(){
     var sliderPosition by remember {mutableStateOf(0)}
+    Text(text = "Refill Days",
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+    Spacer(modifier = Modifier.height(16.dp))
     Box(modifier = Modifier) {
         Slider(
             value = sliderPosition.toFloat(),
@@ -232,7 +220,6 @@ fun AddRefillDays(){
     Text(text = sliderPosition.toString(), textAlign = TextAlign.Center )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SaveDeleteRow(navController: NavHostController) {
     Row(
@@ -259,10 +246,11 @@ fun SaveDeleteRow(navController: NavHostController) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground =true, name = "AddMedication Preview")
 @Composable
 fun AddMedPreview(){
     val navController = rememberNavController()
-    AddMedicationMain(navController);
+    AddMedicationPage(navController);
 }
 
