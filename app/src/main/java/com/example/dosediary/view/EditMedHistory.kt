@@ -29,31 +29,38 @@ fun EditMedication(navController: NavHostController) {
     val time = remember { mutableStateOf("6:00") }
     val text = remember { mutableStateOf("Enter Information") }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        CustomTopAppBar(
-            header = "Edit Medication History",
-            showNavigationIcon = true,
-            navController = navController,
-            imageResId = R.drawable.icon,  // Customizable icon
-            imageDescription = "App Icon"
-        )
-        MedicationNameField(medicationName)
-        Spacer(modifier = Modifier.height(16.dp))
-        EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
-        Spacer(modifier = Modifier.height(16.dp))
-        DateField(date)
-        Spacer(modifier = Modifier.height(16.dp))
-        TimeField(time)
-        Spacer(modifier = Modifier.height(16.dp))
-        TextField(text)
-        Spacer(modifier = Modifier.height(16.dp))
-        ButtonRow(navController)
+    Scaffold(
+        topBar = {
+            CustomTopAppBar(
+                header = "Edit Medication History",
+                showNavigationIcon = true,
+                navController = navController,
+                imageResId = R.drawable.icon,  // Customizable icon
+                imageDescription = "App Icon"
+            )
+        }
+    ) {innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            MedicationNameField(medicationName)
+            Spacer(modifier = Modifier.height(16.dp))
+            EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
+            Spacer(modifier = Modifier.height(16.dp))
+            DateField(date)
+            Spacer(modifier = Modifier.height(16.dp))
+            TimeField(time)
+            Spacer(modifier = Modifier.height(16.dp))
+            TextField(text)
+            Spacer(modifier = Modifier.height(16.dp))
+            ButtonRow(navController)
+        }
     }
 }
+
 
 @Composable
 fun MedicationNameField(medicationName: MutableState<String>) {
