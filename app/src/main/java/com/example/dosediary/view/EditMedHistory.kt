@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import java.util.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -29,31 +30,38 @@ fun EditMedication(navController: NavHostController) {
     val time = remember { mutableStateOf("6:00") }
     val text = remember { mutableStateOf("Enter Information") }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        CustomTopAppBar(
-            header = "Edit Medication History",
-            showNavigationIcon = true,
-            navController = navController,
-            imageResId = R.drawable.icon,  // Customizable icon
-            imageDescription = "App Icon"
-        )
-        MedicationNameField(medicationName)
-        Spacer(modifier = Modifier.height(16.dp))
-        EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
-        Spacer(modifier = Modifier.height(16.dp))
-        DateField(date)
-        Spacer(modifier = Modifier.height(16.dp))
-        TimeField(time)
-        Spacer(modifier = Modifier.height(16.dp))
-        TextField(text)
-        Spacer(modifier = Modifier.height(16.dp))
-        ButtonRow(navController)
+    Scaffold(
+        topBar = {
+            CustomTopAppBar(
+                header = "Edit Medication History",
+                showNavigationIcon = true,
+                navController = navController,
+                imageResId = R.drawable.icon,  // Customizable icon
+                imageDescription = "App Icon"
+            )
+        }
+    ) {innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+            MedicationNameField(medicationName)
+            Spacer(modifier = Modifier.height(16.dp))
+            EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
+            Spacer(modifier = Modifier.height(16.dp))
+            DateField(date)
+            Spacer(modifier = Modifier.height(16.dp))
+            TimeField(time)
+            Spacer(modifier = Modifier.height(16.dp))
+            TextField(text)
+            Spacer(modifier = Modifier.height(16.dp))
+            ButtonRow(navController)
+        }
     }
 }
+
 
 @Composable
 fun MedicationNameField(medicationName: MutableState<String>) {
@@ -197,7 +205,7 @@ fun ButtonRow(navController: NavHostController) {
         Spacer(modifier = Modifier.width(16.dp))
         Button(
             onClick = {navController.navigate("history")},
-            colors = ButtonDefaults.buttonColors(containerColor = Primary),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
             modifier = Modifier.weight(1f)
         ) {
             Text("Delete")
