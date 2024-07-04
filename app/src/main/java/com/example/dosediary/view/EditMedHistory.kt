@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import java.util.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -204,7 +205,7 @@ fun ButtonRow(navController: NavHostController) {
         Spacer(modifier = Modifier.width(16.dp))
         Button(
             onClick = {navController.navigate("history")},
-            colors = ButtonDefaults.buttonColors(containerColor = Primary),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
             modifier = Modifier.weight(1f)
         ) {
             Text("Delete")
