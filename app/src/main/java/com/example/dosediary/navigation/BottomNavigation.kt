@@ -1,4 +1,4 @@
-package com.example.dosediary.model
+package com.example.dosediary.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

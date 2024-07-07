@@ -14,7 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.dosediary.model.Medicine
+import com.example.dosediary.model.MedicationHistory
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -55,20 +55,20 @@ fun MedicationHistory(navController: NavHostController) {
     }
 }
 
-fun generatePDF(context: Context, medications: List<Medicine>) {}
+fun generatePDF(context: Context, medications: List<MedicationHistory>) {}
 
 val sampleMedications = listOf(
-    Medicine("Ibuprofen", "Wednesday 6:00 PM", "2024/06/26", "Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26", "Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
-    Medicine("Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
-    Medicine("Oxaprozin", "Thursday 5:00 AM","2024/06/27", "Effective")
+    MedicationHistory("Ibuprofen", "Wednesday 6:00 PM", "2024/06/26", "Effective"),
+    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26", "Effective"),
+    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
+    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
+    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
+    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
+    MedicationHistory("Oxaprozin", "Thursday 5:00 AM","2024/06/27", "Effective")
 )
 
 @Composable
-fun MedicationItem(medication: Medicine, navController: NavHostController) {
+fun MedicationItem(medication: MedicationHistory, navController: NavHostController) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Background,

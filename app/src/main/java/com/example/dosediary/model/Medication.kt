@@ -1,8 +1,13 @@
 package com.example.dosediary.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.Date
 
+@Entity
 data class Medication(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     var medicationName: String,
     var startDate: Date,
     var endDate: Date,

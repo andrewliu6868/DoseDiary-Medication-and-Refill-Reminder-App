@@ -31,7 +31,6 @@ import com.example.dosediary.view.MedicationRefillScreen
 import com.example.dosediary.view.MedicationRefillDetailScreen
 
 class MainActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -44,7 +43,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
@@ -65,7 +63,6 @@ fun HomeScreen() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation (navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
@@ -80,7 +77,6 @@ fun Navigation (navController: NavHostController) {
 }
 
 @Preview(showBackground =true, name = "HomeScreen Preview")
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreenPreview(){
     HomeScreen();
