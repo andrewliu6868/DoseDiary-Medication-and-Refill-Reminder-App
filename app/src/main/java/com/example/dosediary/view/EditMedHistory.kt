@@ -32,7 +32,7 @@ fun EditMedication(navController: NavHostController) {
     val calendar = Calendar.getInstance()
     calendar.set(2023, Calendar.MAY, 10, 10, 30)
     val date = remember { mutableStateOf(calendar.time)}
-    val time = remember { mutableStateOf("6:00") }
+    val time = remember { mutableStateOf(calendar.time)}
     val text = remember { mutableStateOf("Enter Information") }
 
     Scaffold(
@@ -204,12 +204,42 @@ fun DateField(date: MutableState<Date>) {
 //}
 
 @Composable
-fun TimeField(time: MutableState<String>) {
+fun TimeField(time: MutableState<Date>) {
+    val timeFormat = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
+    val calendar = Calendar.getInstance()
+
+    val context = LocalContext.current
+
+    val timePickerDialog = remember {
+        android.app.TimePickerDialog(
+            context,
+            { _, hourOfDay, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+                time.value = calendar.time
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            false
+        )
+    }
+
     OutlinedTextField(
-        value = time.value,
-        onValueChange = { time.value = it },
+        value = timeFormat.format(time.value),
+        onValueChange = { },
         label = { Text("Select Time") },
-        modifier = Modifier.fillMaxWidth()
+        readOnly = true,
+        modifier = Modifier.fillMaxWidth(),
+        interactionSource = remember { MutableInteractionSource() }
+            .also { interactionSource ->
+                LaunchedEffect(interactionSource) {
+                    interactionSource.interactions.collect {
+                        if (it is PressInteraction.Release) {
+                            timePickerDialog.show()
+                        }
+                    }
+                }
+            }
     )
 }
 
@@ -249,14 +279,6 @@ fun ButtonRow(navController: NavHostController) {
     }
 }
 
-
-@Composable
-fun TimePicker(
-    time: Date
-) {
-    val calendar = Calendar.getInstance()
-    calendar.time = time
-}
 
 @Preview(showBackground =true, name = "EditMedication Preview")
 @Composable
