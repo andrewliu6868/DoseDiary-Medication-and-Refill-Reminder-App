@@ -120,26 +120,6 @@ fun EffectivenessDropdown(
     }
 }
 
-//@Composable
-//fun DateField(date: MutableState<Date>) {
-//    val dateFormat = remember { SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()) }
-//    var datePickerVisible by remember { mutableStateOf(true) }
-//
-//    if (datePickerVisible) {
-//        DatePicker(
-//            date = date.value
-//        )
-//    }
-//
-//    OutlinedTextField(
-//        value = dateFormat.format(date.value),
-//        onValueChange = { },
-//        label = { Text("Select Date") },
-//        readOnly = true,
-//        modifier = Modifier.fillMaxWidth().clickable { datePickerVisible = true },
-//        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
-//    )
-//}
 
 @Composable
 fun DateField(date: MutableState<Date>) {
@@ -181,27 +161,6 @@ fun DateField(date: MutableState<Date>) {
     )
 
 }
-
-//@Composable
-//fun TimeField(time: MutableState<Date>) {
-//    val timeFormat = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
-//    var timePickerVisible by remember { mutableStateOf(true) }
-//
-//    if (timePickerVisible) {
-//        TimePicker(
-//            time = time.value
-//        )
-//    }
-//
-//    OutlinedTextField(
-//        value = timeFormat.format(time.value),
-//        onValueChange = { },
-//        label = { Text("Select Time") },
-//        readOnly = true,
-//        modifier = Modifier.fillMaxWidth().clickable { timePickerVisible = true },
-//        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
-//    )
-//}
 
 @Composable
 fun TimeField(time: MutableState<Date>) {
