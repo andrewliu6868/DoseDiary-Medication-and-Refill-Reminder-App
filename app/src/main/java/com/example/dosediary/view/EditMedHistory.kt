@@ -2,7 +2,10 @@
 
 package com.example.dosediary.view
 
+import android.widget.DatePicker
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,12 +14,14 @@ import androidx.compose.ui.unit.dp
 import java.util.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.ui.theme.Primary
+import java.text.SimpleDateFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,7 +31,7 @@ fun EditMedication(navController: NavHostController) {
     val selectedEffectiveness = remember { mutableStateOf(effectivenessOptions[0]) }
     val calendar = Calendar.getInstance()
     calendar.set(2023, Calendar.MAY, 10, 10, 30)
-    val date = remember { mutableStateOf("06/19/2024") }
+    val date = remember { mutableStateOf(calendar.time)}
     val time = remember { mutableStateOf("6:00") }
     val text = remember { mutableStateOf("Enter Information") }
 
@@ -137,13 +142,44 @@ fun EffectivenessDropdown(
 //}
 
 @Composable
-fun DateField(date: MutableState<String>) {
+fun DateField(date: MutableState<Date>) {
+    val dateFormat = remember { SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()) }
+    val calendar = Calendar.getInstance().apply { time = date.value }
+
+    val context = LocalContext.current
+
+    val datePickerDialog = remember {
+        android.app.DatePickerDialog(
+            context,
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                calendar.set(year, month, dayOfMonth)
+                date.value = calendar.time
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
+
     OutlinedTextField(
-        value = date.value,
-        onValueChange = { date.value = it },
+        value = dateFormat.format(date.value),
+        onValueChange = { },
         label = { Text("Select Date") },
-        modifier = Modifier.fillMaxWidth()
+        readOnly = true,
+        modifier = Modifier.fillMaxWidth(),
+        interactionSource = remember { MutableInteractionSource() }
+            .also { interactionSource ->
+                LaunchedEffect(interactionSource) {
+                    interactionSource.interactions.collect {
+                        if (it is PressInteraction.Release) {
+                            datePickerDialog.show()
+                        }
+                    }
+                }
+            }
     )
+
 }
 
 //@Composable
@@ -213,13 +249,6 @@ fun ButtonRow(navController: NavHostController) {
     }
 }
 
-@Composable
-fun DatePicker(
-    date: Date
-) {
-    val calendar = Calendar.getInstance()
-    calendar.time = date
-}
 
 @Composable
 fun TimePicker(
