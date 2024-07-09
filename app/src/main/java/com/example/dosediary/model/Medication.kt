@@ -11,8 +11,8 @@ data class Medication(
     var medicationName: String,
     var startDate: Date,
     var endDate: Date,
-    var refillDays: Number,
-    var dosage: Number,
+    var refillDays: Int,
+    var dosage: Int,
     var frequency: String,
     var owner: String
 )

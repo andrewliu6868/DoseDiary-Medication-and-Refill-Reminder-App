@@ -58,13 +58,13 @@ fun MedicationHistory(navController: NavHostController) {
 fun generatePDF(context: Context, medications: List<MedicationHistory>) {}
 
 val sampleMedications = listOf(
-    MedicationHistory("Ibuprofen", "Wednesday 6:00 PM", "2024/06/26", "Effective"),
-    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26", "Effective"),
-    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
-    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
-    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
-    MedicationHistory("Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
-    MedicationHistory("Oxaprozin", "Thursday 5:00 AM","2024/06/27", "Effective")
+    MedicationHistory(0,"Ibuprofen", "Wednesday 6:00 PM", "2024/06/26", "Effective"),
+    MedicationHistory(1,"Amoxicillin", "Wednesday 7:30 PM", "2024/06/26", "Effective"),
+    MedicationHistory(2,"Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
+    MedicationHistory(3,"Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
+    MedicationHistory(4,"Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
+    MedicationHistory(5,"Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
+    MedicationHistory(6,"Oxaprozin", "Thursday 5:00 AM","2024/06/27", "Effective")
 )
 
 @Composable

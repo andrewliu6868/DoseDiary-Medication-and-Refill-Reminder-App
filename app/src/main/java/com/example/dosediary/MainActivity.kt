@@ -14,10 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Surface
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.dosediary.model.DoseDiaryDatabase
 
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
@@ -29,10 +31,15 @@ import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
 import com.example.dosediary.view.MedicationRefillScreen
 import com.example.dosediary.view.MedicationRefillDetailScreen
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val userDao = DoseDiaryDatabase.getInstance(this).userDao
+        val medicationDao = DoseDiaryDatabase.getInstance(this).medicationDao
+        val medicationHistoryDao = DoseDiaryDatabase.getInstance(this).medicationHistoryDao
+
         setContent {
             DoseDiaryTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
@@ -40,6 +47,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+
     }
 }
 
