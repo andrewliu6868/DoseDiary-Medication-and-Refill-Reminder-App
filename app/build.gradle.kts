@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -5,7 +7,13 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
 }
-
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { stream ->
+        localProperties.load(stream)
+    }
+}
 android {
     namespace = "com.example.dosediary"
     compileSdk = 34
@@ -21,6 +29,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        manifestPlaceholders["MAPS_API_KEY"] = localProperties["MAPS_API_KEY"] as String
     }
 
     buildTypes {
@@ -33,11 +42,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -89,5 +98,18 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.44")
     kapt("androidx.hilt:hilt-compiler:1.1.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    //Google Maps
+    // Google maps
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    // Google maps for compose
+    implementation("com.google.maps.android:maps-compose:6.0.0")
+
+    // KTX for the Maps SDK for Android
+    implementation("com.google.maps.android:maps-ktx:5.1.0")
+    // KTX for the Maps SDK for Android Utility Library
+    implementation("com.google.maps.android:android-maps-utils:3.8.0")
+
 
 }
