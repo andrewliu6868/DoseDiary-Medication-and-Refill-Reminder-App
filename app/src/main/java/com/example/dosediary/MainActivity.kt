@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.model.DoseDiaryDatabase
+import com.example.dosediary.model.Medication
 
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
@@ -32,6 +33,9 @@ import com.example.dosediary.view.Profile
 import com.example.dosediary.view.MedicationRefillScreen
 import com.example.dosediary.view.MedicationRefillDetailScreen
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +43,49 @@ class MainActivity : ComponentActivity() {
         val userDao = DoseDiaryDatabase.getInstance(this).userDao
         val medicationDao = DoseDiaryDatabase.getInstance(this).medicationDao
         val medicationHistoryDao = DoseDiaryDatabase.getInstance(this).medicationHistoryDao
+
+        lifecycleScope.launch {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+
+            val start_calendar = Calendar.getInstance()
+            val end_calendar = Calendar.getInstance()
+            start_calendar.add(Calendar.DAY_OF_YEAR, 2)
+            end_calendar.add(Calendar.DAY_OF_YEAR, 30)
+
+
+            val sampleMedications = listOf(
+                Medication(
+                    medicationName = "Medication 1",
+                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    endDate = dateFormat.parse(dateFormat.format(end_calendar.time)) ?: Date(),
+                    refillDays = 30,
+                    dosage = 1,
+                    frequency = "Daily",
+                    owner = "User 1"
+                ),
+                Medication(
+                    medicationName = "Medication 2",
+                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    endDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    refillDays = 30,
+                    dosage = 1,
+                    frequency = "Daily",
+                    owner = "User 1"
+                ),
+                Medication(
+                    medicationName = "Medication 3",
+                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    endDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    refillDays = 30,
+                    dosage = 1,
+                    frequency = "Daily",
+                    owner = "User 1"
+                ),
+            )
+            sampleMedications.forEach() {
+                medicationDao.upsertMedication(it)
+            }
+        }
 
         setContent {
             DoseDiaryTheme {
