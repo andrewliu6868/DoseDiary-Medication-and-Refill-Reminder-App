@@ -283,11 +283,11 @@ fun MedicationRefillGoogleMaps() {
             .height(200.dp),
         cameraPositionState = cameraPositionState
     ) {
-        Marker(
+        /*Marker(
             state = MarkerState(position = singapore),
             title = "Singapore",
             snippet = "Marker in Singapore"
-        )
+        )*/
     }
 }
 
