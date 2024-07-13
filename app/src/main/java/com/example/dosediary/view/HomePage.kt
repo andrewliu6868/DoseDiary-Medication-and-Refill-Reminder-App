@@ -25,11 +25,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.model.Medication
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.ui.theme.Primary
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -160,6 +162,18 @@ fun DailyMedicationChecklist() {
     }
 }
 
+
+
+val medication1 = Medication(
+    medicationName = "Medication 3",
+    startDate = Date(),
+    endDate = Date(),
+    refillDays = 30,
+    dosage = 1,
+    frequency = "Daily",
+    owner = "User 1"
+)
+
 @Composable
 fun UpcomingMedicationRefills() {
     Card(
@@ -179,12 +193,12 @@ fun UpcomingMedicationRefills() {
 
             BasicText(text = "Today, Jun 13, Thursday", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold))
             Spacer(modifier = Modifier.height(4.dp))
-            MedicationRefillDetailedItem(medicationRefill1 ,{})
+            MedicationRefillDetailedItem(medication1 ,{})
             Spacer(modifier = Modifier.height(8.dp))
 
             BasicText(text = "Tomorrow, Jun 14, Friday", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold))
             Spacer(modifier = Modifier.height(4.dp))
-            MedicationRefillDetailedItem(medicationRefill2 ,{})
+            MedicationRefillDetailedItem(medication1 ,{})
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = { /*TODO*/ },
                 modifier = Modifier.align(Alignment.CenterHorizontally),

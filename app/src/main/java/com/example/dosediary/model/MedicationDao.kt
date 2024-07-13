@@ -16,4 +16,7 @@ interface MedicationDao {
 
     @Query("SELECT * FROM medication ORDER BY medicationName ASC")
     fun getContactsOrderedByFirstName(): Flow<List<Medication>>
+
+    @Query("SELECT * FROM medication WHERE owner = :owner ORDER BY medicationName ASC")
+    fun getMedicationsByOwner(owner: String): Flow<List<Medication>>
 }
