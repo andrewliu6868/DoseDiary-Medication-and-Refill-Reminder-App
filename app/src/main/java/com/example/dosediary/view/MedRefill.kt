@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,6 +17,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,6 +31,8 @@ import com.example.dosediary.R
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.min
+import androidx.compose.ui.unit.times
 import androidx.navigation.NavController
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.model.Medication
@@ -96,96 +101,12 @@ fun MedicationRefillScreen(
     }
 }
 
-//val medicationRefill1 = MedicationRefill(
-//    medicationName = "Lisinopril",
-//    dosage = "10 mg",
-//    quantity = 90,
-//    refillQuantity = 90,
-//    refillDate = "2024-06-01",
-//    nextRefillDate = "2024-09-01",
-//    refillFrequency = 90, // Every 90 days
-//    pharmacyName = "Pharmacy One",
-//    pharmacyContact = "555-1234",
-//    pharmacyAddress = "123 Main St, Springfield",
-//    prescriptionNumber = "RX123456",
-//    prescribingDoctor = "Dr. John Smith",
-//    doctorContact = "555-5678",
-//    reminderSettings = "2 days before refill date",
-//    currentStock = 30,
-//    insuranceInformation = "Insurance Company A",
-//    notes = "Take with food."
-//)
-//
-//val medicationRefill2 = MedicationRefill(
-//    medicationName = "Metformin",
-//    dosage = "500 mg",
-//    quantity = 60,
-//    refillQuantity = 60,
-//    refillDate = "2024-06-15",
-//    nextRefillDate = "2024-08-15",
-//    refillFrequency = 60, // Every 60 days
-//    pharmacyName = "Pharmacy Two",
-//    pharmacyContact = "555-2345",
-//    pharmacyAddress = "456 Oak St, Springfield",
-//    prescriptionNumber = "RX654321",
-//    prescribingDoctor = "Dr. Jane Doe",
-//    doctorContact = "555-6789",
-//    reminderSettings = "3 days before refill date",
-//    currentStock = 20,
-//    insuranceInformation = "Insurance Company B",
-//    notes = "Avoid alcohol."
-//)
-//
-//val medicationRefill3 = MedicationRefill(
-//    medicationName = "Atorvastatin",
-//    dosage = "20 mg",
-//    quantity = 30,
-//    refillQuantity = 30,
-//    refillDate = "2024-06-20",
-//    nextRefillDate = "2024-07-20",
-//    refillFrequency = 30, // Every 30 days
-//    pharmacyName = "Pharmacy Three",
-//    pharmacyContact = "555-3456",
-//    pharmacyAddress = "789 Pine St, Springfield",
-//    prescriptionNumber = "RX789012",
-//    prescribingDoctor = "Dr. Emily Brown",
-//    doctorContact = "555-7890",
-//    reminderSettings = "1 day before refill date",
-//    currentStock = 10,
-//    insuranceInformation = "Insurance Company C",
-//    notes = "Take in the evening."
-//)
-//
-//val medicationRefill4 = MedicationRefill(
-//    medicationName = "Lisinopril",
-//    dosage = "10 mg",
-//    quantity = 90,
-//    refillQuantity = 90,
-//    refillDate = "2024-06-01",
-//    nextRefillDate = "2024-09-01",
-//    refillFrequency = 90, // Every 90 days
-//    pharmacyName = "Pharmacy One",
-//    pharmacyContact = "555-1234",
-//    pharmacyAddress = "123 Main St, Springfield",
-//    prescriptionNumber = "RX123456",
-//    prescribingDoctor = "Dr. John Smith",
-//    doctorContact = "555-5678",
-//    reminderSettings = "2 days before refill date",
-//    currentStock = 30,
-//    insuranceInformation = "Insurance Company A",
-//    notes = "Take with food."
-//)
-//
-//val medicationList = listOf(
-//    medicationRefill1,
-//    medicationRefill2,
-//    medicationRefill3,
-//    medicationRefill4
-//)
+
 @Composable
 fun MedicationRefillTodayList(
     navController: NavController,
-    state: MedRefillState
+    state: MedRefillState,
+    isHomePage: Boolean = false
 ) {
     Card(
         shape = RoundedCornerShape(35.dp),
@@ -195,18 +116,34 @@ fun MedicationRefillTodayList(
             .padding(vertical = 8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
+            if (isHomePage) {
+                BasicText(
+                    text = "Upcoming Medication Refills",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             BasicText(
                 text = "Today",
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             // for medication in medication list render MedicationRefillDetailedItem(medication)
-            LazyColumn(modifier = Modifier.height(240.dp)) {
-                items(state.medRefills) { medication ->
+            LazyColumn(modifier = Modifier.height(min(state.medRefillsToday.size * 75.dp, 4 * 75.dp))) {
+                items(state.medRefillsToday) { medication ->
                     MedicationRefillDetailedItem(medication, onItemClick = {
                         // Navigate to MedicationRefillDetailScreen
                         navController.navigate("refillDetails")
                     })
+                }
+            }
+
+            if (isHomePage) {
+                Button(onClick = { navController.navigate("refill") },
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    colors = ButtonDefaults.buttonColors(containerColor = Primary)
+                ) {
+                    Text("View All Medication Details")
                 }
             }
         }
@@ -231,8 +168,8 @@ fun MedicationRefillNextWeekList(
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            LazyColumn(modifier = Modifier.height(240.dp)) {
-                items(state.medRefills) { medication ->
+            LazyColumn(modifier = Modifier.height(min(state.medRefillsUpcoming.size * 75.dp, 4 * 75.dp))) {
+                items(state.medRefillsUpcoming) { medication ->
                     MedicationRefillDetailedItem(medication, onItemClick = {
                         // Navigate to MedicationRefillDetailScreen
                         navController.navigate("refillDetails")
