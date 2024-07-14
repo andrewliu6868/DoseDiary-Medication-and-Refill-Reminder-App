@@ -159,18 +159,6 @@ fun DailyMedicationChecklist() {
     }
 }
 
-
-
-val medication1 = Medication(
-    medicationName = "Medication 3",
-    startDate = Date(),
-    endDate = Date(),
-    refillDays = 30,
-    dosage = 1,
-    frequency = "Daily",
-    owner = "User 1"
-)
-
 @Composable
 fun UpcomingMedicationRefills(navController: NavController, state: MedRefillState) {
     Card(

@@ -131,7 +131,7 @@ fun Navigation (navController: NavHostController, medRefillViewModel: MedRefillV
         composable("home") { MedicationListScreen(navController, medRefillViewModel)}
         composable("refill") { MedicationRefillScreen(navController, medRefillViewModel) }
         composable("history") { MedicationHistory(navController) }
-        composable("profile") { Profile() }
+        composable("profile") { Profile(navController) }
         composable("Add Medication") { AddMedicationPage(navController) }
         composable("refillDetails") { MedicationRefillDetailScreen(navController) }
         composable("editMedication") { EditMedication(navController) }

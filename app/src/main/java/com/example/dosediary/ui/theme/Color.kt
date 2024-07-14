@@ -13,5 +13,6 @@ val Pink40 = Color(0xFF7D5260)
 val Primary = Color(0xFF18A0FB)             //Blue
 val Background = Color(0xFFFFFFFF)          //White
 val ContainerBackground = Color(0xFFEBFAFF)  //Light Blue
+val OutlineTextField = Color(0xFF18A0FB)     //Blue
 
 val MedicationRefillDetailedItem = Color(0xFFBBE6F5)
