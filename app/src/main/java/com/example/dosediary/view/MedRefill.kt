@@ -37,25 +37,25 @@ import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.viewmodel.MedRefillState
 import com.example.dosediary.viewmodel.MedRefillViewModel
 
-//data class MedicationRefill(
-//    val medicationName: String,
-//    val dosage: String,
-//    val quantity: Int,
-//    val refillQuantity: Int,
-//    val refillDate: String, // Could use LocalDate for date handling
-//    val nextRefillDate: String, // Could use LocalDate for date handling
-//    val refillFrequency: Int, // Number of days between refills
-//    val pharmacyName: String,
-//    val pharmacyContact: String,
-//    val pharmacyAddress: String,
-//    val prescriptionNumber: String,
-//    val prescribingDoctor: String,
-//    val doctorContact: String,
-//    val reminderSettings: String, // Could use a more complex type for detailed reminders
-//    val currentStock: Int,
-//    val insuranceInformation: String,
-//    val notes: String
-//)
+data class MedicationRefill(
+    val medicationName: String,
+    val dosage: String,
+    val quantity: Int,
+    val refillQuantity: Int,
+    val refillDate: String, // Could use LocalDate for date handling
+    val nextRefillDate: String, // Could use LocalDate for date handling
+    val refillFrequency: Int, // Number of days between refills
+    val pharmacyName: String,
+    val pharmacyContact: String,
+    val pharmacyAddress: String,
+    val prescriptionNumber: String,
+    val prescribingDoctor: String,
+    val doctorContact: String,
+    val reminderSettings: String, // Could use a more complex type for detailed reminders
+    val currentStock: Int,
+    val insuranceInformation: String,
+    val notes: String
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 //@Preview
