@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.dosediary.model.DoseDiaryDatabase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MedRefillViewModel(application: Application): ViewModel() {
 
@@ -20,7 +22,25 @@ class MedRefillViewModel(application: Application): ViewModel() {
 
     val state = combine(_state, _medications) { state, medications ->
         state.copy(
-            medRefills = medications
+            medRefillsToday = medications.filter { medication ->
+
+                calculateRefillDates(medication.startDate, medication.endDate, medication.refillDays).any { refillDate ->
+                    needsRefillToday(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(refillDate))
+                }
+            },
+            medRefillsUpcoming = medications.filter { medication ->
+                calculateRefillDates(
+                    medication.startDate,
+                    medication.endDate,
+                    medication.refillDays
+                ).any { refillDate ->
+                    needsRefillNextWeek(
+                        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                            refillDate
+                        )
+                    )
+                }
+            }
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MedRefillState())
 
@@ -35,6 +55,38 @@ class MedRefillViewModel(application: Application): ViewModel() {
         }
     }
 
+}
+
+fun calculateRefillDates(startDate: Date, endDate: Date, refillDays: Int): List<Date> {
+    val refillDates = mutableListOf<Date>()
+    val calendar = Calendar.getInstance()
+    calendar.time = startDate
+
+    while (!calendar.time.after(endDate)) {
+        refillDates.add(calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, refillDays)
+    }
+
+    return refillDates
+}
+
+
+fun needsRefillToday(refillDate: String): Boolean {
+    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val today = Calendar.getInstance().time
+    return sdf.format(today) == refillDate
+}
+
+fun needsRefillNextWeek(refillDate: String): Boolean {
+    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val today = Calendar.getInstance()
+    val nextWeek = Calendar.getInstance()
+    nextWeek.add(Calendar.DAY_OF_YEAR, 7)
+    val refill = Calendar.getInstance()
+    sdf.parse(refillDate)?.let {
+        refill.time = it
+    }
+    return refill.after(today) && refill.before(nextWeek)
 }
 
 class MedRefillViewModelFactory(private val application: Application) : ViewModelProvider.Factory {

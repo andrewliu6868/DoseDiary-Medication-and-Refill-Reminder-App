@@ -2,40 +2,37 @@ package com.example.dosediary.view
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.model.Medication
 import com.example.dosediary.ui.theme.ContainerBackground
-import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.ui.theme.Primary
+import com.example.dosediary.viewmodel.MedRefillState
+import com.example.dosediary.viewmodel.MedRefillViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MedicationListScreen(navController: NavController) {
+fun MedicationListScreen(navController: NavController, medRefillViewModel: MedRefillViewModel) {
+
+    val state by medRefillViewModel.state.collectAsState()
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -65,7 +62,7 @@ fun MedicationListScreen(navController: NavController) {
             ) {
                 item { MedicationReminder() }
                 item { DailyMedicationChecklist() }
-                item { UpcomingMedicationRefills() }
+                item { UpcomingMedicationRefills(navController, state) }
             }
         }
     }
@@ -175,7 +172,7 @@ val medication1 = Medication(
 )
 
 @Composable
-fun UpcomingMedicationRefills() {
+fun UpcomingMedicationRefills(navController: NavController, state: MedRefillState) {
     Card(
         shape = RoundedCornerShape(35.dp),
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
@@ -184,73 +181,6 @@ fun UpcomingMedicationRefills() {
             .padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            BasicText(
-                text = "Upcoming Medication Refills",
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            BasicText(text = "Today, Jun 13, Thursday", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold))
-            Spacer(modifier = Modifier.height(4.dp))
-            MedicationRefillDetailedItem(medication1 ,{})
-            Spacer(modifier = Modifier.height(8.dp))
-
-            BasicText(text = "Tomorrow, Jun 14, Friday", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold))
-            Spacer(modifier = Modifier.height(4.dp))
-            MedicationRefillDetailedItem(medication1 ,{})
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { /*TODO*/ },
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                colors = ButtonDefaults.buttonColors(containerColor = Primary)
-            ) {
-                Text("View All Medication Details")
-            }
-        }
+        MedicationRefillTodayList(navController, state, true)
     }
-}
-
-@Composable
-fun MedicationRefillItem(date: String, medication: String, pills: Int) {
-    Card(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
-        ),
-        colors = CardDefaults.cardColors(containerColor = Background),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clickable {
-//                onItemClick()
-            }
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.icon),
-                contentDescription = "Pill Pics",
-                modifier = Modifier.width(30.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                BasicText(text = medication)
-                BasicText(text = "$pills Pills")
-            }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Outlined.Info, contentDescription = null)
-            }
-        }
-    }
-}
-
-@Preview(showBackground =true, name = "MedicationList Preview")
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun MedListPreview(){
-    val navController = rememberNavController()
-    MedicationListScreen(navController = navController);
 }
