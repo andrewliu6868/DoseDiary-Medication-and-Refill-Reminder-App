@@ -11,10 +11,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Directions
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -35,10 +38,19 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dosediary.model.Medication
+import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MedicationRefillDetailScreen(navController: NavController){
+fun MedicationRefillDetailScreen(navController: NavController, medRefillDetailViewModel: MedRefillDetailViewModel,
+                                 medicationId: Int){
+    LaunchedEffect(medicationId) {
+        medRefillDetailViewModel.fetchMedById(medicationId)
+    }
+    val medication by medRefillDetailViewModel.state
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -59,34 +71,14 @@ fun MedicationRefillDetailScreen(navController: NavController){
                 .padding(horizontal = 16.dp)
 
         ) {
-            MedicationRefillDetail()
+            MedicationRefillDetail(medication?:Medication())
         }
     }
 
 }
 
-val medicationRefill = MedicationRefill(
-    medicationName = "Lisinopril",
-    dosage = "10 mg",
-    quantity = 90,
-    refillQuantity = 90,
-    refillDate = "2024-06-01",
-    nextRefillDate = "2024-09-01",
-    refillFrequency = 90, // Every 90 days
-    pharmacyName = "Pharmacy One",
-    pharmacyContact = "555-1234",
-    pharmacyAddress = "123 Main St, Springfield",
-    prescriptionNumber = "RX123456",
-    prescribingDoctor = "Dr. John Smith",
-    doctorContact = "555-5678",
-    reminderSettings = "2 days before refill date",
-    currentStock = 30,
-    insuranceInformation = "Insurance Company A",
-    notes = "Take with food."
-)
-
 @Composable
-fun MedicationRefillDetail() {
+fun MedicationRefillDetail(medication: Medication) {
     Card(
         shape = RoundedCornerShape(35.dp),
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
@@ -96,7 +88,7 @@ fun MedicationRefillDetail() {
         Column(modifier = Modifier.padding(16.dp)) {
             Spacer(modifier = Modifier.height(8.dp))
             BasicText(
-                text = medicationRefill.medicationName + ": " + medicationRefill.currentStock + " pills left",
+                text = medication.medicationName + ": " + 0 + " pills left", // fix it later
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -146,7 +138,7 @@ fun MedicationRefillDetail() {
                             append("Next Refill Date: ")
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.nextRefillDate)
+                            append("") // fix later
                         }
                     }
                 )
@@ -156,7 +148,7 @@ fun MedicationRefillDetail() {
                             append("Pharmacy Name: ")
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.pharmacyName)
+                            append("") // fix later
                         }
                     }
                 )
@@ -166,7 +158,7 @@ fun MedicationRefillDetail() {
                             append("Pharmacy Contact: ")
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.pharmacyContact)
+                            append("") // fix later
                         }
                     }
                 )
@@ -177,40 +169,7 @@ fun MedicationRefillDetail() {
                             append("Pharmacy Address:")
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.pharmacyAddress)
-                        }
-                    }
-                )
-
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Prescription Number: ")
-                        }
-                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.prescriptionNumber)
-                        }
-                    }
-                )
-
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Prescribing Doctor: ")
-                        }
-                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.prescribingDoctor)
-                        }
-                    }
-                )
-
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Doctor Contact: ")
-                        }
-                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.doctorContact)
+                            append("") // fix later
                         }
                     }
                 )
@@ -237,7 +196,7 @@ fun MedicationRefillDetail() {
                             append("Dosage: ")
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.dosage)
+                            append(medication.dosage.toString())
                         }
                     }
                 )
@@ -248,7 +207,7 @@ fun MedicationRefillDetail() {
                             append("Quantity: ")
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.quantity.toString())
+                            append("") // fix later
                         }
                     }
                 )
@@ -259,7 +218,7 @@ fun MedicationRefillDetail() {
                             append("Notes: ")
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medicationRefill.notes.toString())
+                            append("") // fix later
                         }
                     }
                 )
@@ -269,7 +228,26 @@ fun MedicationRefillDetail() {
         }
     }
 }
+@Composable
+fun MedRefillGoogleMaps(location: LatLng) {
+    val context = LocalContext.current
 
+    GoogleMap(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .height(200.dp),
+        cameraPositionState = rememberCameraPositionState{
+            position = CameraPosition.fromLatLngZoom(location,12f)
+        }
+    ){
+        Marker(
+            state = MarkerState(position = location),
+            title = "Current Location",
+            snippet = "Marker in ${location.latitude}, ${location.longitude}"
+        )
+    }
+}
 @Composable
 fun MedicationRefillGoogleMaps() {
     val singapore = LatLng(1.35, 103.87)
@@ -283,17 +261,10 @@ fun MedicationRefillGoogleMaps() {
             .height(200.dp),
         cameraPositionState = cameraPositionState
     ) {
-        Marker(
+        /*Marker(
             state = MarkerState(position = singapore),
             title = "Singapore",
             snippet = "Marker in Singapore"
-        )
+        )*/
     }
-}
-
-@Preview(showBackground =true, name = "Medication Refill Detail Preview")
-@Composable
-fun MedRefillDetailPreview(){
-    val navController = rememberNavController()
-    MedicationRefillDetailScreen(navController = navController);
 }
