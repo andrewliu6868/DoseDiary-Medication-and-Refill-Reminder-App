@@ -129,12 +129,19 @@ fun MedicationRefillTodayList(
             )
             Spacer(modifier = Modifier.height(8.dp))
             // for medication in medication list render MedicationRefillDetailedItem(medication)
-            LazyColumn(modifier = Modifier.height(min(state.medRefillsToday.size * 75.dp, 4 * 75.dp))) {
-                items(state.medRefillsToday) { medication ->
-                    MedicationRefillDetailedItem(medication, onItemClick = {
-                        // Navigate to MedicationRefillDetailScreen
-                        navController.navigate("refillDetails")
-                    })
+            if (state.medRefillsToday.isEmpty()) {
+                BasicText(
+                    text = "No Medication Refills Today",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                )
+            } else {
+                LazyColumn(modifier = Modifier.height(min(state.medRefillsToday.size * 75.dp, 4 * 75.dp))) {
+                    items(state.medRefillsToday) { medication ->
+                        MedicationRefillDetailedItem(medication, onItemClick = {
+                            // Navigate to MedicationRefillDetailScreen
+                            navController.navigate("refillDetails")
+                        })
+                    }
                 }
             }
 
@@ -168,12 +175,20 @@ fun MedicationRefillNextWeekList(
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            LazyColumn(modifier = Modifier.height(min(state.medRefillsUpcoming.size * 75.dp, 4 * 75.dp))) {
-                items(state.medRefillsUpcoming) { medication ->
-                    MedicationRefillDetailedItem(medication, onItemClick = {
-                        // Navigate to MedicationRefillDetailScreen
-                        navController.navigate("refillDetails")
-                    })
+
+            if (state.medRefillsUpcoming.isEmpty()) {
+                BasicText(
+                    text = "No Medication Refills Today",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                )
+            } else {
+                LazyColumn(modifier = Modifier.height(min(state.medRefillsUpcoming.size * 75.dp, 4 * 75.dp))) {
+                    items(state.medRefillsUpcoming) { medication ->
+                        MedicationRefillDetailedItem(medication, onItemClick = {
+                            // Navigate to MedicationRefillDetailScreen
+                            navController.navigate("refillDetails")
+                        })
+                    }
                 }
             }
         }
