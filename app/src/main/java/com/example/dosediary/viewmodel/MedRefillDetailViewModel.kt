@@ -54,7 +54,7 @@ fun showStartDate(startDate: Date): Date{
 class MedRefillDetailViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(MedRefillDetailViewModel::class.java)){
-            return MedRefillViewModel(application) as T
+            return MedRefillDetailViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

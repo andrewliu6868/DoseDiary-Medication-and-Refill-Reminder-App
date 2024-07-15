@@ -34,6 +34,7 @@ import com.example.dosediary.view.Profile
 import com.example.dosediary.view.MedicationRefillScreen
 import com.example.dosediary.view.MedicationRefillDetailScreen
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
+import com.example.dosediary.viewmodel.MedRefillDetailViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModelFactory
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ import java.util.Date
 
 class MainActivity : ComponentActivity() {
     private val  medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
-        MedRefillViewModelFactory(application)
+        MedRefillDetailViewModelFactory(application)
     }
 
     private val medRefillViewModel by viewModels<MedRefillViewModel> {

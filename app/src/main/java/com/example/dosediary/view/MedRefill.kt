@@ -139,7 +139,7 @@ fun MedicationRefillTodayList(
                     items(state.medRefillsToday) { medication ->
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
-                            navController.navigate("refillDetails")
+                            navController.navigate("refillDetails/${medication.id}")
                         })
                     }
                 }
@@ -186,7 +186,7 @@ fun MedicationRefillNextWeekList(
                     items(state.medRefillsUpcoming) { medication ->
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
-                            navController.navigate("refillDetails")
+                            navController.navigate("refillDetails/${medication.id}")
                         })
                     }
                 }
