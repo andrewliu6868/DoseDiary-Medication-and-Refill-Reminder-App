@@ -23,4 +23,6 @@ interface MedicationDao {
 
     @Query("SELECT medicationName FROM medication ORDER BY refillDays ASC")
     fun getMedicationByRefill(): Flow<List<Medication>>
+    @Query("SELECT * FROM medication WHERE id = :medID ORDER BY refillDays ASC")
+    fun getMedicationByID(medID: Int): Flow<List<Medication>>
 }
