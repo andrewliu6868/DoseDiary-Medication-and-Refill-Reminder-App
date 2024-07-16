@@ -1,5 +1,6 @@
 package com.example.dosediary.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,28 +40,23 @@ fun Profile(navController: NavController) {
         topBar = {
             CustomTopAppBar(
                 header = "Profile",
-                showNavigationIcon = true,
+                showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
                 imageDescription = "App Icon"
             )
         }
     ) { padding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(padding)
                 .padding(horizontal = 16.dp)
         ) {
-
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                item { UserDetail() }
-                item { MedicationHistory(navController) }
-                item { MedicationDetail(navController)}
-            }
-
+            item { UserDetail() }
+            item { MedicationHistory(navController) }
+            item { MedicationDetail(navController)}
         }
     }
 }

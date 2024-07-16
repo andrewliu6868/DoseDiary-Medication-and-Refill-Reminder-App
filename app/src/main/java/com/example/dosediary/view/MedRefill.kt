@@ -42,26 +42,6 @@ import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.viewmodel.MedRefillState
 import com.example.dosediary.viewmodel.MedRefillViewModel
 
-data class MedicationRefill(
-    val medicationName: String,
-    val dosage: String,
-    val quantity: Int,
-    val refillQuantity: Int,
-    val refillDate: String, // Could use LocalDate for date handling
-    val nextRefillDate: String, // Could use LocalDate for date handling
-    val refillFrequency: Int, // Number of days between refills
-    val pharmacyName: String,
-    val pharmacyContact: String,
-    val pharmacyAddress: String,
-    val prescriptionNumber: String,
-    val prescribingDoctor: String,
-    val doctorContact: String,
-    val reminderSettings: String, // Could use a more complex type for detailed reminders
-    val currentStock: Int,
-    val insuranceInformation: String,
-    val notes: String
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 //@Preview
 @Composable
@@ -78,7 +58,7 @@ fun MedicationRefillScreen(
                 showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon"
+                imageDescription = "App Icon",
             )
         }
     ){ innerPadding ->
@@ -129,12 +109,19 @@ fun MedicationRefillTodayList(
             )
             Spacer(modifier = Modifier.height(8.dp))
             // for medication in medication list render MedicationRefillDetailedItem(medication)
-            LazyColumn(modifier = Modifier.height(min(state.medRefillsToday.size * 75.dp, 4 * 75.dp))) {
-                items(state.medRefillsToday) { medication ->
-                    MedicationRefillDetailedItem(medication, onItemClick = {
-                        // Navigate to MedicationRefillDetailScreen
-                        navController.navigate("refillDetails")
-                    })
+            if (state.medRefillsToday.isEmpty()) {
+                BasicText(
+                    text = "No Medication Refills Today",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                )
+            } else {
+                LazyColumn(modifier = Modifier.height(min(state.medRefillsToday.size * 75.dp, 4 * 75.dp))) {
+                    items(state.medRefillsToday) { medication ->
+                        MedicationRefillDetailedItem(medication, onItemClick = {
+                            // Navigate to MedicationRefillDetailScreen
+                            navController.navigate("refillDetails/${medication.id}")
+                        })
+                    }
                 }
             }
 
@@ -168,12 +155,20 @@ fun MedicationRefillNextWeekList(
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            LazyColumn(modifier = Modifier.height(min(state.medRefillsUpcoming.size * 75.dp, 4 * 75.dp))) {
-                items(state.medRefillsUpcoming) { medication ->
-                    MedicationRefillDetailedItem(medication, onItemClick = {
-                        // Navigate to MedicationRefillDetailScreen
-                        navController.navigate("refillDetails")
-                    })
+
+            if (state.medRefillsUpcoming.isEmpty()) {
+                BasicText(
+                    text = "No Medication Refills in the Next 7 Days",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                )
+            } else {
+                LazyColumn(modifier = Modifier.height(min(state.medRefillsUpcoming.size * 75.dp, 4 * 75.dp))) {
+                    items(state.medRefillsUpcoming) { medication ->
+                        MedicationRefillDetailedItem(medication, onItemClick = {
+                            // Navigate to MedicationRefillDetailScreen
+                            navController.navigate("refillDetails/${medication.id}")
+                        })
+                    }
                 }
             }
         }

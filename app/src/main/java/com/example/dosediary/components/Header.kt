@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,9 +69,16 @@ fun CustomTopAppBar(
     imageDescription: String = "App Logo"
 ) {
     CenterAlignedTopAppBar(
-        modifier = Modifier.padding(vertical = 16.dp).background(Color(0xFFFFFFFF)),
+        modifier = Modifier.padding(vertical = 16.dp).background(color = Background),
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Background
+        ),
         title = {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth().background(color = Background),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 if (imageResId != null) {
                     Image(
                         painter = painterResource(id = imageResId),

@@ -2,6 +2,7 @@ package com.example.dosediary.view
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,7 +29,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MedicationListScreen(navController: NavController, medRefillViewModel: MedRefillViewModel) {
 
@@ -54,6 +54,7 @@ fun MedicationListScreen(navController: NavController, medRefillViewModel: MedRe
     ){ padding -> Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(padding)
                 .padding(horizontal = 16.dp)
         ) {
