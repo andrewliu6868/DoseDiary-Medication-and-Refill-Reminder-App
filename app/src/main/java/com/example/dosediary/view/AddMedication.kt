@@ -92,6 +92,7 @@ fun AddMedicationPage(navController: NavHostController){
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(innerPadding)
                 .padding(horizontal = 20.dp),
             contentPadding = PaddingValues(vertical = 16.dp),

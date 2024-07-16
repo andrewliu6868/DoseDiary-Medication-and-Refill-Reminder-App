@@ -3,6 +3,7 @@
 package com.example.dosediary.view
 
 import android.widget.DatePicker
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -54,6 +55,7 @@ fun EditMedication(navController: NavHostController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(innerPadding)
                 .padding(16.dp)
         ) {

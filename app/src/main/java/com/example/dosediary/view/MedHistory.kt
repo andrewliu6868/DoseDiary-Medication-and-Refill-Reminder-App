@@ -8,6 +8,7 @@ import android.graphics.pdf.PdfDocument
 import android.os.Build
 import android.os.Environment
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -71,8 +72,10 @@ fun MedicationHistory(navController: NavHostController) {
         }
     ){ innerPadding ->
         LazyColumn(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
+                .padding(innerPadding)
                 .padding(horizontal = 20.dp)
         ) {
             items(sampleMedications) { medication ->

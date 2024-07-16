@@ -42,7 +42,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dosediary.model.Medication
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MedicationRefillDetailScreen(navController: NavController, medRefillDetailViewModel: MedRefillDetailViewModel,
                                  medicationId: Int){
