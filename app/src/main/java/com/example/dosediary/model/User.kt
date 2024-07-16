@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
 data class User (
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val email: String,
-    val password: String,
-    val firstName: String,
-    val lastname: String,
+    val email: String = "",
+    val password: String = "",
+    val firstName: String = "",
+    val lastname: String = "",
 )
