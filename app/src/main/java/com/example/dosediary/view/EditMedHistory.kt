@@ -23,6 +23,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.components.TimePicker
+import com.example.dosediary.components.DatePicker
 import com.example.dosediary.ui.theme.Primary
 import java.text.SimpleDateFormat
 
@@ -59,9 +61,9 @@ fun EditMedication(navController: NavHostController) {
             Spacer(modifier = Modifier.height(16.dp))
             EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
             Spacer(modifier = Modifier.height(16.dp))
-            DateField(date)
+            DatePicker(date, "Select Date")
             Spacer(modifier = Modifier.height(16.dp))
-            TimeField(time)
+            TimePicker(time, "Select Time")
             Spacer(modifier = Modifier.height(16.dp))
             TextField(text)
             Spacer(modifier = Modifier.height(16.dp))
@@ -121,88 +123,6 @@ fun EffectivenessDropdown(
             }
         }
     }
-}
-
-
-@Composable
-fun DateField(date: MutableState<Date>) {
-    val dateFormat = remember { SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()) }
-    val calendar = Calendar.getInstance().apply { time = date.value }
-
-    val context = LocalContext.current
-
-    val datePickerDialog = remember {
-        android.app.DatePickerDialog(
-            context,
-            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-                calendar.set(year, month, dayOfMonth)
-                date.value = calendar.time
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-    }
-
-
-    OutlinedTextField(
-        value = dateFormat.format(date.value),
-        onValueChange = { },
-        label = { Text("Select Date") },
-        readOnly = true,
-        modifier = Modifier.fillMaxWidth(),
-        interactionSource = remember { MutableInteractionSource() }
-            .also { interactionSource ->
-                LaunchedEffect(interactionSource) {
-                    interactionSource.interactions.collect {
-                        if (it is PressInteraction.Release) {
-                            datePickerDialog.show()
-                        }
-                    }
-                }
-            }
-    )
-
-}
-
-@Composable
-fun TimeField(time: MutableState<Date>) {
-    val timeFormat = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
-    val calendar = Calendar.getInstance()
-
-    val context = LocalContext.current
-
-    val timePickerDialog = remember {
-        android.app.TimePickerDialog(
-            context,
-            { _, hourOfDay, minute ->
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                calendar.set(Calendar.MINUTE, minute)
-                time.value = calendar.time
-            },
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE),
-            false
-        )
-    }
-
-    OutlinedTextField(
-        value = timeFormat.format(time.value),
-        onValueChange = { },
-        label = { Text("Select Time") },
-        readOnly = true,
-        modifier = Modifier.fillMaxWidth(),
-        interactionSource = remember { MutableInteractionSource() }
-            .also { interactionSource ->
-                LaunchedEffect(interactionSource) {
-                    interactionSource.interactions.collect {
-                        if (it is PressInteraction.Release) {
-                            timePickerDialog.show()
-                        }
-                    }
-                }
-            }
-    )
 }
 
 @Composable
