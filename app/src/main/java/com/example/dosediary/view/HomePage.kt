@@ -28,7 +28,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MedicationListScreen(navController: NavController, medRefillViewModel: MedRefillViewModel) {
 
