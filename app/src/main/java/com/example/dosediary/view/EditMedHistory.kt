@@ -26,19 +26,19 @@ import java.text.SimpleDateFormat
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditMedication(navController: NavHostController) {
-    val medicationName = remember { mutableStateOf("Ibuprofen") }
+    val medicationName = remember { mutableStateOf("") }
     val effectivenessOptions = listOf("Effective", "Moderate", "Marginal", "Ineffective")
-    val selectedEffectiveness = remember { mutableStateOf(effectivenessOptions[0]) }
+    val selectedEffectiveness = remember { mutableStateOf("") }
     val calendar = Calendar.getInstance()
     calendar.set(2023, Calendar.MAY, 10, 10, 30)
     val date = remember { mutableStateOf(calendar.time)}
     val time = remember { mutableStateOf(calendar.time)}
-    val text = remember { mutableStateOf("Enter Information") }
+    val text = remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = "Edit Medication History",
+                header = "Add Medication History",
                 showNavigationIcon = true,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
@@ -74,6 +74,7 @@ fun MedicationNameField(medicationName: MutableState<String>) {
         value = medicationName.value,
         onValueChange = { medicationName.value = it },
         label = { Text("Medication Name") },
+        placeholder = {Text ("Medication Name")},
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -95,6 +96,7 @@ fun EffectivenessDropdown(
             onValueChange = { },
             readOnly = true,
             label = { Text("Effectiveness") },
+            placeholder = { Text("Select Effectiveness") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
@@ -146,6 +148,7 @@ fun DateField(date: MutableState<Date>) {
         value = dateFormat.format(date.value),
         onValueChange = { },
         label = { Text("Select Date") },
+        placeholder = { Text("MM/DD/YYYY") },
         readOnly = true,
         modifier = Modifier.fillMaxWidth(),
         interactionSource = remember { MutableInteractionSource() }
@@ -187,6 +190,7 @@ fun TimeField(time: MutableState<Date>) {
         value = timeFormat.format(time.value),
         onValueChange = { },
         label = { Text("Select Time") },
+        placeholder = { Text("HH:MM AM/PM") },
         readOnly = true,
         modifier = Modifier.fillMaxWidth(),
         interactionSource = remember { MutableInteractionSource() }
@@ -208,6 +212,7 @@ fun TextField(text: MutableState<String>) {
         value = text.value,
         onValueChange = { text.value = it },
         label = { Text("Other Information") },
+        placeholder = { Text("Enter Additional Information") },
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -225,7 +230,7 @@ fun ButtonRow(navController: NavHostController) {
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ) {
-            Text("Save")
+            Text("Create")
         }
         Spacer(modifier = Modifier.width(16.dp))
         Button(
@@ -233,7 +238,7 @@ fun ButtonRow(navController: NavHostController) {
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
             modifier = Modifier.weight(1f)
         ) {
-            Text("Delete")
+                Text("Discard")
         }
     }
 }
