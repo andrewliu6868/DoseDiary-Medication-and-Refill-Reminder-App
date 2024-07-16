@@ -102,6 +102,7 @@ fun AddMedicationPage(navController: NavHostController){
             item { MedDurationSection() }
             item { MedFrequencySection() }
             item { RefillDaysSection() }
+            item { AddressSection() }
             item { NoteSection() }
             item { SaveDeleteRow(navController) }
         }
@@ -146,7 +147,7 @@ fun MedFrequencySection(){
         horizontalArrangement = Arrangement.Center
     ) {
         Column {
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             Text(text = "Number of times per day:", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Medium, fontSize = 15.sp))
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -222,6 +223,50 @@ fun NoteSection() {
         label = { Text("Add a note") },
         modifier = Modifier.fillMaxWidth()
     )
+}
+
+@Composable
+fun AddressSection() {
+    var address by remember { mutableStateOf("") }
+    var postalCode by remember { mutableStateOf("") }
+    var postalCodeError by remember { mutableStateOf<String?>(null) }
+
+    val postalCodeRegex = Regex("^[A-Za-z]\\d[A-Za-z][ -]?\\d[A-Za-z]\\d$")
+
+    Text(text = "Pharmacy Location", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
+    Spacer(modifier = Modifier.height(10.dp))
+
+    // Address
+    OutlinedTextField(
+        value = address,
+        onValueChange = { address = it },
+        label = { Text("Address") },
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    // Postal code
+    OutlinedTextField(
+        value = postalCode,
+        onValueChange = { value ->
+            postalCode = value
+            postalCodeError = if (postalCodeRegex.matches(value)) null else "Invalid postal code format"
+        },
+        label = { Text("Postal Code") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        modifier = Modifier.fillMaxWidth(),
+        isError = postalCodeError != null
+    )
+
+    if (postalCodeError != null) {
+        Text(
+            text = postalCodeError!!,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+    }
 }
 
 
