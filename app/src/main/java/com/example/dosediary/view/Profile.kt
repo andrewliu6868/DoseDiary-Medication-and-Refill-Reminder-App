@@ -1,13 +1,17 @@
 package com.example.dosediary.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Button
@@ -21,15 +25,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.OutlineTextField
 import com.example.dosediary.ui.theme.Primary
@@ -54,12 +62,107 @@ fun Profile(navController: NavController) {
                 .padding(padding)
                 .padding(horizontal = 16.dp)
         ) {
+            item { ManageUsers(navController)}
             item { UserDetail() }
             item { MedicationHistory(navController) }
             item { MedicationDetail(navController)}
         }
     }
 }
+
+
+@Composable
+fun ManageUsers(navController: NavController) {
+    Card(
+        shape = RoundedCornerShape(35.dp),
+        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            BasicText(
+                text = "Manage Users",
+                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LazyRow {
+                item { Users() }
+                item { Users() }
+                item { Users() }
+                item { AddUsers() }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun Users( onItemClick: () -> Unit = {}) {
+    Column (
+        modifier = Modifier
+            .padding(16.dp)
+            .clickable {
+                onItemClick()
+            },
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ){
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .drawBehind {
+                    drawCircle(
+                        color = Color.Gray,
+                        radius = 80.0f
+                    )
+                },
+            text = "NG",
+            style = TextStyle(color = Color.White, fontSize = 20.sp)
+        )
+        Spacer(modifier = Modifier.height(1.dp))
+        BasicText(
+            text = "New User",
+            style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 10.sp)
+        )
+
+    }
+}
+
+@Composable
+fun AddUsers(onItemClick: () -> Unit = {}) {
+    Column (
+        modifier = Modifier
+            .padding(16.dp)
+            .clickable {
+                onItemClick()
+            },
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ){
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .drawBehind {
+                    drawCircle(
+                        color = Color.Gray,
+                        radius = 80.0f
+                    )
+                },
+            text = "+",
+            style = TextStyle(color = Color.White, fontSize = 20.sp)
+        )
+        Spacer(modifier = Modifier.height(1.dp))
+        BasicText(
+            text = "Add Users",
+            style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 10.sp)
+        )
+    }
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

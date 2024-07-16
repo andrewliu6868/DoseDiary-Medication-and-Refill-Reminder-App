@@ -7,14 +7,15 @@ import androidx.room.Room
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [User::class, Medication::class, MedicationHistory::class],
-    version = 1
+    entities = [User::class, Medication::class, MedicationHistory::class, UserRelationship::class],
+    version = 2
 )
 @TypeConverters(TypeConverter::class)
 abstract class DoseDiaryDatabase: RoomDatabase() {
     abstract val userDao: UserDao
     abstract val medicationDao: MedicationDao
     abstract val medicationHistoryDao: MedicationHistoryDao
+    abstract val userRelationshipDao: UserRelationshipDao
 
     companion object {
         @Volatile
@@ -26,7 +27,7 @@ abstract class DoseDiaryDatabase: RoomDatabase() {
                     context.applicationContext,
                     DoseDiaryDatabase::class.java,
                     "dosediary_db"
-                ).build().also {
+                ).fallbackToDestructiveMigration().build().also {
                     INSTANCE = it
                 }
             }
