@@ -65,6 +65,7 @@ fun MedicationRefillScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
