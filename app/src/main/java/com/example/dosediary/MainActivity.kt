@@ -115,10 +115,10 @@ class MainActivity : ComponentActivity() {
                 password = "1234"
             )
 
-//            val userDao = DoseDiaryDatabase.getInstance(application).userDao
+            val userDao = DoseDiaryDatabase.getInstance(application).userDao
 //            userDao.upsertUser(user)
-//            val user1 = userDao.getUserById(1)
-//            userRepository.setUsers(user1.firstOrNull() ?: User())
+            val user1 = userDao.getUserById(1).firstOrNull() ?: User()
+            userRepository.setUser(user1)
 //
 //
 //            val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
