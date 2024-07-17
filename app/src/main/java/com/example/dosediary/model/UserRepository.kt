@@ -9,10 +9,10 @@ class UserRepository {
     private val _user = MutableStateFlow<User?>(null)
 //    private val _mangedUsers = MutableStateFlow<List<User>>(emptyList())
 
-    val users: StateFlow<User?> get() = _user
+    val users: MutableStateFlow<User?> get() = _user
 //    val managedUsers: StateFlow<List<User>> get() = _mangedUsers
 
-    fun setUsers(user: User) {
+    fun setUser(user: User) {
         _user.value = user
     }
 

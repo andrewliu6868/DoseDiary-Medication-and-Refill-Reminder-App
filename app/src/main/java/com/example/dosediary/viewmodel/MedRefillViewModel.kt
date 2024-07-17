@@ -9,6 +9,7 @@ import com.example.dosediary.model.DoseDiaryDatabase
 import com.example.dosediary.model.User
 import com.example.dosediary.model.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -22,36 +23,38 @@ class MedRefillViewModel  @Inject constructor(
 ): ViewModel() {
 
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
+    private val _currentUser: MutableStateFlow<User?> = userRepository.users
 
-    private val _currentUser: StateFlow<User?> = userRepository.users
-    private val _medications = medicationDao.getMedicationsByOwner(1)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val state: StateFlow<MedRefillState> = _currentUser.flatMapLatest { currentUser ->
+        val medicationsFlow = if (currentUser != null) {
+            medicationDao.getMedicationsByOwner(currentUser.id)
+        } else {
+            flowOf(emptyList())
+        }
 
-    private val _state = MutableStateFlow(MedRefillState())
-
-    val state = combine(_state, _medications) { state, medications ->
-        state.copy(
-            medRefillsToday = medications.filter { medication ->
-
-                calculateRefillDates(medication.startDate, medication.endDate, medication.refillDays).any { refillDate ->
-                    needsRefillToday(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(refillDate))
-                }
-            },
-//            medRefillsToday = _medications.value,
-            medRefillsUpcoming = medications.filter { medication ->
-                calculateRefillDates(
-                    medication.startDate,
-                    medication.endDate,
-                    medication.refillDays
-                ).any { refillDate ->
-                    needsRefillNextWeek(
-                        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-                            refillDate
+        combine(medicationsFlow, _currentUser) { medications, user ->
+            MedRefillState(
+                medRefillsToday = medications.filter { medication ->
+                    calculateRefillDates(medication.startDate, medication.endDate, medication.refillDays).any { refillDate ->
+                        needsRefillToday(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(refillDate))
+                    }
+                },
+                medRefillsUpcoming = medications.filter { medication ->
+                    calculateRefillDates(
+                        medication.startDate,
+                        medication.endDate,
+                        medication.refillDays
+                    ).any { refillDate ->
+                        needsRefillNextWeek(
+                            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+                                refillDate
+                            )
                         )
-                    )
+                    }
                 }
-            }
-        )
+            )
+        }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MedRefillState())
 
     fun onEvent(event: MedRefillEvent) {
