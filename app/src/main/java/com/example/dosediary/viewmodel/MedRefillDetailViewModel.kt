@@ -10,17 +10,24 @@ import kotlinx.coroutines.launch
 import java.util.*
 import androidx.lifecycle.ViewModel
 import com.example.dosediary.model.entity.Medication
+import com.example.dosediary.state.MedRefillDetailState
+import com.example.dosediary.state.MedRefillState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class MedRefillDetailViewModel(application: Application) : ViewModel(){
-    private val _medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
+    private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
 
-    private val _state = mutableStateOf<Medication?>(null)
+//    private val _state = mutableStateOf<Medication?>(null)
+    private val _state = MutableStateFlow(MedRefillDetailState())
 
-    val state: State<Medication?> = _state
+//    val state: State<Medication?> = _state
+    val state = _state.asStateFlow()
+
     fun fetchMedById(id: Int) {
         viewModelScope.launch {
-            _medicationDao.getMedicationByID(id).collect { medication ->
-                _state.value = medication
+            medicationDao.getMedicationByID(id).collect { medication ->
+                _state.value = MedRefillDetailState(medRefillsMedication = medication)
             }
         }
     }

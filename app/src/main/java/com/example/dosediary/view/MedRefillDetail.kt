@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Directions
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,12 +38,11 @@ import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 
 @Composable
-fun MedicationRefillDetailScreen(navController: NavController, medRefillDetailViewModel: MedRefillDetailViewModel,
-                                 medicationId: Int){
+fun MedicationRefillDetailScreen(navController: NavController, medRefillDetailViewModel: MedRefillDetailViewModel, medicationId: Int){
     LaunchedEffect(medicationId) {
         medRefillDetailViewModel.fetchMedById(medicationId)
     }
-    val medication by medRefillDetailViewModel.state
+    val state by medRefillDetailViewModel.state.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -64,7 +64,9 @@ fun MedicationRefillDetailScreen(navController: NavController, medRefillDetailVi
                 .padding(horizontal = 16.dp)
 
         ) {
-            MedicationRefillDetail(medication?: Medication())
+            state.medRefillsMedication.let { medication ->
+                MedicationRefillDetail(medication)
+            }
         }
     }
 
@@ -183,16 +185,16 @@ fun MedicationRefillDetail(medication: Medication) {
                     )
                 )
 
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Dosage: ")
-                        }
-                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append(medication.dosage.toString())
-                        }
-                    }
-                )
+//                Text(
+//                    buildAnnotatedString {
+//                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+//                            append("Dosage: ")
+//                        }
+//                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+//                            append(medication.dosage.toString())
+//                        }
+//                    }
+//                )
 
                 Text(
                     buildAnnotatedString {

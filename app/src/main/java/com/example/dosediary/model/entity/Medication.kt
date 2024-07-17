@@ -16,13 +16,20 @@ import java.util.Date
     ]
 )
 data class Medication(
+    // From Input
+    val medicationName: String,
+    val startDate: Date,
+    val endDate: Date,
+    val frequency: String,
+    val times: List<Date>,
+    val refillDays: Int,
+    val note: String,
+    val address: String,
+    val postalCode: String,
+    val postalCodeError: String?,
+    //
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    var medicationName: String = "",
-    var startDate: Date = Date(),
-    var endDate: Date = Date(),
-    var refillDays: Int = 0,
-    var dosage: Int = 0,
-    var frequency: String = "",
-    var owner: Int = 0
+    val lastRefilledDate: Date,
+    var owner: Int
 )

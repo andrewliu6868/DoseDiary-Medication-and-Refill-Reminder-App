@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 object AppModule {
 
     @Provides
-    fun provideUserRepository(): UserState {
+    fun provideUserState(): UserState {
         return UserState()
     }
 }
