@@ -17,4 +17,10 @@ interface UserDao {
 
     @Query("SELECT * FROM User WHERE id = :id")
     fun getUserById(id: Int): Flow<User>
+
+    @Query("SELECT * FROM User WHERE firstName = :firstName AND lastname = :lastName")
+    fun getUserByFullName(firstName: String, lastName: String): Flow<User>
+
+    @Query("UPDATE User SET firstName = :firstName, lastname = :lastName, email = :email, password = :password WHERE id = :id")
+    suspend fun updateUser(id: Int, firstName: String, lastName: String, email: String, password: String)
 }

@@ -24,7 +24,7 @@ class MedRefillViewModel  @Inject constructor(
 ): ViewModel() {
 
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
-    private val _currentUser: MutableStateFlow<User?> = userState.users
+    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val state: StateFlow<MedRefillState> = _currentUser.flatMapLatest { currentUser ->

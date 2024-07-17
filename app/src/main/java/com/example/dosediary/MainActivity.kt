@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocal
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -39,7 +41,10 @@ import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModelFactory
+import com.example.dosediary.viewmodel.ProfileViewModel
+import com.example.dosediary.viewmodel.ProfileViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -58,6 +63,10 @@ class MainActivity : ComponentActivity() {
 
     private val medRefillViewModel by viewModels<MedRefillViewModel> {
         MedRefillViewModelFactory(application, userState)
+    }
+
+    private val profileViewModel by viewModels<ProfileViewModel> {
+        ProfileViewModelFactory(application, userState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,10 +119,57 @@ class MainActivity : ComponentActivity() {
                 password = "1234"
             )
 
+            // create sub users for user daniel
+            val subUserList = listOf(
+                User(
+                    firstName = "sub1",
+                    lastname = "an",
+                    email = "sub1@gmail.com",
+                    password = "password"
+                ),
+                User(
+                    firstName = "sub1",
+                    lastname = "an",
+                    email = "sub1@gmail.com",
+                    password = "password"
+                )
+            )
+
+            // insert user daniel into the database
             val userDao = DoseDiaryDatabase.getInstance(application).userDao
 //            userDao.upsertUser(user)
+
+            // set user daniel as the current user
             val user1 = userDao.getUserById(1).firstOrNull() ?: User()
-            userState.setUser(user1)
+            userState.setMainUser(user1)
+            userState.setcurrentUser(user1)
+
+            val userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
+            val user1Relationships = userRelationshipDao.getUserRelationshipsByMainUserId(1).firstOrNull() ?: emptyList()
+            userState.setMangedUsers(listOf(user1) + user1Relationships.map { userRelationship ->
+                userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
+            })
+
+            //insert sub users into the database
+//            subUserList.forEach() {
+//                userDao.upsertUser(it)
+//            }
+//            // establish relationship between user daniel and sub users
+//            val userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
+//            userRelationshipDao.upsertUserRelationship(
+//                UserRelationship(
+//                    mainUserId = 1,
+//                    subUserId = 8
+//                )
+//            )
+//            userRelationshipDao.upsertUserRelationship(
+//                UserRelationship(
+//                    mainUserId = 1,
+//                    subUserId = 9
+//                )
+//            )
+
+
 //
 //
 //            val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
@@ -126,7 +182,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DoseDiaryTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
-                    HomeScreen(medRefillViewModel, medRefillDetailViewModel)
+                    HomeScreen(medRefillViewModel, medRefillDetailViewModel, profileViewModel)
                 }
             }
         }
@@ -140,6 +196,7 @@ class MainActivity : ComponentActivity() {
 fun HomeScreen(
     medRefillViewModel: MedRefillViewModel,
     medRefillDetailViewModel: MedRefillDetailViewModel,
+    profileViewModel: ProfileViewModel
 ) {
     val navController = rememberNavController()
     Scaffold(
@@ -152,7 +209,12 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            Navigation(navController, medRefillViewModel, medRefillDetailViewModel)
+            Navigation(
+                navController,
+                medRefillViewModel,
+                medRefillDetailViewModel,
+                profileViewModel
+            )
         }
     }
 }
@@ -162,12 +224,14 @@ fun Navigation (
     navController: NavHostController,
     medRefillViewModel: MedRefillViewModel,
     medRefillDetailViewModel: MedRefillDetailViewModel,
+    profileViewModel: ProfileViewModel
 ){
+
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { MedicationListScreen(navController, medRefillViewModel)}
         composable("refill") { MedicationRefillScreen(navController, medRefillViewModel) }
         composable("history") { MedicationHistory(navController) }
-        composable("profile") { Profile(navController) }
+        composable("profile") { Profile(navController, profileViewModel) }
         composable("Add Medication") { AddMedicationPage(navController) }
         composable(
             "refillDetails/{medicationId}",
@@ -177,6 +241,9 @@ fun Navigation (
             MedicationRefillDetailScreen(navController, medRefillDetailViewModel, medicationId)
         }
         composable("editMedication") { EditMedication(navController) }
+
     }
+
+
 }
 
