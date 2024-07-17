@@ -1,13 +1,14 @@
 package com.example.dosediary.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.dosediary.model.DoseDiaryDatabase
-import com.example.dosediary.model.User
-import com.example.dosediary.model.UserRepository
+import com.example.dosediary.event.MedRefillEvent
+import com.example.dosediary.utils.DoseDiaryDatabase
+import com.example.dosediary.model.entity.User
+import com.example.dosediary.model.UserState
+import com.example.dosediary.state.MedRefillState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -18,12 +19,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MedRefillViewModel  @Inject constructor(
-    private val userRepository: UserRepository,
+    private val userState: UserState,
     application: Application
 ): ViewModel() {
 
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
-    private val _currentUser: MutableStateFlow<User?> = userRepository.users
+    private val _currentUser: MutableStateFlow<User?> = userState.users
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val state: StateFlow<MedRefillState> = _currentUser.flatMapLatest { currentUser ->
@@ -102,12 +103,12 @@ fun needsRefillNextWeek(refillDate: String): Boolean {
     return refill.after(today) && refill.before(nextWeek)
 }
 
-class MedRefillViewModelFactory(private val application: Application, private val userRepository: UserRepository) : ViewModelProvider.Factory {
+class MedRefillViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         if (modelClass.isAssignableFrom(MedRefillViewModel::class.java)) {
-            return MedRefillViewModel(userRepository, application) as T
+            return MedRefillViewModel(userState, application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

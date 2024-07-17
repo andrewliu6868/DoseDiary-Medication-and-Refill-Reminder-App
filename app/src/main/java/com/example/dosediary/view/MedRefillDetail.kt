@@ -1,7 +1,6 @@
 package com.example.dosediary.view
 
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,9 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -26,9 +23,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dosediary.R
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
@@ -38,8 +33,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.dosediary.model.Medication
+import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 
 @Composable
@@ -70,7 +64,7 @@ fun MedicationRefillDetailScreen(navController: NavController, medRefillDetailVi
                 .padding(horizontal = 16.dp)
 
         ) {
-            MedicationRefillDetail(medication?:Medication())
+            MedicationRefillDetail(medication?: Medication())
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.dosediary.viewmodel
+package com.example.dosediary.event
 
 sealed interface MedRefillDetailEvent {
     object clickedMedication : MedRefillDetailEvent

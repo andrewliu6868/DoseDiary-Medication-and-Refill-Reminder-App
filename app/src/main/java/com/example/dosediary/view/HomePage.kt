@@ -1,7 +1,5 @@
 package com.example.dosediary.view
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,14 +18,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
-import com.example.dosediary.model.Medication
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
-import com.example.dosediary.viewmodel.MedRefillState
+import com.example.dosediary.state.MedRefillState
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 @Composable
 fun MedicationListScreen(navController: NavController, medRefillViewModel: MedRefillViewModel) {

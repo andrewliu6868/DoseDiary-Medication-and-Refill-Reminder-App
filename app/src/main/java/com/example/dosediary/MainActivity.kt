@@ -53,10 +53,7 @@ import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModelFactory
-import com.example.dosediary.viewmodel.ProfileViewModel
-import com.example.dosediary.viewmodel.ProfileViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -67,14 +64,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
-    lateinit var userRepository: UserRepository
+    lateinit var userState: UserState
 
     private val  medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
         MedRefillDetailViewModelFactory(application)
     }
 
     private val medRefillViewModel by viewModels<MedRefillViewModel> {
-        MedRefillViewModelFactory(application, userRepository)
+        MedRefillViewModelFactory(application, userState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,6 +117,19 @@ class MainActivity : ComponentActivity() {
                 ),
             )
 
+            val user = User(
+                firstName = "daniel",
+                lastname = "an",
+                email = "daniel@gmail.com",
+                password = "1234"
+            )
+
+            val userDao = DoseDiaryDatabase.getInstance(application).userDao
+//            userDao.upsertUser(user)
+            val user1 = userDao.getUserById(1).firstOrNull() ?: User()
+            userState.setUser(user1)
+//
+//
 //            val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
 //
 //            sampleMedications.forEach() {

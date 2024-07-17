@@ -1,25 +1,15 @@
 package com.example.dosediary.viewmodel
 
 import android.app.Application
-import androidx.compose.material3.TabPosition
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.dosediary.model.DoseDiaryDatabase
-import kotlinx.coroutines.flow.*
+import com.example.dosediary.utils.DoseDiaryDatabase
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 import androidx.lifecycle.ViewModel
-import com.example.dosediary.model.Medication
-import com.example.dosediary.model.MedicationDao
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.WhileSubscribed
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
+import com.example.dosediary.model.entity.Medication
 
 class MedRefillDetailViewModel(application: Application) : ViewModel(){
     private val _medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
@@ -34,7 +24,6 @@ class MedRefillDetailViewModel(application: Application) : ViewModel(){
             }
         }
     }
-
 }
 
 fun showMedName (medicationName: String): String{

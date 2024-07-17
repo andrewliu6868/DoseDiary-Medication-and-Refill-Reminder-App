@@ -1,4 +1,4 @@
-package com.example.dosediary.model
+package com.example.dosediary.utils
 
 import androidx.room.TypeConverter
 import java.util.Date
