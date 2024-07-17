@@ -82,35 +82,35 @@ class MainActivity : ComponentActivity() {
             end_calendar.add(Calendar.DAY_OF_YEAR, 30)
 
 
-            val sampleMedications = listOf(
-                Medication(
-                    medicationName = "Medication 1",
-                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
-                    endDate = dateFormat.parse(dateFormat.format(end_calendar.time)) ?: Date(),
-                    refillDays = 10,
-                    dosage = 1,
-                    frequency = "Daily",
-                    owner = 1
-                ),
-                Medication(
-                    medicationName = "Medication 2",
-                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
-                    endDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
-                    refillDays = 10,
-                    dosage = 1,
-                    frequency = "Daily",
-                    owner = 1
-                ),
-                Medication(
-                    medicationName = "Medication 3",
-                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
-                    endDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
-                    refillDays = 10,
-                    dosage = 1,
-                    frequency = "Daily",
-                    owner = 1
-                ),
-            )
+//            val sampleMedications = listOf(
+//                Medication(
+//                    medicationName = "Medication 1",
+//                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+//                    endDate = dateFormat.parse(dateFormat.format(end_calendar.time)) ?: Date(),
+//                    refillDays = 10,
+//                    dosage = 1,
+//                    frequency = "Daily",
+//                    owner = 1
+//                ),
+//                Medication(
+//                    medicationName = "Medication 2",
+//                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+//                    endDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+//                    refillDays = 10,
+//                    dosage = 1,
+//                    frequency = "Daily",
+//                    owner = 1
+//                ),
+//                Medication(
+//                    medicationName = "Medication 3",
+//                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+//                    endDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+//                    refillDays = 10,
+//                    dosage = 1,
+//                    frequency = "Daily",
+//                    owner = 1
+//                ),
+//            )
 
             val user = User(
                 firstName = "daniel",

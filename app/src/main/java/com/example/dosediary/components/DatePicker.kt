@@ -16,16 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.dosediary.events.AddMedicationEvent
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 @Composable
-fun DatePicker(date: MutableState<Date>, placeholder: String) {
+fun DatePicker(date: Date, placeholder: String, onDateSelected: (Date) -> Unit) {
     //Use remember: Ensures that these objects are only created once and survive recompositions
     val dateFormat = remember { SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()) }
-    val calendar = Calendar.getInstance()
+    val calendar = Calendar.getInstance().apply { time = date }
 
     val context = LocalContext.current
 
@@ -35,7 +36,7 @@ fun DatePicker(date: MutableState<Date>, placeholder: String) {
             context,
             { _, year, month, dayOfMonth ->
                 calendar.set(year, month, dayOfMonth)
-                date.value = calendar.time
+                onDateSelected(calendar.time)
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -45,7 +46,7 @@ fun DatePicker(date: MutableState<Date>, placeholder: String) {
 
 
     OutlinedTextField(
-        value = dateFormat.format(date.value),
+        value = dateFormat.format(date),
         onValueChange = { },
         label = { Text(placeholder) },
         readOnly = true,
@@ -66,6 +67,6 @@ fun DatePicker(date: MutableState<Date>, placeholder: String) {
 @Preview(showBackground = true)
 @Composable
 fun DatePickerPreview() {
-    val currentDate = remember { mutableStateOf(Date()) }
-    DatePicker(date = currentDate, "Select Date")
+    val currentDate = Date()
+    DatePicker(date = currentDate, "Select Date") { }
 }
