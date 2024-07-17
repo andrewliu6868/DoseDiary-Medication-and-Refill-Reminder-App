@@ -12,7 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -22,17 +27,24 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.dosediary.model.DoseDiaryDatabase
 import com.example.dosediary.model.Medication
+import com.example.dosediary.model.User
 
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.view.AddMedicationPage
 import com.example.dosediary.view.EditMedication
+import com.example.dosediary.view.HomeScreen
+import com.example.dosediary.view.LoginAttempt
+import com.example.dosediary.view.LoginScreen
 import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
 import com.example.dosediary.view.MedicationRefillScreen
 import com.example.dosediary.view.MedicationRefillDetailScreen
+import com.example.dosediary.viewmodel.LoginState
+import com.example.dosediary.viewmodel.LoginViewModel
+import com.example.dosediary.viewmodel.LoginViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillViewModel
@@ -43,16 +55,19 @@ import java.util.Calendar
 import java.util.Date
 
 class MainActivity : ComponentActivity() {
-    private val  medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
+    private val _medRefillViewModel by viewModels<MedRefillViewModel>{
+        MedRefillViewModelFactory(application)
+    }
+    private val _loginViewModel by viewModels<LoginViewModel>{
+        LoginViewModelFactory(application)
+    }
+    private val  _medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
         MedRefillDetailViewModelFactory(application)
     }
 
-    private val medRefillViewModel by viewModels<MedRefillViewModel> {
-        MedRefillViewModelFactory(application)
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         lifecycleScope.launch {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -61,7 +76,21 @@ class MainActivity : ComponentActivity() {
             val end_calendar = Calendar.getInstance()
             start_calendar.add(Calendar.DAY_OF_YEAR, 2)
             end_calendar.add(Calendar.DAY_OF_YEAR, 30)
+            val sampleUsers = listOf(
+                User(
+                    email = "andrewliu6867@gmail.com",
+                    password = "password",
+                    firstName = "Andrew",
+                    lastname =  "Liu",
+                ),
 
+                User(
+                    email = "randomguy@gmail.com",
+                    password = "password1",
+                    firstName = "Random",
+                    lastname = "Guy",
+                )
+            )
 
             val sampleMedications = listOf(
                 Medication(
@@ -98,12 +127,23 @@ class MainActivity : ComponentActivity() {
 //            sampleMedications.forEach() {
 //                medicationDao.upsertMedication(it)
 //            }
+
+
+            /*val userDao = DoseDiaryDatabase.getInstance(application).userDao
+            sampleUsers.forEach(){
+                userDao.upsertUser(it)
+            }*/
+
         }
 
         setContent {
             DoseDiaryTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
-                    HomeScreen(medRefillViewModel, medRefillDetailViewModel)
+                    // HomeScreen(_medRefillViewModel, _medRefillDetailViewModel)
+                    val navController = rememberNavController()
+                    AppNavigation(navController, _loginViewModel, _medRefillViewModel, _medRefillDetailViewModel)
+
+
                 }
             }
         }
@@ -111,44 +151,62 @@ class MainActivity : ComponentActivity() {
 
     }
 }
-
+@Composable
+fun AppNavigation(
+    navController: NavHostController,
+    loginViewModel: LoginViewModel,
+    medRefillViewModel: MedRefillViewModel,
+    medRefillDetailViewModel: MedRefillDetailViewModel
+) {
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") {
+            LoginScreen(navController, loginViewModel)
+        }
+        composable("home") {
+            HomeScreen(medRefillViewModel, medRefillDetailViewModel)
+        }
+    }
+}
+@Composable
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HomeScreen(medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: MedRefillDetailViewModel) {
-    val navController = rememberNavController()
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(navController)
+fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel){
+    val loginState by viewModel.loginState.collectAsState()
+
+    when(loginState){
+        is LoginState.Idle ->{
+            LoginAttempt {email, password ->
+                viewModel.login(email, password)
+            }
         }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            Navigation(navController, medRefillViewModel, medRefillDetailViewModel)
+
+        is LoginState.Loading -> {
+
+        }
+
+        is LoginState.Success -> {
+            //Navigate to Home Screen
+            navController.navigate("home"){
+                popUpTo("login"){inclusive = true}
+            }
+            /*Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                fontWeight = FontWeight.Bold,
+                text="Success")*/
+        }
+
+        is LoginState.Error -> {
+            LoginAttempt {email, password ->
+                viewModel.login(email, password)
+            }
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                fontWeight = FontWeight.Bold,
+                text="Error: ${loginState.error}")
         }
     }
 }
 
-@Composable
-fun Navigation (navController: NavHostController, medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: MedRefillDetailViewModel){
 
-    NavHost(navController = navController, startDestination = "home") {
-        composable("home") { MedicationListScreen(navController, medRefillViewModel)}
-        composable("refill") { MedicationRefillScreen(navController, medRefillViewModel) }
-        composable("history") { MedicationHistory(navController) }
-        composable("profile") { Profile(navController) }
-        composable("Add Medication") { AddMedicationPage(navController) }
-        composable(
-            "refillDetails/{medicationId}",
-            arguments = listOf(navArgument("medicationId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val medicationId = backStackEntry.arguments?.getInt("medicationId")?:0
-            MedicationRefillDetailScreen(navController, medRefillDetailViewModel, medicationId)
-        }
-        composable("editMedication") { EditMedication(navController) }
-
-    }
-}
 

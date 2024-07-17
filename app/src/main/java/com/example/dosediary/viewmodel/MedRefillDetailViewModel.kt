@@ -22,14 +22,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class MedRefillDetailViewModel(application: Application) : ViewModel(){
-    private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
+    private val _medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
 
     private val _state = mutableStateOf<Medication?>(null)
 
     val state: State<Medication?> = _state
     fun fetchMedById(id: Int) {
         viewModelScope.launch {
-            medicationDao.getMedicationByID(id).collect { medication ->
+            _medicationDao.getMedicationByID(id).collect { medication ->
                 _state.value = medication
             }
         }

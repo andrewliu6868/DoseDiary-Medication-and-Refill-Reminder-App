@@ -21,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +33,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -39,27 +41,125 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.pm.ShortcutInfoCompat.Surface
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.dosediary.viewmodel.LoginState
+import com.example.dosediary.viewmodel.LoginViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun LoginScreen(){
+fun LoginScreen(viewModel: LoginViewModel){
+    val loginState by viewModel.loginState.collectAsState()
+    val navController = rememberNavController()
+
+    when(loginState){
+        is LoginState.Idle ->{
+            LoginAttempt {email, password ->
+                viewModel.login(email, password)
+            }
+        }
+
+        is LoginState.Loading -> {
+
+        }
+
+        is LoginState.Success -> {
+            //Navigate to Home Screen
+            navController.navigate("home")
+            /*Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                fontWeight = FontWeight.Bold,
+                text="Success")*/
+            }
+
+        is LoginState.Error -> {
+                LoginAttempt {email, password ->
+                    viewModel.login(email, password)
+                }
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    fontWeight = FontWeight.Bold,
+                    text="Error: ${loginState.error}")
+                }
+    }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginAttempt(onLogin: (String, String) -> Unit){
+    val email = remember { mutableStateOf("") }
+    val password = remember{ mutableStateOf("") }
+
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(50.dp),
         color = Color.White
     ) {
         Column {
             LoginTitle(value = "Login Page")
-            Spacer(modifier = Modifier.height(8.dp))
-            InputTextFields(labelValue = "Email")
-            Spacer(modifier = Modifier.height(8.dp))
-            InputPasswordFields(labelValue = "Password")
-            Spacer(modifier = Modifier.height(8.dp))
-            SubmitButton(value = "Login")
+            Spacer(modifier = Modifier.height(20.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(4.dp)),
+                label = {Text(text = "Email")},
+                value = email.value,
+                onValueChange = {newText->
+                    email.value = newText
+                },
+                keyboardOptions = KeyboardOptions.Default,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Blue,
+                    cursorColor = Color.Blue
+                )
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(4.dp)),
+                label = {Text(text = "Password")},
+                value = password.value,
+                onValueChange = {newText->
+                    password.value = newText
+                },
+                keyboardOptions = KeyboardOptions.Default,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Blue,
+                    cursorColor = Color.Blue
+                )
+            )
+            Spacer(modifier = Modifier.height(80.dp))
+            Button(
+                onClick = {onLogin(email.value,password.value)},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(48.dp),
+                contentPadding = PaddingValues(),
+                colors = ButtonDefaults.buttonColors(Color.Transparent)){
+                Box (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(48.dp)
+                        .background(
+                            brush = Brush.horizontalGradient(listOf(Color.Blue, Color.Cyan)),
+                            shape = RoundedCornerShape(50.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(text="Login",
+                        fontSize=18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
 
     }
-}
 
+}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,83 +178,5 @@ fun LoginTitle(value: String){
     )
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun InputTextFields(labelValue: String){
-    var textValue by remember{
-        mutableStateOf("")
-    }
 
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp)),
-        label = {Text(text = labelValue)},
-        value = textValue,
-        onValueChange = {textValue = it},
-        keyboardOptions = KeyboardOptions.Default,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color.Blue,
-            cursorColor = Color.Blue
-        )
-    )
-}
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun InputPasswordFields(labelValue: String){
-    var textValue by remember{
-        mutableStateOf("")
-    }
-
-    var passwordVisible by remember{
-        mutableStateOf(false)
-    }
-
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp)),
-        label = {Text(text = labelValue)},
-        value = textValue,
-        onValueChange = {textValue = it},
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color.Blue,
-            cursorColor = Color.Blue
-        )
-    )
-}
-
-@Composable
-fun SubmitButton(value: String){
-   Button(
-       onClick = { /*TODO*/ },
-       modifier = Modifier
-           .fillMaxWidth()
-           .heightIn(48.dp),
-       contentPadding = PaddingValues(),
-       colors = ButtonDefaults.buttonColors(Color.Transparent)
-   ) {
-        Box (
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(48.dp)
-                .background(
-                    brush = Brush.horizontalGradient(listOf(Color.Blue, Color.Cyan)),
-                    shape = RoundedCornerShape(50.dp)
-                ),
-                contentAlignment = Alignment.Center
-        ){
-            Text(text=value,
-                fontSize=18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-    }
-}
-@Preview
-@Composable
-fun LoginPreview(){
-    LoginScreen()
-}

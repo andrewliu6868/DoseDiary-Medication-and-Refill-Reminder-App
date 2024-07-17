@@ -48,7 +48,7 @@ fun SignUpScreen(){
             .padding(28.dp),
     ){
         Column {
-            LoginTitle(value = "Sign Page")
+            /*LoginTitle(value = "Sign Page")
             Spacer(modifier = Modifier.height(12.dp))
             InputTextFields(labelValue = "First Name")
             Spacer(modifier = Modifier.height(12.dp))
@@ -57,15 +57,117 @@ fun SignUpScreen(){
             InputTextFields(labelValue = "Email")
             Spacer(modifier = Modifier.height(12.dp))
             InputTextFields(labelValue = "Password")
-            Spacer(modifier = Modifier.height(50.dp))
-            SubmitButton(value = "Register")
+            Spacer(modifier = Modifier.height(50.dp))*/
         }
     }
 }
 
-
-@Preview
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpPreview(){
-    SignUpScreen()
+fun SignUpAttempt(onLogin: (String, String) -> Unit){
+    val email = remember { mutableStateOf("") }
+    val password = remember{ mutableStateOf("") }
+    val firstName = remember{mutableStateOf("")}
+    val lastName = remember { mutableStateOf("") }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(50.dp),
+        color = Color.White
+    ) {
+        Column {
+            LoginTitle(value = "Sign Up Page")
+            Spacer(modifier = Modifier.height(20.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(4.dp)),
+                label = {Text(text = "First Name")},
+                value = firstName.value,
+                onValueChange = {newText->
+                    firstName.value = newText
+                },
+                keyboardOptions = KeyboardOptions.Default,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Blue,
+                    cursorColor = Color.Blue
+                )
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(4.dp)),
+                label = {Text(text = "Last Name")},
+                value = lastName.value,
+                onValueChange = {newText->
+                    lastName.value = newText
+                },
+                keyboardOptions = KeyboardOptions.Default,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Blue,
+                    cursorColor = Color.Blue
+                )
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(4.dp)),
+                label = {Text(text = "Email")},
+                value = email.value,
+                onValueChange = {newText->
+                    email.value = newText
+                },
+                keyboardOptions = KeyboardOptions.Default,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Blue,
+                    cursorColor = Color.Blue
+                )
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(4.dp)),
+                label = {Text(text = "Password")},
+                value = password.value,
+                onValueChange = {newText->
+                    password.value = newText
+                },
+                keyboardOptions = KeyboardOptions.Default,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color.Blue,
+                    cursorColor = Color.Blue
+                )
+            )
+            Spacer(modifier = Modifier.height(80.dp))
+            Button(
+                onClick = {onLogin(email.value,password.value)},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(48.dp),
+                contentPadding = PaddingValues(),
+                colors = ButtonDefaults.buttonColors(Color.Transparent)){
+                Box (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(48.dp)
+                        .background(
+                            brush = Brush.horizontalGradient(listOf(Color.Blue, Color.Cyan)),
+                            shape = RoundedCornerShape(50.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(text="Register",
+                        fontSize=18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+
+    }
+
 }
