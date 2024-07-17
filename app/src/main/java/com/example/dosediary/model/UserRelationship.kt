@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 
 @Entity(
-    tableName = "user_relationship",
     primaryKeys = ["mainUserId", "subUserId"],
     foreignKeys = [
         ForeignKey(
@@ -22,6 +21,6 @@ import androidx.room.ForeignKey
     ]
 )
 data class UserRelationship(
-    val mainUserId: Long,
-    val subUserId: Long
+    val mainUserId: Int,
+    val subUserId: Int
 )

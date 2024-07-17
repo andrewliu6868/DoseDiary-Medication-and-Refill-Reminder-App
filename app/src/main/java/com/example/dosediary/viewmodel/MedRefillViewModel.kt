@@ -1,21 +1,30 @@
 package com.example.dosediary.viewmodel
 
 import android.app.Application
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.model.DoseDiaryDatabase
+import com.example.dosediary.model.User
+import com.example.dosediary.model.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class MedRefillViewModel(application: Application): ViewModel() {
+@HiltViewModel
+class MedRefillViewModel  @Inject constructor(
+    private val userRepository: UserRepository,
+    application: Application
+): ViewModel() {
 
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
 
-    private val _user = "User 1"
-    private val _medications = medicationDao.getMedicationsByOwner(_user)
+    private val _currentUser: StateFlow<User?> = userRepository.users
+    private val _medications = medicationDao.getMedicationsByOwner(1)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val _state = MutableStateFlow(MedRefillState())
@@ -28,6 +37,7 @@ class MedRefillViewModel(application: Application): ViewModel() {
                     needsRefillToday(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(refillDate))
                 }
             },
+//            medRefillsToday = _medications.value,
             medRefillsUpcoming = medications.filter { medication ->
                 calculateRefillDates(
                     medication.startDate,
@@ -89,12 +99,12 @@ fun needsRefillNextWeek(refillDate: String): Boolean {
     return refill.after(today) && refill.before(nextWeek)
 }
 
-class MedRefillViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+class MedRefillViewModelFactory(private val application: Application, private val userRepository: UserRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         if (modelClass.isAssignableFrom(MedRefillViewModel::class.java)) {
-            return MedRefillViewModel(application) as T
+            return MedRefillViewModel(userRepository, application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -7,8 +7,9 @@ import androidx.room.Room
 import androidx.room.TypeConverters
 
 @Database(
+//    entities = [User::class, Medication::class, MedicationHistory::class, UserRelationship::class],
     entities = [User::class, Medication::class, MedicationHistory::class, UserRelationship::class],
-    version = 2
+    version = 4
 )
 @TypeConverters(TypeConverter::class)
 abstract class DoseDiaryDatabase: RoomDatabase() {
