@@ -1,6 +1,6 @@
-package com.example.dosediary.viewmodel
+package com.example.dosediary.state
 
-import com.example.dosediary.model.User
+import com.example.dosediary.model.entity.User
 
 data class ProfileState (
     val user: User = User(),

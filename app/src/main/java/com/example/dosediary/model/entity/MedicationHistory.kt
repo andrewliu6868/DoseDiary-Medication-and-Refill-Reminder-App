@@ -1,4 +1,4 @@
-package com.example.dosediary.model
+package com.example.dosediary.model.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

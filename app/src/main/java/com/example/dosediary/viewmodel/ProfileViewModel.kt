@@ -4,20 +4,21 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.dosediary.model.DoseDiaryDatabase
-import com.example.dosediary.model.User
-import com.example.dosediary.model.UserRepository
+import com.example.dosediary.event.ProfileEvent
+import com.example.dosediary.utils.DoseDiaryDatabase
+import com.example.dosediary.model.entity.User
+import com.example.dosediary.model.UserState
+import com.example.dosediary.state.MedRefillState
+import com.example.dosediary.state.ProfileState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+    private val userState: UserState,
     application: Application
 ): ViewModel() {
 
@@ -59,12 +60,12 @@ class ProfileViewModel @Inject constructor(
 
 }
 
-class ProfileViewModelFactory(private val application: Application, private val userRepository: UserRepository) : ViewModelProvider.Factory {
+class ProfileViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
-            return ProfileViewModel(userRepository, application) as T
+            return ProfileViewModel(userState, application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

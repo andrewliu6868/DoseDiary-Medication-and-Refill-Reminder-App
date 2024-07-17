@@ -1,11 +1,11 @@
-package com.example.dosediary.model
+package com.example.dosediary.model.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import com.example.dosediary.model.entity.Medication
 import kotlinx.coroutines.flow.Flow
-import java.util.Date
 
 @Dao
 interface MedicationDao {

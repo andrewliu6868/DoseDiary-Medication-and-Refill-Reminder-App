@@ -1,7 +1,8 @@
-package com.example.dosediary.model
+package com.example.dosediary.model.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import com.example.dosediary.model.entity.User
 
 @Entity(
     primaryKeys = ["mainUserId", "subUserId"],

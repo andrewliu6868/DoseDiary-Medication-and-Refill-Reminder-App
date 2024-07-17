@@ -1,4 +1,4 @@
-package com.example.dosediary.model
+package com.example.dosediary.model.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(
-    foreignKeys = [
+    foreignKeys = [                         //Mapping "owner" in Medication to "id" in User
         ForeignKey(
             entity = User::class,
             parentColumns = ["id"],

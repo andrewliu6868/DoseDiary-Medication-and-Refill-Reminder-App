@@ -35,11 +35,11 @@ import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.times
 import androidx.navigation.NavController
 import com.example.dosediary.components.CustomTopAppBar
-import com.example.dosediary.model.Medication
+import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.ui.theme.Background
-import com.example.dosediary.viewmodel.MedRefillState
+import com.example.dosediary.state.MedRefillState
 import com.example.dosediary.viewmodel.MedRefillViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

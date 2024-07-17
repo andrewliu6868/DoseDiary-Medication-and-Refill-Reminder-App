@@ -13,8 +13,6 @@ import androidx.compose.ui.Modifier
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.CompositionLocal
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -22,10 +20,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.dosediary.model.DoseDiaryDatabase
-import com.example.dosediary.model.Medication
-import com.example.dosediary.model.User
-import com.example.dosediary.model.UserRepository
+import com.example.dosediary.utils.DoseDiaryDatabase
+import com.example.dosediary.model.entity.Medication
+import com.example.dosediary.model.entity.User
+import com.example.dosediary.model.UserState
 
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
@@ -41,10 +39,7 @@ import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModelFactory
-import com.example.dosediary.viewmodel.ProfileViewModel
-import com.example.dosediary.viewmodel.ProfileViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -55,14 +50,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
-    lateinit var userRepository: UserRepository
+    lateinit var userState: UserState
 
     private val  medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
         MedRefillDetailViewModelFactory(application)
     }
 
     private val medRefillViewModel by viewModels<MedRefillViewModel> {
-        MedRefillViewModelFactory(application, userRepository)
+        MedRefillViewModelFactory(application, userState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,7 +113,7 @@ class MainActivity : ComponentActivity() {
             val userDao = DoseDiaryDatabase.getInstance(application).userDao
 //            userDao.upsertUser(user)
             val user1 = userDao.getUserById(1).firstOrNull() ?: User()
-            userRepository.setUser(user1)
+            userState.setUser(user1)
 //
 //
 //            val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
@@ -168,7 +163,6 @@ fun Navigation (
     medRefillViewModel: MedRefillViewModel,
     medRefillDetailViewModel: MedRefillDetailViewModel,
 ){
-
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { MedicationListScreen(navController, medRefillViewModel)}
         composable("refill") { MedicationRefillScreen(navController, medRefillViewModel) }
@@ -183,9 +177,6 @@ fun Navigation (
             MedicationRefillDetailScreen(navController, medRefillDetailViewModel, medicationId)
         }
         composable("editMedication") { EditMedication(navController) }
-
     }
-
-
 }
 

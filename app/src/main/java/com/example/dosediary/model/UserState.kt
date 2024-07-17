@@ -1,11 +1,9 @@
 package com.example.dosediary.model
 
-import androidx.lifecycle.viewModelScope
+import com.example.dosediary.model.entity.User
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
-class UserRepository {
+class UserState {
     private val _user = MutableStateFlow<User?>(null)
 //    private val _mangedUsers = MutableStateFlow<List<User>>(emptyList())
 
