@@ -42,6 +42,7 @@ import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
 import com.example.dosediary.view.MedicationRefillScreen
 import com.example.dosediary.view.MedicationRefillDetailScreen
+import com.example.dosediary.view.SignUpScreen
 import com.example.dosediary.viewmodel.LoginState
 import com.example.dosediary.viewmodel.LoginViewModel
 import com.example.dosediary.viewmodel.LoginViewModelFactory
@@ -49,6 +50,8 @@ import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModelFactory
+import com.example.dosediary.viewmodel.SignUpViewModel
+import com.example.dosediary.viewmodel.SignUpViewModelFactory
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -60,6 +63,9 @@ class MainActivity : ComponentActivity() {
     }
     private val _loginViewModel by viewModels<LoginViewModel>{
         LoginViewModelFactory(application)
+    }
+    private val _signUpViewModel by viewModels<SignUpViewModel>{
+        SignUpViewModelFactory(application)
     }
     private val  _medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
         MedRefillDetailViewModelFactory(application)
@@ -141,7 +147,7 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
                     // HomeScreen(_medRefillViewModel, _medRefillDetailViewModel)
                     val navController = rememberNavController()
-                    AppNavigation(navController, _loginViewModel, _medRefillViewModel, _medRefillDetailViewModel)
+                    AppNavigation(navController, _loginViewModel, _signUpViewModel, _medRefillViewModel, _medRefillDetailViewModel)
 
 
                 }
@@ -155,6 +161,7 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation(
     navController: NavHostController,
     loginViewModel: LoginViewModel,
+    signUpViewModel: SignUpViewModel,
     medRefillViewModel: MedRefillViewModel,
     medRefillDetailViewModel: MedRefillDetailViewModel
 ) {
@@ -165,48 +172,12 @@ fun AppNavigation(
         composable("home") {
             HomeScreen(medRefillViewModel, medRefillDetailViewModel)
         }
-    }
-}
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel){
-    val loginState by viewModel.loginState.collectAsState()
-
-    when(loginState){
-        is LoginState.Idle ->{
-            LoginAttempt {email, password ->
-                viewModel.login(email, password)
-            }
-        }
-
-        is LoginState.Loading -> {
-
-        }
-
-        is LoginState.Success -> {
-            //Navigate to Home Screen
-            navController.navigate("home"){
-                popUpTo("login"){inclusive = true}
-            }
-            /*Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                fontWeight = FontWeight.Bold,
-                text="Success")*/
-        }
-
-        is LoginState.Error -> {
-            LoginAttempt {email, password ->
-                viewModel.login(email, password)
-            }
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                fontWeight = FontWeight.Bold,
-                text="Error: ${loginState.error}")
+        composable("signup"){
+            SignUpScreen(navController, viewModel = signUpViewModel)
         }
     }
 }
+
 
 
 

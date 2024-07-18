@@ -14,9 +14,10 @@ interface UserDao {
     @Delete
     suspend fun deleteUser(user: User)
 
-    @Query("SELECT * FROM User WHERE email = :tryEmail AND password = :tryPassword")
+    @Query("SELECT * FROM User WHERE email = :tryEmail AND password = :tryPassword LIMIT 1")
     fun validateEmailPassword(tryEmail: String, tryPassword:String): Flow<User?>
 
-
+    @Query("SELECT * FROM User WHERE email = :tryEmail")
+    fun verifyUserExist(tryEmail:String): Flow<User?>
 
 }

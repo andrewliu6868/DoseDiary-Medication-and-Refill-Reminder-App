@@ -22,18 +22,21 @@ class LoginViewModel(application: Application): ViewModel(){
         viewModelScope.launch {
             try{
                 _loginState.value = LoginState.Loading
-                _userDao.validateEmailPassword(email, password).collect{ currUser ->
-                    if(currUser != null){
-                        _loginState.value= LoginState.Success(currUser)
-                    } else{
-                        _loginState.value = LoginState.Error("User does not exist")
-                    }
+                val currUser  = _userDao.validateEmailPassword(email, password).firstOrNull()
+                if(currUser != null){
+                    _loginState.value= LoginState.Success(currUser)
+                } else{
+                    _loginState.value = LoginState.Error("User does not exist")
                 }
             }catch (e: Exception){
                 _loginState.value = LoginState.Error(e.message ?: "Unknown Error" )
             }
 
         }
+    }
+
+    fun resetLoginState() {
+        _loginState.value = LoginState.Idle
     }
 
 }

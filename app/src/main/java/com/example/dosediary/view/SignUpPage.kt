@@ -20,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,35 +37,51 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.dosediary.viewmodel.SignUpState
+import com.example.dosediary.viewmodel.SignUpViewModel
+import kotlin.math.sign
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun SignUpScreen(){
-    Surface(
-        color = Color.White,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(28.dp),
-    ){
-        Column {
-            /*LoginTitle(value = "Sign Page")
-            Spacer(modifier = Modifier.height(12.dp))
-            InputTextFields(labelValue = "First Name")
-            Spacer(modifier = Modifier.height(12.dp))
-            InputTextFields(labelValue = "Last Name")
-            Spacer(modifier = Modifier.height(12.dp))
-            InputTextFields(labelValue = "Email")
-            Spacer(modifier = Modifier.height(12.dp))
-            InputTextFields(labelValue = "Password")
-            Spacer(modifier = Modifier.height(50.dp))*/
+fun SignUpScreen(navHostController: NavHostController, viewModel:SignUpViewModel){
+    val signUpState by viewModel.signUpState.collectAsState()
+    when(signUpState){
+        is SignUpState.Idle -> {
+            SignUpAttempt{firstName, lastName, email, password ->
+                viewModel.addUser(firstName, lastName, email,password)
+            }
+        }
+
+        is SignUpState.Loading -> {
+
+        }
+
+        is SignUpState.Success ->{
+            // go back to Login Screen
+            viewModel.resetSignUpState()
+            navHostController.navigate("login")
+        }
+
+        is SignUpState.Error ->{
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                fontWeight = FontWeight.Bold,
+                color = Color.Red,
+                text="Error: ${signUpState.error}")
+            SignUpAttempt{firstName, lastName, email, password ->
+                viewModel.addUser(firstName, lastName, email,password)
+            }
+
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpAttempt(onLogin: (String, String) -> Unit){
+fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
     val email = remember { mutableStateOf("") }
     val password = remember{ mutableStateOf("") }
     val firstName = remember{mutableStateOf("")}
@@ -144,7 +161,7 @@ fun SignUpAttempt(onLogin: (String, String) -> Unit){
             )
             Spacer(modifier = Modifier.height(80.dp))
             Button(
-                onClick = {onLogin(email.value,password.value)},
+                onClick = {onSignUp(firstName.value, lastName.value, email.value, password.value)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(48.dp),

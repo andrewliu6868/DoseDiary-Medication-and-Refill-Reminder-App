@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,7 +34,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role.Companion.Button
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,52 +46,51 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.pm.ShortcutInfoCompat.Surface
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.viewmodel.LoginState
 import com.example.dosediary.viewmodel.LoginViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun LoginScreen(viewModel: LoginViewModel){
+fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel){
     val loginState by viewModel.loginState.collectAsState()
-    val navController = rememberNavController()
 
     when(loginState){
         is LoginState.Idle ->{
-            LoginAttempt {email, password ->
-                viewModel.login(email, password)
-            }
+            LoginAttempt( {email, password ->
+                    viewModel.login(email, password) },
+                    navHostController)
         }
 
         is LoginState.Loading -> {
-
+            Text("wtf")
         }
 
         is LoginState.Success -> {
             //Navigate to Home Screen
-            navController.navigate("home")
-            /*Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                fontWeight = FontWeight.Bold,
-                text="Success")*/
-            }
+            // viewModel.resetLoginState()
+            navHostController.navigate("home")
+
+        }
 
         is LoginState.Error -> {
-                LoginAttempt {email, password ->
-                    viewModel.login(email, password)
-                }
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
                     fontWeight = FontWeight.Bold,
+                    color = Color.Red,
                     text="Error: ${loginState.error}")
-                }
+                LoginAttempt({email, password ->
+                    viewModel.login(email, password)},
+                    navHostController)
+
+        }
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginAttempt(onLogin: (String, String) -> Unit){
+fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostController){
     val email = remember { mutableStateOf("") }
     val password = remember{ mutableStateOf("") }
 
@@ -155,6 +158,8 @@ fun LoginAttempt(onLogin: (String, String) -> Unit){
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(80.dp))
+            ClickableText(text = AnnotatedString("Sign Up Here"), onClick = {navHostController.navigate("signup")} )
         }
 
     }
