@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -22,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -61,7 +63,7 @@ fun AddMedicationPage(navController: NavHostController, viewModel: AddMedication
         topBar = {
             CustomTopAppBar(
                 header = "Add Medication",
-                showNavigationIcon = false,
+                showNavigationIcon = true,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
                 imageDescription = "App Icon"
@@ -84,6 +86,14 @@ fun AddMedicationPage(navController: NavHostController, viewModel: AddMedication
             item { AddressSection(state.address, state.postalCode, state.postalCodeError) { viewModel.onEvent(it) } }
             item { NoteSection(state.note) { viewModel.onEvent(it) } }
             item { SaveDeleteRow(navController) { viewModel.onEvent(it) } }
+        }
+        if (state.showConfirmDialog) {
+            ConfirmationDialog(
+                onConfirm = {
+                    viewModel.onEvent(AddMedicationEvent.ConfirmSaveMedication)
+                    navController.navigate("home") },
+                onDismiss = { viewModel.onEvent(AddMedicationEvent.DismissDialog) }
+            )
         }
     }
 }
@@ -236,25 +246,33 @@ fun SaveDeleteRow(navController: NavHostController, onEvent: (AddMedicationEvent
     ) {
         //TODO: Add Validation For Save (All fields besides Notes should be filled)
         Button(
-            onClick = {
-                onEvent(AddMedicationEvent.SaveMedication)
-                navController.navigate("home") },
+            onClick = { onEvent(AddMedicationEvent.SaveMedication) },
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f),
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
         ) {
             Text("Save")
         }
-        Spacer(modifier = Modifier.width(16.dp))
-        Button(
-            onClick = { navController.navigate("home") },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
-            modifier = Modifier.weight(1f),
-            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
-        ) {
-            Text("Delete")
-        }
     }
+}
+
+@Composable
+fun ConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = "Confirm Save") },
+        text = { Text(text = "Are you sure the information is correct?") },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text("Yes")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("No")
+            }
+        }
+    )
 }
 
 @Preview(showBackground =true, name = "AddMedication Preview")

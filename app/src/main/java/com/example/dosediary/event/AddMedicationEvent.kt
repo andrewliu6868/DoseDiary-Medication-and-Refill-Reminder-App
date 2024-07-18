@@ -13,5 +13,6 @@ sealed interface AddMedicationEvent {
     data class OnAddressChanged(val address: String) : AddMedicationEvent
     data class OnPostalCodeChanged(val postalCode: String) : AddMedicationEvent
     object SaveMedication : AddMedicationEvent
-    object DeleteMedication : AddMedicationEvent
+    object ConfirmSaveMedication : AddMedicationEvent // New event
+    object DismissDialog : AddMedicationEvent // New event
 }

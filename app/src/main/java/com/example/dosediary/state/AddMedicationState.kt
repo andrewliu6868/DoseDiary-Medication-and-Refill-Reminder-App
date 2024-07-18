@@ -1,5 +1,6 @@
 package com.example.dosediary.state
 
+import android.app.TimePickerDialog
 import java.util.Date
 
 data class AddMedicationState(
@@ -12,5 +13,6 @@ data class AddMedicationState(
     val note: String = "",
     val address: String = "",
     val postalCode: String = "",
-    val postalCodeError: String? = null
+    val postalCodeError: String? = null,
+    val showConfirmDialog: Boolean = false
 )

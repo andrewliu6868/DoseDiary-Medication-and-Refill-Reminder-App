@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -99,10 +100,15 @@ fun CustomTopAppBar(
             if (showNavigationIcon) {
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Navigate Up"
                     )
                 }
+            }
+        },
+        actions = {
+            if (showNavigationIcon) {
+                Spacer(modifier = Modifier.width(50.dp)) // Adjust width to balance space
             }
         }
     )
@@ -115,7 +121,7 @@ fun CustomTopAppBarPreview() {
 
     CustomTopAppBar(
         header = "My App",
-        showNavigationIcon = false,
+        showNavigationIcon = true,
         navController = navController,
         imageResId = R.drawable.icon,
         imageDescription = "Image"

@@ -12,6 +12,7 @@ import com.example.dosediary.utils.DoseDiaryDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
@@ -72,6 +73,9 @@ class AddMedicationViewModel @Inject constructor(
                 _state.value = _state.value.copy(postalCode = event.postalCode, postalCodeError = postalCodeError)
             }
             AddMedicationEvent.SaveMedication -> {
+                _state.value = _state.value.copy(showConfirmDialog = true)
+            }
+            AddMedicationEvent.ConfirmSaveMedication -> {
                 val medication = Medication(
                     medicationName = _state.value.medicationName,
                     startDate = _state.value.startDate,
@@ -83,15 +87,16 @@ class AddMedicationViewModel @Inject constructor(
                     address = _state.value.address,
                     postalCode = _state.value.postalCode,
                     postalCodeError = _state.value.postalCodeError,
-                    lastRefilledDate = state.value.startDate,
+                    lastRefilledDate = _state.value.startDate,
                     owner = 1           //TODO: Change this after User Profile is Ready
                 )
                 viewModelScope.launch {
                     medicationDao.upsertMedication(medication)
+                    _state.value = AddMedicationState()
                 }
             }
-            AddMedicationEvent.DeleteMedication -> {
-                // Handle delete medication logic
+            AddMedicationEvent.DismissDialog -> {
+                _state.value = _state.value.copy(showConfirmDialog = false)
             }
         }
     }
