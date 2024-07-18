@@ -15,19 +15,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.state.MedRefillState
+import com.example.dosediary.viewmodel.AddMedicationViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun MedicationListScreen(navController: NavController, medRefillViewModel: MedRefillViewModel) {
-
+fun MedicationListScreen(navController: NavController) {
+    val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
     val state by medRefillViewModel.state.collectAsState()
     Scaffold(
         floatingActionButton = {

@@ -102,14 +102,3 @@ fun needsRefillNextWeek(refillDate: String): Boolean {
     }
     return refill.after(today) && refill.before(nextWeek)
 }
-
-class MedRefillViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        @Suppress("UNCHECKED_CAST")
-        if (modelClass.isAssignableFrom(MedRefillViewModel::class.java)) {
-            return MedRefillViewModel(userState, application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

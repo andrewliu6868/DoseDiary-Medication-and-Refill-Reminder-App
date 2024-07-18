@@ -192,14 +192,3 @@ class ProfileViewModel @Inject constructor(
     }
 
 }
-
-class ProfileViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        @Suppress("UNCHECKED_CAST")
-        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
-            return ProfileViewModel(userState, application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

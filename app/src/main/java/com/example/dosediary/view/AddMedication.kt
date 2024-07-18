@@ -56,7 +56,8 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun AddMedicationPage(navController: NavHostController, viewModel: AddMedicationViewModel = hiltViewModel()){
+fun AddMedicationPage(navController: NavHostController){
+    val viewModel = hiltViewModel<AddMedicationViewModel>()
     val state by viewModel.state.collectAsState()
 
     Scaffold(

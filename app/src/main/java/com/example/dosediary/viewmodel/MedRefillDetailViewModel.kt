@@ -12,10 +12,15 @@ import androidx.lifecycle.ViewModel
 import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.state.MedRefillDetailState
 import com.example.dosediary.state.MedRefillState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
-class MedRefillDetailViewModel(application: Application) : ViewModel(){
+@HiltViewModel
+class MedRefillDetailViewModel @Inject constructor(
+    application: Application
+) : ViewModel(){
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
 
 //    private val _state = mutableStateOf<Medication?>(null)
@@ -44,14 +49,4 @@ fun showRefillDays(refillDays:Int): Int {
 }
 fun showStartDate(startDate: Date): Date{
     return startDate
-}
-
-
-class MedRefillDetailViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
-    override fun <T: ViewModel> create(modelClass: Class<T>): T{
-        if(modelClass.isAssignableFrom(MedRefillDetailViewModel::class.java)){
-            return MedRefillDetailViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
 }

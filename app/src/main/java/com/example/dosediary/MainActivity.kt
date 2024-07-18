@@ -37,12 +37,6 @@ import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
 import com.example.dosediary.view.MedicationRefillScreen
 import com.example.dosediary.view.MedicationRefillDetailScreen
-import com.example.dosediary.viewmodel.MedRefillDetailViewModel
-import com.example.dosediary.viewmodel.MedRefillDetailViewModelFactory
-import com.example.dosediary.viewmodel.MedRefillViewModel
-import com.example.dosediary.viewmodel.MedRefillViewModelFactory
-import com.example.dosediary.viewmodel.ProfileViewModel
-import com.example.dosediary.viewmodel.ProfileViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.firstOrNull
@@ -56,18 +50,6 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var userState: UserState
-
-    private val  medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
-        MedRefillDetailViewModelFactory(application)
-    }
-
-    private val medRefillViewModel by viewModels<MedRefillViewModel> {
-        MedRefillViewModelFactory(application, userState)
-    }
-
-    private val profileViewModel by viewModels<ProfileViewModel> {
-        ProfileViewModelFactory(application, userState)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,7 +164,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DoseDiaryTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
-                    HomeScreen(medRefillViewModel, medRefillDetailViewModel, profileViewModel)
+                    HomeScreen()
                 }
             }
         }
@@ -193,11 +175,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    medRefillViewModel: MedRefillViewModel,
-    medRefillDetailViewModel: MedRefillDetailViewModel,
-    profileViewModel: ProfileViewModel
-) {
+fun HomeScreen() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
@@ -209,41 +187,28 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            Navigation(
-                navController,
-                medRefillViewModel,
-                medRefillDetailViewModel,
-                profileViewModel
-            )
+            Navigation(navController)
         }
     }
 }
 
 @Composable
-fun Navigation (
-    navController: NavHostController,
-    medRefillViewModel: MedRefillViewModel,
-    medRefillDetailViewModel: MedRefillDetailViewModel,
-    profileViewModel: ProfileViewModel
-){
+fun Navigation (navController: NavHostController){
 
     NavHost(navController = navController, startDestination = "home") {
-        composable("home") { MedicationListScreen(navController, medRefillViewModel)}
-        composable("refill") { MedicationRefillScreen(navController, medRefillViewModel) }
+        composable("home") { MedicationListScreen(navController)}
+        composable("refill") { MedicationRefillScreen(navController) }
         composable("history") { MedicationHistory(navController) }
-        composable("profile") { Profile(navController, profileViewModel) }
+        composable("profile") { Profile(navController) }
         composable("Add Medication") { AddMedicationPage(navController) }
         composable(
             "refillDetails/{medicationId}",
             arguments = listOf(navArgument("medicationId") { type = NavType.IntType })
         ) { backStackEntry ->
             val medicationId = backStackEntry.arguments?.getInt("medicationId")?:0
-            MedicationRefillDetailScreen(navController, medRefillDetailViewModel, medicationId)
+            MedicationRefillDetailScreen(navController, medicationId)
         }
         composable("editMedication") { EditMedication(navController) }
-
     }
-
-
 }
 

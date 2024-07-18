@@ -51,6 +51,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
@@ -61,16 +62,16 @@ import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.OutlineTextField
 import com.example.dosediary.ui.theme.Primary
+import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.ProfileViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Profile(
-    navController: NavController,
-    profileViewModel: ProfileViewModel
+    navController: NavController
 ) {
-
+    val profileViewModel = hiltViewModel<ProfileViewModel>()
     val state by profileViewModel.state.collectAsState()
 
     var isAddingUser by remember { mutableStateOf(false) }
