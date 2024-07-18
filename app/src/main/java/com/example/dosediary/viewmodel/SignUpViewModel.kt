@@ -4,29 +4,19 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.dosediary.model.UserState
-import com.example.dosediary.model.entity.User
-import com.example.dosediary.utils.DoseDiaryDatabase
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dosediary.model.DoseDiaryDatabase
+import com.example.dosediary.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.*
-import javax.inject.Inject
 
-@HiltViewModel
-class SignUpViewModel @Inject constructor(
-    private val userState: UserState,
-    application: Application): ViewModel(){
+class SignUpViewModel(application: Application): ViewModel(){
     private val _userDao = DoseDiaryDatabase.getInstance(application).userDao
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Idle)
-    private val _userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
-
-    private val _managedUsers: MutableStateFlow<List<User>> = userState.managedUsers
-    private val _addUserFirstName: MutableStateFlow<String> = MutableStateFlow("")
-    private val _addUserLastName: MutableStateFlow<String> = MutableStateFlow("")
-
     val signUpState: StateFlow<SignUpState> get() = _signUpState
+
     fun addUser(firstName: String, lastName: String, email: String, password:String ){
         viewModelScope.launch {
             try{
@@ -49,10 +39,7 @@ class SignUpViewModel @Inject constructor(
         _signUpState.value = SignUpState.Idle
     }
 
-
 }
-
-/*
 class SignUpViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(SignUpViewModel::class.java)){
@@ -60,4 +47,4 @@ class SignUpViewModelFactory(private val application: Application) : ViewModelPr
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}*/
+}

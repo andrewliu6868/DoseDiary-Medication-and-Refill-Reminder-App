@@ -15,12 +15,15 @@ import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -40,10 +43,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,9 +68,9 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel)
 
     when(loginState){
         is LoginState.Idle ->{
-            LoginAttempt( {email, password ->
-                    viewModel.login(email, password) },
-                    navHostController)
+            LoginAttempt({email, password ->
+                viewModel.login(email, password)},
+                navHostController)
         }
 
         is LoginState.Loading -> {
@@ -75,22 +79,20 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel)
 
         is LoginState.Success -> {
             //Navigate to Home Screen
-            // viewModel.resetLoginState()
             navHostController.navigate("home")
 
-        }
+            }
 
         is LoginState.Error -> {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Red,
-                    text="Error: ${loginState.error}")
-                LoginAttempt({email, password ->
-                    viewModel.login(email, password)},
-                    navHostController)
-
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                fontWeight = FontWeight.Bold,
+                color = Color.Red,
+                text="Error: ${loginState.error}")
+            LoginAttempt({email, password ->
+                viewModel.login(email, password)},
+                navHostController)
         }
     }
 }
@@ -99,6 +101,8 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel)
 fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostController){
     val email = remember { mutableStateOf("") }
     val password = remember{ mutableStateOf("") }
+
+    var showPassword by remember { mutableStateOf(value = false) }
 
     Surface(
         modifier = Modifier
@@ -134,7 +138,36 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                 onValueChange = {newText->
                     password.value = newText
                 },
-                keyboardOptions = KeyboardOptions.Default,
+                visualTransformation = if (showPassword) {
+
+                    VisualTransformation.None
+
+                } else {
+
+                    PasswordVisualTransformation()
+
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    if (showPassword) {
+                        IconButton(onClick = { showPassword = false }) {
+                            Icon(
+                                imageVector = Icons.Filled.Visibility,
+                                contentDescription = "hide_password"
+                            )
+                        }
+                    }else{
+                        IconButton(onClick = { showPassword = true}) {
+                            Icon(
+                                imageVector = Icons.Filled.VisibilityOff,
+                                contentDescription = "show_password"
+                            )
+
+                        }
+
+                    }
+
+                },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color.Blue,
                     cursorColor = Color.Blue

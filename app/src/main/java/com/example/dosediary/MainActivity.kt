@@ -25,10 +25,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.dosediary.utils.DoseDiaryDatabase
-import com.example.dosediary.model.entity.Medication
-import com.example.dosediary.model.entity.User
-import com.example.dosediary.model.UserState
+import com.example.dosediary.model.DoseDiaryDatabase
+import com.example.dosediary.model.Medication
+import com.example.dosediary.model.User
 
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
@@ -45,50 +44,35 @@ import com.example.dosediary.view.MedicationRefillScreen
 import com.example.dosediary.view.MedicationRefillDetailScreen
 import com.example.dosediary.viewmodel.LoginState
 import com.example.dosediary.viewmodel.LoginViewModel
+import com.example.dosediary.viewmodel.LoginViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
+import com.example.dosediary.viewmodel.MedRefillDetailViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillViewModel
-import com.example.dosediary.viewmodel.ProfileViewModel
+import com.example.dosediary.viewmodel.MedRefillViewModelFactory
 import com.example.dosediary.viewmodel.SignUpViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.firstOrNull
+import com.example.dosediary.viewmodel.SignUpViewModelFactory
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var userState: UserState
-    private val loginViewModel: LoginViewModel by viewModels()
-    private val signupViewModel: SignUpViewModel by viewModels()
-    private val medRefillViewModel: MedRefillViewModel by viewModels()
-    private val medRefillDetailViewModel: MedRefillDetailViewModel by viewModels()
-
-    /*private val _medRefillViewModel by viewModels<MedRefillViewModel> {
-        MedRefillViewModelFactory(application, userState)
+    private val _medRefillViewModel by viewModels<MedRefillViewModel>{
+        MedRefillViewModelFactory(application)
     }
-
-    private val profileViewModel by viewModels<ProfileViewModel> {
-        ProfileViewModelFactory(application, userState)
-    }
-
-
     private val _loginViewModel by viewModels<LoginViewModel>{
         LoginViewModelFactory(application)
+    }
+    private val _signUpViewModel by viewModels<SignUpViewModel>{
+        SignUpViewModelFactory(application)
     }
     private val  _medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
         MedRefillDetailViewModelFactory(application)
     }
 
-    private val _signupViewModel by viewModels<SignUpViewModel>{
-        SignUpViewModelFactory(application)
-    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         lifecycleScope.launch {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -97,6 +81,63 @@ class MainActivity : ComponentActivity() {
             val end_calendar = Calendar.getInstance()
             start_calendar.add(Calendar.DAY_OF_YEAR, 2)
             end_calendar.add(Calendar.DAY_OF_YEAR, 30)
+            val sampleUsers = listOf(
+                User(
+                    email = "andrewliu6867@gmail.com",
+                    password = "password",
+                    firstName = "Andrew",
+                    lastname =  "Liu",
+                ),
+
+                User(
+                    email = "randomguy@gmail.com",
+                    password = "password1",
+                    firstName = "Random",
+                    lastname = "Guy",
+                )
+            )
+
+            val sampleMedications = listOf(
+                Medication(
+                    medicationName = "Medication 1",
+                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    endDate = dateFormat.parse(dateFormat.format(end_calendar.time)) ?: Date(),
+                    refillDays = 10,
+                    dosage = 1,
+                    frequency = "Daily",
+                    owner = "User 1"
+                ),
+                Medication(
+                    medicationName = "Medication 2",
+                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    endDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    refillDays = 10,
+                    dosage = 1,
+                    frequency = "Daily",
+                    owner = "User 1"
+                ),
+                Medication(
+                    medicationName = "Medication 3",
+                    startDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    endDate = dateFormat.parse(dateFormat.format(start_calendar.time)) ?: Date(),
+                    refillDays = 10,
+                    dosage = 1,
+                    frequency = "Daily",
+                    owner = "User 1"
+                ),
+            )
+
+//            val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
+//
+//            sampleMedications.forEach() {
+//                medicationDao.upsertMedication(it)
+//            }
+
+
+            /*val userDao = DoseDiaryDatabase.getInstance(application).userDao
+            sampleUsers.forEach(){
+                userDao.upsertUser(it)
+            }*/
 
         }
 
@@ -105,7 +146,7 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
                     // HomeScreen(_medRefillViewModel, _medRefillDetailViewModel)
                     val navController = rememberNavController()
-                    AppNavigation(navController, loginViewModel, signupViewModel, medRefillViewModel, medRefillDetailViewModel)
+                    AppNavigation(navController, _loginViewModel, _signUpViewModel, _medRefillViewModel, _medRefillDetailViewModel)
 
 
                 }
@@ -130,11 +171,12 @@ fun AppNavigation(
         composable("home") {
             HomeScreen(medRefillViewModel, medRefillDetailViewModel)
         }
-        composable("signup") {
+        composable("signup"){
             SignUpScreen(navController, viewModel = signUpViewModel)
-
         }
-
     }
 }
+
+
+
 

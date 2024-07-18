@@ -10,12 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -39,11 +37,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.dosediary.viewmodel.SignUpViewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.viewmodel.SignUpState
+import com.example.dosediary.viewmodel.SignUpViewModel
+import kotlin.math.sign
+
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun SignUpScreen(navHostController: NavHostController, viewModel: SignUpViewModel){
+fun SignUpScreen(navHostController: NavHostController, viewModel:SignUpViewModel){
     val signUpState by viewModel.signUpState.collectAsState()
     when(signUpState){
         is SignUpState.Idle -> {
@@ -53,7 +54,7 @@ fun SignUpScreen(navHostController: NavHostController, viewModel: SignUpViewMode
         }
 
         is SignUpState.Loading -> {
-            SignUpLoading()
+
         }
 
         is SignUpState.Success ->{
@@ -72,13 +73,14 @@ fun SignUpScreen(navHostController: NavHostController, viewModel: SignUpViewMode
             SignUpAttempt{firstName, lastName, email, password ->
                 viewModel.addUser(firstName, lastName, email,password)
             }
+
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpAttempt(onSignUp: (String, String, String,String) -> Unit){
+fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
     val email = remember { mutableStateOf("") }
     val password = remember{ mutableStateOf("") }
     val firstName = remember{mutableStateOf("")}
@@ -184,19 +186,4 @@ fun SignUpAttempt(onSignUp: (String, String, String,String) -> Unit){
 
     }
 
-}
-
-@Composable
-fun SignUpLoading() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        CircularProgressIndicator(
-            modifier = Modifier.width(32.dp),
-            color = MaterialTheme.colorScheme.secondary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
-
-            )
-    }
 }
