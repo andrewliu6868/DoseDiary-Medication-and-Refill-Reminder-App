@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -55,7 +58,7 @@ fun SignUpScreen(navHostController: NavHostController, viewModel:SignUpViewModel
         }
 
         is SignUpState.Loading -> {
-
+            SignUpLoading()
         }
 
         is SignUpState.Success ->{
@@ -187,4 +190,19 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
 
     }
 
+}
+
+@Composable
+fun SignUpLoading() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        CircularProgressIndicator(
+            modifier = Modifier.width(32.dp),
+            color = MaterialTheme.colorScheme.secondary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+
+            )
+    }
 }
