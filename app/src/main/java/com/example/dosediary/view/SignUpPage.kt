@@ -97,7 +97,7 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
         color = Color.White
     ) {
         Column {
-            LoginTitle(value = "Sign Up Page")
+            LoginTitle(value = "Sign Up")
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier
@@ -162,7 +162,7 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                     cursorColor = Color.Blue
                 )
             )
-            Spacer(modifier = Modifier.height(80.dp))
+            Spacer(modifier = Modifier.height(40.dp))
             Button(
                 onClick = {onSignUp(firstName.value, lastName.value, email.value, password.value)},
                 modifier = Modifier

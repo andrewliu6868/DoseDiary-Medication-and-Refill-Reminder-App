@@ -17,6 +17,8 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +45,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,6 +53,7 @@ import androidx.core.content.pm.ShortcutInfoCompat.Surface
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.viewmodel.LoginState
 import com.example.dosediary.viewmodel.LoginViewModel
 
@@ -103,7 +107,7 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
         color = Color.White
     ) {
         Column {
-            LoginTitle(value = "Login Page")
+            LoginTitle(value = "Login")
             Spacer(modifier = Modifier.height(20.dp))
             OutlinedTextField(
                 modifier = Modifier
@@ -136,7 +140,7 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                     cursorColor = Color.Blue
                 )
             )
-            Spacer(modifier = Modifier.height(80.dp))
+            Spacer(modifier = Modifier.height(40.dp))
             Button(
                 onClick = {onLogin(email.value,password.value)},
                 modifier = Modifier
@@ -160,8 +164,22 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(80.dp))
-            ClickableText(text = AnnotatedString("Sign Up Here"), onClick = {navHostController.navigate("signup")} )
+            Spacer(modifier = Modifier.height(5.dp))
+            ClickableText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                text = AnnotatedString(
+                    "Sign Up Here",
+                    ),
+                style = TextStyle(
+                    textAlign = TextAlign.Center,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textDecoration = TextDecoration.Underline,
+                    color = Color.Blue
+                ),
+                onClick = {navHostController.navigate("signup")})
         }
 
     }
@@ -177,7 +195,7 @@ fun LoginTitle(value: String){
             .fillMaxWidth()
             .heightIn(min = 80.dp),
         style = TextStyle(
-            fontSize = 30.sp,
+            fontSize = 50.sp,
             fontWeight = FontWeight.Bold
             //fontStyle = FontStyle.Normal
         ),
