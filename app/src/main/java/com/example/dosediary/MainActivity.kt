@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocal
 import androidx.compose.runtime.CompositionLocalProvider
@@ -37,9 +36,6 @@ import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.view.AddMedicationPage
 import com.example.dosediary.view.EditMedication
-import com.example.dosediary.view.HomeScreen
-import com.example.dosediary.view.LoginAttempt
-import com.example.dosediary.view.LoginScreen
 import com.example.dosediary.view.MedicationHistory
 import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
