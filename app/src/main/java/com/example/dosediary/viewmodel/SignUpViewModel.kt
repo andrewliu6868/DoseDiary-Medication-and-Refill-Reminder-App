@@ -20,7 +20,9 @@ class SignUpViewModel @Inject constructor(
     private val userState: UserState,
     application: Application): ViewModel(){
     private val _userDao = DoseDiaryDatabase.getInstance(application).userDao
+    private val userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Idle)
+
     val signUpState: StateFlow<SignUpState> get() = _signUpState
 
     fun addUser(firstName: String, lastName: String, email: String, password:String ){

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.model.UserState
+import com.example.dosediary.model.entity.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.example.dosediary.utils.DoseDiaryDatabase
@@ -20,6 +21,10 @@ class LoginViewModel @Inject constructor(
     private val userState: UserState,
     application: Application): ViewModel(){
     private val _userDao = DoseDiaryDatabase.getInstance(application).userDao
+    private val userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
+
+    private val _mainUser: MutableStateFlow<User?> = userState.mainUser
+    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> get() = _loginState
 
@@ -29,6 +34,8 @@ class LoginViewModel @Inject constructor(
                 _loginState.value = LoginState.Loading
                 val currUser  = _userDao.validateEmailPassword(email, password).firstOrNull()
                 if(currUser != null){
+                    _currentUser.value = currUser
+                    _mainUser.value = currUser
                     _loginState.value= LoginState.Success(currUser)
                 } else{
                     _loginState.value = LoginState.Error("User does not exist")
