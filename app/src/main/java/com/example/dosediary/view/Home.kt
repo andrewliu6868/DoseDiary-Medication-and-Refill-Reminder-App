@@ -40,8 +40,8 @@ fun HomeScreen(medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel:
 @Composable
 fun HomeNavigation (navController: NavHostController, medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: MedRefillDetailViewModel){
     NavHost(navController = navController, startDestination = "home") {
-        composable("home") { MedicationListScreen(navController, medRefillViewModel)}
-        composable("refill") { MedicationRefillScreen(navController, medRefillViewModel) }
+        composable("home") { MedicationListScreen(navController)}
+        composable("refill") { MedicationRefillScreen(navController) }
         composable("history") { MedicationHistory(navController) }
         composable("profile") { Profile(navController) }
         composable("Add Medication") { AddMedicationPage(navController) }
@@ -50,7 +50,7 @@ fun HomeNavigation (navController: NavHostController, medRefillViewModel: MedRef
             arguments = listOf(navArgument("medicationId") { type = NavType.IntType })
         ) { backStackEntry ->
             val medicationId = backStackEntry.arguments?.getInt("medicationId")?:0
-            MedicationRefillDetailScreen(navController, medRefillDetailViewModel, medicationId)
+            MedicationRefillDetailScreen(navController, medicationId)
         }
         composable("editMedication") { EditMedication(navController) }
 
