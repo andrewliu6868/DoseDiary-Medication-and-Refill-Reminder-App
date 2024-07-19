@@ -2,15 +2,9 @@
 
 package com.example.dosediary.view
 
-import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -18,20 +12,16 @@ import androidx.compose.ui.unit.dp
 import java.util.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
-import com.example.dosediary.components.TimePicker
-import com.example.dosediary.components.DatePicker
 import com.example.dosediary.ui.theme.Primary
-import java.text.SimpleDateFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditMedication(navController: NavHostController) {
+fun EditMedicationPage(navController: NavHostController) {
     val medicationName = remember { mutableStateOf("") }
     val effectivenessOptions = listOf("Effective", "Moderate", "Marginal", "Ineffective")
     val selectedEffectiveness = remember { mutableStateOf("") }
@@ -171,5 +161,5 @@ fun ButtonRow(navController: NavHostController) {
 @Composable
 fun EditMedPreview(){
     val navController = rememberNavController()
-    EditMedication(navController = navController);
+    EditMedicationPage(navController = navController);
 }

@@ -5,14 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.state.AddMedicationState
 import com.example.dosediary.events.AddMedicationEvent
-import com.example.dosediary.model.UserState
-import com.example.dosediary.model.dao.MedicationDao
+import com.example.dosediary.state.UserState
 import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.utils.DoseDiaryDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject

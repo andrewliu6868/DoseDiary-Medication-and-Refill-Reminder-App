@@ -1,6 +1,6 @@
-package com.example.dosediary
+package com.example.dosediary.app
 
-import com.example.dosediary.model.UserState
+import com.example.dosediary.state.UserState
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

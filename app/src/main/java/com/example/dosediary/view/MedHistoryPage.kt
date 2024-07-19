@@ -43,16 +43,14 @@ import com.example.dosediary.components.CustomTopAppBar
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import android.widget.Toast;
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.google.android.material.snackbar.Snackbar;
 import kotlinx.coroutines.launch
 
 @Composable
-fun MedicationHistory(navController: NavHostController) {
+fun MedicationHistoryPage(navController: NavHostController) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -207,7 +205,7 @@ fun MedicationItem(medication: MedicationHistory, navController: NavHostControll
 @Composable
 fun MedHistoryPreview(){
     val navController = rememberNavController()
-    MedicationHistory(navController = navController);
+    MedicationHistoryPage(navController = navController);
 }
 
 

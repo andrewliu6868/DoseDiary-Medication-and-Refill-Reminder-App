@@ -2,12 +2,11 @@ package com.example.dosediary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.event.MedRefillEvent
 import com.example.dosediary.utils.DoseDiaryDatabase
 import com.example.dosediary.model.entity.User
-import com.example.dosediary.model.UserState
+import com.example.dosediary.state.UserState
 import com.example.dosediary.state.MedRefillState
 import com.example.dosediary.state.MedicationWithNextRefillDate
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,4 +1,4 @@
-package com.example.dosediary
+package com.example.dosediary.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

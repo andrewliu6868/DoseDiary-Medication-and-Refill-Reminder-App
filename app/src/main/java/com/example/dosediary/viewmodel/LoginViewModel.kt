@@ -1,13 +1,11 @@
 package com.example.dosediary.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.dosediary.model.UserState
+import com.example.dosediary.state.UserState
 import com.example.dosediary.model.entity.User
+import com.example.dosediary.state.LoginState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.example.dosediary.utils.DoseDiaryDatabase

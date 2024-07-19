@@ -1,4 +1,4 @@
-package com.example.dosediary.model
+package com.example.dosediary.state
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow

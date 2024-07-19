@@ -36,11 +36,10 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.example.dosediary.model.entity.Medication
-import com.example.dosediary.viewmodel.AddMedicationViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 
 @Composable
-fun MedicationRefillDetailScreen(navController: NavController, medicationId: Int){
+fun MedicationRefillDetailPage(navController: NavController, medicationId: Int){
     val medRefillDetailViewModel = hiltViewModel<MedRefillDetailViewModel>()
     LaunchedEffect(medicationId) {
         medRefillDetailViewModel.fetchMedById(medicationId)
