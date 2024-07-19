@@ -43,15 +43,34 @@ import com.example.dosediary.components.CustomTopAppBar
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import android.widget.Toast;
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import com.google.android.material.snackbar.Snackbar;
+import kotlinx.coroutines.launch
 
 @Composable
 fun MedicationHistory(navController: NavHostController) {
     val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {generatePDF(context, sampleMedications)  },
+                onClick = {
+                    generatePDF(context, sampleMedications) { result ->
+                        scope.launch {
+                            if (result) {
+                                snackbarHostState.showSnackbar("PDF generated successfully")
+                            } else {
+                                snackbarHostState.showSnackbar("Error generating PDF")
+                            }
+                        }
+                    }
+                },
                 containerColor = Color(0xFF7DCBFF)
             ) {
                 Icon(Icons.Filled.BarChart, contentDescription = "Generate PDF")
@@ -65,8 +84,11 @@ fun MedicationHistory(navController: NavHostController) {
                 imageResId = R.drawable.icon,  // Customizable icon
                 imageDescription = "App Icon"
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -81,7 +103,7 @@ fun MedicationHistory(navController: NavHostController) {
     }
 }
 
-fun generatePDF(context: Context, medications: List<MedicationHistory>) {
+fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult: (Boolean) -> Unit) {
     val pdfDocument = PdfDocument()
     val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
     val page = pdfDocument.startPage(pageInfo)
@@ -113,9 +135,11 @@ fun generatePDF(context: Context, medications: List<MedicationHistory>) {
     try {
         pdfDocument.writeTo(FileOutputStream(file))
         Log.d("PDF Generation", "PDF file generated successfully at ${file.absolutePath}")
+        onResult(true)
     } catch (e: IOException) {
         e.printStackTrace()
         Log.e("PDF Generation", "Error generating PDF: ${e.message}")
+        onResult(false)
     } finally {
         pdfDocument.close()
     }
