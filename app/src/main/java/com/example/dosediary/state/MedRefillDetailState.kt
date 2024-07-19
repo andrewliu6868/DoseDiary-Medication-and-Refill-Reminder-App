@@ -9,7 +9,7 @@ data class MedRefillDetailState(
         startDate = Date(),
         endDate = Date(),
         frequency = "",
-        //times = emptyList(),
+        times = emptyList(),
         refillDays = 0,
         note = "",
         address = "",

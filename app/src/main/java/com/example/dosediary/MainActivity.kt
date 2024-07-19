@@ -43,6 +43,7 @@ import com.example.dosediary.view.MedicationListScreen
 import com.example.dosediary.view.Profile
 import com.example.dosediary.view.MedicationRefillScreen
 import com.example.dosediary.view.MedicationRefillDetailScreen
+import com.example.dosediary.view.SignUpScreen
 import com.example.dosediary.viewmodel.LoginState
 import com.example.dosediary.viewmodel.LoginViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
