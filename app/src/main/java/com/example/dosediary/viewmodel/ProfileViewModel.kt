@@ -58,20 +58,6 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-//    val state :StateFlow<ProfileState> = _managedUsers.flatMapLatest { managedUsers ->
-//        combine(flowOf(managedUsers)) { managedUsers ->
-//            ProfileState(
-//                mainUser = _mainUser.value,
-//                currentUser = _currentUser.value,
-//                managedUsers = managedUsers.first(),
-//            )
-//        }
-//    }.stateIn(
-//        viewModelScope,
-//        SharingStarted.WhileSubscribed(5000),
-//        ProfileState(currentUser = null, managedUsers = emptyList(), mainUser = null)
-//    )
-
     val state: StateFlow<ProfileState> = combine(
         listOf(_mainUser,
         _currentUser,
@@ -99,23 +85,6 @@ class ProfileViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(5000),
         ProfileState(currentUser = null, managedUsers = emptyList(), mainUser = null, addUserFirstName = "", addUserLastName = "", isAddingUser = false)
     )
-
-//    @OptIn(ExperimentalCoroutinesApi::class)
-//    val state: StateFlow<ProfileState> = _currentUser.flatMapLatest { currentUser ->
-//        val relationshipsFlow = if (currentUser != null) {
-//            userRelationshipDao.getUserRelationshipsByMainUserId(currentUser.id)
-//        } else {
-//            flowOf(emptyList())
-//        }
-//
-//        combine(relationshipsFlow) { relationships ->
-//            ProfileState(
-//                userProfiles = relationships.first().map { userRelationship ->
-//                    userDao.getUserById(userRelationship.subUserId).first()
-//                }
-//            )
-//        }
-//    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ProfileState(emptyList()))
 
     fun onEvent(event: ProfileEvent) {
         when(event) {
@@ -149,7 +118,6 @@ class ProfileViewModel @Inject constructor(
             }
             is ProfileEvent.onChangeUser -> {
                 userState.setcurrentUser(event.user)
-                println("helllo")
             }
             is ProfileEvent.onMainUserFirstNameChanged -> {
                 _editMainUserFirstName.value = event.firstName

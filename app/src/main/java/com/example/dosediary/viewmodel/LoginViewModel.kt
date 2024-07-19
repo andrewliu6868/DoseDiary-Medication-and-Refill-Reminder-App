@@ -19,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userState: UserState,
-    application: Application): ViewModel(){
+    application: Application
+): ViewModel(){
     private val _userDao = DoseDiaryDatabase.getInstance(application).userDao
     private val userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
 
@@ -34,8 +35,8 @@ class LoginViewModel @Inject constructor(
                 _loginState.value = LoginState.Loading
                 val currUser  = _userDao.validateEmailPassword(email, password).firstOrNull()
                 if(currUser != null){
-                    _currentUser.value = currUser
-                    _mainUser.value = currUser
+                    userState.setcurrentUser(currUser)
+                    userState.setMainUser(currUser)
                     _loginState.value= LoginState.Success(currUser)
                 } else{
                     _loginState.value = LoginState.Error("User does not exist")

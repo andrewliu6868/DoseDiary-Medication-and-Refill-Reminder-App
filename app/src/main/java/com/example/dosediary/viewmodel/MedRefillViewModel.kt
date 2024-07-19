@@ -9,6 +9,7 @@ import com.example.dosediary.utils.DoseDiaryDatabase
 import com.example.dosediary.model.entity.User
 import com.example.dosediary.model.UserState
 import com.example.dosediary.state.MedRefillState
+import com.example.dosediary.state.MedicationWithNextRefillDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -35,26 +36,61 @@ class MedRefillViewModel  @Inject constructor(
         }
 
         combine(medicationsFlow, _currentUser) { medications, user ->
-            MedRefillState(
-                medRefillsToday = medications.filter { medication ->
-                    calculateRefillDates(medication.startDate, medication.endDate, medication.refillDays).any { refillDate ->
-                        needsRefillToday(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(refillDate))
-                    }
-                },
-                medRefillsUpcoming = medications.filter { medication ->
-                    calculateRefillDates(
-                        medication.startDate,
-                        medication.endDate,
-                        medication.refillDays
-                    ).any { refillDate ->
-                        needsRefillNextWeek(
-                            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-                                refillDate
-                            )
-                        )
-                    }
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val today = sdf.format(Calendar.getInstance().time)
+            val nextWeek = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 7) }
+            val nextWeekFormatted = sdf.format(nextWeek.time)
+
+            val medRefillsToday = medications.mapNotNull { medication ->
+                calculateNextRefillDate(
+                    medication.startDate,
+                    medication.endDate,
+                    medication.refillDays,
+                    medication.lastRefilledDate
+                )?.let { refillDate ->
+                    if (sdf.format(refillDate) == today) MedicationWithNextRefillDate(medication, refillDate) else null
                 }
+            }
+
+            val medRefillsUpcoming = medications.mapNotNull { medication ->
+                calculateNextRefillDate(
+                    medication.startDate,
+                    medication.endDate,
+                    medication.refillDays,
+                    medication.lastRefilledDate
+                )?.let { refillDate ->
+                    val refillDateFormatted = sdf.format(refillDate)
+                    if (refillDateFormatted > today && refillDateFormatted <= nextWeekFormatted) MedicationWithNextRefillDate(medication, refillDate) else null
+                }
+            }
+
+            MedRefillState(
+                medRefillsToday = medRefillsToday,
+                medRefillsUpcoming = medRefillsUpcoming
             )
+//            MedRefillState(
+//                medRefillsToday = medications.filter { medication ->
+//                    calculateNextRefillDate(
+//                        medication.startDate,
+//                        medication.endDate,
+//                        medication.refillDays,
+//                        medication.lastRefilledDate
+//                    )?.let { refillDate ->
+//                        sdf.format(refillDate) == today
+//                    } ?: false
+//                },
+//                medRefillsUpcoming = medications.filter { medication ->
+//                    calculateNextRefillDate(
+//                        medication.startDate,
+//                        medication.endDate,
+//                        medication.refillDays,
+//                        medication.lastRefilledDate
+//                    )?.let { refillDate ->
+//                        val refillDateFormatted = sdf.format(refillDate)
+//                        refillDateFormatted > today && refillDateFormatted <= nextWeekFormatted
+//                    } ?: false
+//                }
+//            )
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MedRefillState())
 
@@ -62,8 +98,10 @@ class MedRefillViewModel  @Inject constructor(
         when(event) {
             is MedRefillEvent.SetRefillCompleted -> {
                 viewModelScope.launch {
-//                    val medRefills = medicationDao.getMedications()
-//                    _state.value = MedRefillState(medRefills)
+                    medicationDao.updateLastRefillDate(
+                        event.medicationWithNextRefillDate.medication.id,
+                        event.medicationWithNextRefillDate.nextRefillDate ?: Date()
+                    )
                 }
             }
         }
@@ -71,17 +109,18 @@ class MedRefillViewModel  @Inject constructor(
 
 }
 
-fun calculateRefillDates(startDate: Date, endDate: Date, refillDays: Int): List<Date> {
-    val refillDates = mutableListOf<Date>()
+fun calculateNextRefillDate(startDate: Date, endDate: Date, refillDays: Int, lastRefilledDate: Date): Date? {
     val calendar = Calendar.getInstance()
-    calendar.time = startDate
+    calendar.time = lastRefilledDate
 
     while (!calendar.time.after(endDate)) {
-        refillDates.add(calendar.time)
         calendar.add(Calendar.DAY_OF_YEAR, refillDays)
+        if (calendar.time.after(lastRefilledDate)) {
+            return calendar.time
+        }
     }
 
-    return refillDates
+    return null
 }
 
 

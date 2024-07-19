@@ -62,7 +62,7 @@ fun MedicationListScreen(navController: NavController) {
             ) {
                 item { MedicationReminder() }
                 item { DailyMedicationChecklist() }
-                item { UpcomingMedicationRefills(navController, state) }
+                item { UpcomingMedicationRefills(navController, state, medRefillViewModel) }
             }
         }
     }
@@ -160,7 +160,11 @@ fun DailyMedicationChecklist() {
 }
 
 @Composable
-fun UpcomingMedicationRefills(navController: NavController, state: MedRefillState) {
+fun UpcomingMedicationRefills(
+    navController: NavController,
+    state: MedRefillState,
+    medRefillViewModel: MedRefillViewModel
+) {
     Card(
         shape = RoundedCornerShape(35.dp),
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
@@ -169,6 +173,6 @@ fun UpcomingMedicationRefills(navController: NavController, state: MedRefillStat
             .padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
-        MedicationRefillTodayList(navController, state, true)
+        MedicationRefillTodayList(navController, state, medRefillViewModel, true)
     }
 }

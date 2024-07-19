@@ -187,8 +187,8 @@ fun Profile(
                     )
                 }
                 item { UserDetail(state, profileViewModel) }
-                item { MedicationHistory(navController) }
-                item { MedicationDetail(navController)}
+//                item { MedicationHistory(navController) }
+//                item { MedicationDetail(navController)}
             }
         }
 
@@ -444,7 +444,7 @@ fun UserDetail(
                             onClick = {
                                 profileViewModel.onEvent(ProfileEvent.cancelUpdateMainUser)
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ) {
                             Text("Cancel")
@@ -461,10 +461,12 @@ fun UserDetail(
                         }
                     }
                 }
-
-
             } else {
-                //TODO
+                //sub text saying you can not edit user detail for a sub user
+                BasicText(
+                    text = "You can not edit user detail for a sub user, please switch to main user to edit user detail",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 10.sp)
+                )
             }
         }
     }
@@ -472,57 +474,57 @@ fun UserDetail(
 }
 
 
-@Composable
-fun MedicationHistory(navController: NavController) {
-    Card(
-        shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            BasicText(
-                text = "Medication History",
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+//@Composable
+//fun MedicationHistory(navController: NavController) {
+//    Card(
+//        shape = RoundedCornerShape(35.dp),
+//        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(vertical = 8.dp)
+//    ) {
+//        Column(modifier = Modifier.padding(16.dp)) {
+//            BasicText(
+//                text = "Medication History",
+//                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+//            )
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            Button(
+//                onClick = { navController.navigate("history") },
+//                colors = ButtonDefaults.buttonColors(containerColor = Primary),
+//                modifier = Modifier.align(Alignment.CenterHorizontally)
+//            ) {
+//                Text("View Medication History")
+//            }
+//        }
+//    }
+//}
 
-            Button(
-                onClick = { navController.navigate("history") },
-                colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Text("View Medication History")
-            }
-        }
-    }
-}
-
-@Composable
-fun MedicationDetail(navController: NavController) {
-    Card(
-        shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            BasicText(
-                text = "Medication Details",
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = { navController.navigate("history") },
-                colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Text("View All Medication Details")
-            }
-        }
-    }
-
-}
+//@Composable
+//fun MedicationDetail(navController: NavController) {
+//    Card(
+//        shape = RoundedCornerShape(35.dp),
+//        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(vertical = 8.dp)
+//    ) {
+//        Column(modifier = Modifier.padding(16.dp)) {
+//            BasicText(
+//                text = "Medication Details",
+//                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+//            )
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            Button(
+//                onClick = { navController.navigate("history") },
+//                colors = ButtonDefaults.buttonColors(containerColor = Primary),
+//                modifier = Modifier.align(Alignment.CenterHorizontally)
+//            ) {
+//                Text("View All Medication Details")
+//            }
+//        }
+//    }
+//
+//}

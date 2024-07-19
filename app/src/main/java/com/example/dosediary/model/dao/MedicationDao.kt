@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 import com.example.dosediary.model.entity.Medication
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 @Dao
 interface MedicationDao {
@@ -26,4 +27,8 @@ interface MedicationDao {
   
     @Query("SELECT * FROM medication WHERE id = :medID ORDER BY medicationName ASC LIMIT 1")
     fun getMedicationByID(medID: Int): Flow<Medication>
+
+    //update lastrefilldate
+    @Query("UPDATE medication SET lastRefilledDate = :lastRefilledDate WHERE id = :medID")
+    suspend fun updateLastRefillDate(medID: Int, lastRefilledDate: Date)
 }

@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.times
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.event.MedRefillEvent
 import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
@@ -43,7 +44,12 @@ import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.state.MedRefillState
 
 import com.example.dosediary.viewmodel.AddMedicationViewModel
+import com.example.dosediary.state.MedicationWithNextRefillDate
 import com.example.dosediary.viewmodel.MedRefillViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 //@Preview
@@ -77,8 +83,8 @@ fun MedicationRefillScreen(
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp)
             )
             LazyColumn {
-                item { MedicationRefillTodayList(navController, state) }
-                item { MedicationRefillNextWeekList(navController, state) }
+                item { MedicationRefillTodayList(navController, state, medRefillViewModel) }
+                item { MedicationRefillNextWeekList(navController, state, medRefillViewModel) }
             }
         }
     }
@@ -89,6 +95,7 @@ fun MedicationRefillScreen(
 fun MedicationRefillTodayList(
     navController: NavController,
     state: MedRefillState,
+    medRefillViewModel: MedRefillViewModel,
     isHomePage: Boolean = false
 ) {
     Card(
@@ -122,8 +129,8 @@ fun MedicationRefillTodayList(
                     items(state.medRefillsToday) { medication ->
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
-                            navController.navigate("refillDetails/${medication.id}")
-                        })
+                            navController.navigate("refillDetails/${medication.medication.id}")
+                        }, medRefillViewModel)
                     }
                 }
             }
@@ -144,6 +151,7 @@ fun MedicationRefillTodayList(
 fun MedicationRefillNextWeekList(
     navController: NavController,
     state: MedRefillState,
+    medRefillViewModel: MedRefillViewModel
 ) {
     Card(
         shape = RoundedCornerShape(35.dp),
@@ -169,8 +177,8 @@ fun MedicationRefillNextWeekList(
                     items(state.medRefillsUpcoming) { medication ->
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
-                            navController.navigate("refillDetails/${medication.id}")
-                        })
+                            navController.navigate("refillDetails/${medication.medication.id}")
+                        }, medRefillViewModel)
                     }
                 }
             }
@@ -179,7 +187,19 @@ fun MedicationRefillNextWeekList(
 }
 
 @Composable
-fun MedicationRefillDetailedItem(medication: Medication, onItemClick: () -> Unit) {
+fun MedicationRefillDetailedItem(
+    medicationWithNextRefillDate: MedicationWithNextRefillDate,
+    onItemClick: () -> Unit,
+    medRefillViewModel: MedRefillViewModel
+) {
+//    val shouldCheck = shouldCheckCheckbox(
+//        medicationWithNextRefillDate.medication.lastRefilledDate,
+//        medicationWithNextRefillDate.medication.refillDays
+//    )
+//    val checkedState = remember { mutableStateOf(shouldCheck) }
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
@@ -208,19 +228,30 @@ fun MedicationRefillDetailedItem(medication: Medication, onItemClick: () -> Unit
                     .weight(1f)
             ) {
                 BasicText(
-                    text = medication.medicationName,
+                    text = medicationWithNextRefillDate.medication.medicationName,
                 )
                 BasicText(
-                    text = "${medication.refillDays} Pills",
+                    text = "${dateFormat.format(medicationWithNextRefillDate.nextRefillDate)}",
                 )
             }
 
-            val checkedState = remember { mutableStateOf(false) }
             Checkbox(
-                checked = checkedState.value,
+                checked = false,
                 colors = CheckboxDefaults.colors(Primary),
-                onCheckedChange = { checkedState.value = it },
+                onCheckedChange = {
+                    medRefillViewModel.onEvent(MedRefillEvent.SetRefillCompleted(medicationWithNextRefillDate))
+                },
             )
         }
     }
 }
+
+//fun shouldCheckCheckbox(lastRefillDate: Date, refillDays: Int): Boolean {
+//    val calendar = Calendar.getInstance()
+//    // if last refill date is null, use todays date
+//    calendar.time = lastRefillDate
+//    calendar.add(Calendar.DAY_OF_YEAR, refillDays)
+//    val suggestedRefillDate = calendar.time
+//    val currentDate = Date()
+//    return currentDate >= suggestedRefillDate
+//}
