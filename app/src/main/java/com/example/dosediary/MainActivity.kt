@@ -18,6 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.runtime.CompositionLocal
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -50,11 +52,14 @@ import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
@@ -82,10 +87,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             DoseDiaryTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
+
                     // HomeScreen(_medRefillViewModel, _medRefillDetailViewModel)
                     val navController = rememberNavController()
                     AppNavigation(navController, loginViewModel, signUpViewModel, medRefillViewModel, medRefillDetailViewModel)
-
 
                 }
             }
@@ -114,7 +119,6 @@ fun AppNavigation(
         }
     }
 }
-
 
 
 

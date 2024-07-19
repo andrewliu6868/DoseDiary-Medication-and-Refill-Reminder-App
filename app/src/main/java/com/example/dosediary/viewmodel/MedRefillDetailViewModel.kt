@@ -23,10 +23,10 @@ class MedRefillDetailViewModel @Inject constructor(
 ) : ViewModel(){
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
 
-    //    private val _state = mutableStateOf<Medication?>(null)
+//    private val _state = mutableStateOf<Medication?>(null)
     private val _state = MutableStateFlow(MedRefillDetailState())
 
-    //    val state: State<Medication?> = _state
+//    val state: State<Medication?> = _state
     val state = _state.asStateFlow()
 
     fun fetchMedById(id: Int) {

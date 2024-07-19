@@ -22,7 +22,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun TimePicker(time: MutableState<Date>, placeholder: String) {
+fun TimePicker(time: Date, placeholder: String, onTimeSelected: (Date) -> Unit) {
     val timeFormat = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
     val calendar = Calendar.getInstance()
 
@@ -34,7 +34,7 @@ fun TimePicker(time: MutableState<Date>, placeholder: String) {
             { _, hourOfDay, minute ->
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 calendar.set(Calendar.MINUTE, minute)
-                time.value = calendar.time
+                onTimeSelected(calendar.time)
             },
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),
@@ -43,7 +43,7 @@ fun TimePicker(time: MutableState<Date>, placeholder: String) {
     }
 
     OutlinedTextField(
-        value = timeFormat.format(time.value),
+        value = timeFormat.format(time),
         onValueChange = { },
         label = { Text(placeholder) },
         readOnly = true,
@@ -64,6 +64,6 @@ fun TimePicker(time: MutableState<Date>, placeholder: String) {
 @Preview(showBackground = true)
 @Composable
 fun TimePickerPreview() {
-    val currentTime = remember { mutableStateOf(Date()) }
-    TimePicker(time = currentTime, "Select Time")
+    val currentTime = Date()
+    TimePicker(time = currentTime, "Select Time") { }
 }

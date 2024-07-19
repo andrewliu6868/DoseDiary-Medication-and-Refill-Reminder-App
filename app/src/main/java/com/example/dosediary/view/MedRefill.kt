@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.times
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.model.entity.Medication
@@ -40,15 +41,17 @@ import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.state.MedRefillState
+
+import com.example.dosediary.viewmodel.AddMedicationViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 //@Preview
 @Composable
 fun MedicationRefillScreen(
-    navController: NavController,
-    medRefillViewModel: MedRefillViewModel
+    navController: NavController
 ){
+    val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
     val state by medRefillViewModel.state.collectAsState()
 
     Scaffold(

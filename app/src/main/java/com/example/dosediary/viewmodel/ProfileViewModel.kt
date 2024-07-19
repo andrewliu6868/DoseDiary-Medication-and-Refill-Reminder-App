@@ -74,14 +74,14 @@ class ProfileViewModel @Inject constructor(
 
     val state: StateFlow<ProfileState> = combine(
         listOf(_mainUser,
-            _currentUser,
-            _managedUsers,
-            _addUserFirstName,
-            _addUserLastName,
-            _editMainUserFirstName,
-            _editMainUserLastName,
-            _editMainUserEmail,
-            _editMainUserPassword)
+        _currentUser,
+        _managedUsers,
+        _addUserFirstName,
+        _addUserLastName,
+        _editMainUserFirstName,
+        _editMainUserLastName,
+        _editMainUserEmail,
+        _editMainUserPassword)
     ) { list ->
         ProfileState(
             mainUser = list[0] as User?,

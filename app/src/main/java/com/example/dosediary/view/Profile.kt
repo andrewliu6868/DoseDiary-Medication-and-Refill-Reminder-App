@@ -342,10 +342,10 @@ fun UserDetail(
                         unfocusedBorderColor = OutlineTextField // Custom unfocused border color
                     ),
                     modifier = Modifier
-                        .fillMaxWidth(),
+                            .fillMaxWidth(),
                     shape = RoundedCornerShape(percent = 20),
 
-                    )
+                )
                 Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
