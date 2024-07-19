@@ -1,5 +1,6 @@
 package com.example.dosediary.view
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
+
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,9 +29,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
@@ -202,6 +207,68 @@ fun NoteSection(note: String, onEvent: (AddMedicationEvent) -> Unit) {
     )
 }
 
+
+@Composable
+fun NoteSection() {
+    var note by remember { mutableStateOf("") }
+
+    Text(text = "Notes", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
+    Spacer(modifier = Modifier.height(5.dp))
+
+    OutlinedTextField(
+        value = note,
+        onValueChange = { note = it },
+        label = { Text("Add a note") },
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+fun AddressSection() {
+    var address by remember { mutableStateOf("") }
+    var postalCode by remember { mutableStateOf("") }
+    var postalCodeError by remember { mutableStateOf<String?>(null) }
+
+    val postalCodeRegex = Regex("^[A-Za-z]\\d[A-Za-z][ -]?\\d[A-Za-z]\\d$")
+
+    Text(text = "Pharmacy Location", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
+    Spacer(modifier = Modifier.height(10.dp))
+
+    // Address
+    OutlinedTextField(
+        value = address,
+        onValueChange = { address = it },
+        label = { Text("Address") },
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    // Postal code
+    OutlinedTextField(
+        value = postalCode,
+        onValueChange = { value ->
+            postalCode = value
+            postalCodeError = if (postalCodeRegex.matches(value)) null else "Invalid postal code format"
+        },
+        label = { Text("Postal Code") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        modifier = Modifier.fillMaxWidth(),
+        isError = postalCodeError != null
+    )
+
+    if (postalCodeError != null) {
+        Text(
+            text = postalCodeError!!,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+    }
+}
+
+
+
 @Composable
 fun AddressSection(address: String, postalCode: String, postalCodeError: String?, onEvent: (AddMedicationEvent) -> Unit) {
     Text(text = "Pharmacy Location", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
@@ -256,6 +323,7 @@ fun SaveDeleteRow(navController: NavHostController, onEvent: (AddMedicationEvent
         }
     }
 }
+
 
 @Composable
 fun ConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {

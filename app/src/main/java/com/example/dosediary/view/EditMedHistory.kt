@@ -62,6 +62,7 @@ fun EditMedication(navController: NavHostController) {
             Spacer(modifier = Modifier.height(16.dp))
             EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
             Spacer(modifier = Modifier.height(16.dp))
+
 //            DatePicker(date, "Select Date")
             Spacer(modifier = Modifier.height(16.dp))
 //            TimePicker(time, "Select Time")

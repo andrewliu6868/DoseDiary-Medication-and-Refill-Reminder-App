@@ -100,4 +100,5 @@ class AddMedicationViewModel @Inject constructor(
             }
         }
     }
+
 }
