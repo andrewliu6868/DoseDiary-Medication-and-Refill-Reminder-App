@@ -133,6 +133,7 @@ fun TextField(text: MutableState<String>) {
         value = text.value,
         onValueChange = { text.value = it },
         label = { Text("Other Information") },
+        placeholder = { Text("Enter Additional Information") },
         modifier = Modifier.fillMaxWidth()
     )
 }
