@@ -19,7 +19,7 @@ interface MedicationDao {
     fun getMedicationOrderedByFirstName(): Flow<List<Medication>>
 
     @Query("SELECT * FROM medication WHERE owner = :owner ORDER BY medicationName ASC")
-    fun getMedicationsByOwner(owner: String): Flow<List<Medication>>
+    fun getMedicationsByOwner(owner: Int): Flow<List<Medication>>
 
     @Query("SELECT * FROM medication ORDER BY refillDays ASC")
     fun getMedicationByRefill(): Flow<List<Medication>>

@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocal
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,6 +30,7 @@ import androidx.navigation.navArgument
 import com.example.dosediary.model.DoseDiaryDatabase
 import com.example.dosediary.model.Medication
 import com.example.dosediary.model.User
+import com.example.dosediary.model.UserRepository
 
 import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.navigation.BottomNavigationBar
@@ -50,30 +53,33 @@ import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModelFactory
-import com.example.dosediary.viewmodel.SignUpViewModel
-import com.example.dosediary.viewmodel.SignUpViewModelFactory
+import com.example.dosediary.viewmodel.ProfileViewModel
+import com.example.dosediary.viewmodel.ProfileViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val _medRefillViewModel by viewModels<MedRefillViewModel>{
-        MedRefillViewModelFactory(application)
-    }
-    private val _loginViewModel by viewModels<LoginViewModel>{
-        LoginViewModelFactory(application)
-    }
-    private val _signUpViewModel by viewModels<SignUpViewModel>{
-        SignUpViewModelFactory(application)
-    }
-    private val  _medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
+    @Inject
+    lateinit var userRepository: UserRepository
+
+    private val  medRefillDetailViewModel by viewModels<MedRefillDetailViewModel>{
         MedRefillDetailViewModelFactory(application)
     }
 
+    private val medRefillViewModel by viewModels<MedRefillViewModel> {
+        MedRefillViewModelFactory(application, userRepository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         lifecycleScope.launch {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -82,21 +88,7 @@ class MainActivity : ComponentActivity() {
             val end_calendar = Calendar.getInstance()
             start_calendar.add(Calendar.DAY_OF_YEAR, 2)
             end_calendar.add(Calendar.DAY_OF_YEAR, 30)
-            val sampleUsers = listOf(
-                User(
-                    email = "andrewliu6867@gmail.com",
-                    password = "password",
-                    firstName = "Andrew",
-                    lastname =  "Liu",
-                ),
 
-                User(
-                    email = "randomguy@gmail.com",
-                    password = "password1",
-                    firstName = "Random",
-                    lastname = "Guy",
-                )
-            )
 
             val sampleMedications = listOf(
                 Medication(
@@ -106,7 +98,7 @@ class MainActivity : ComponentActivity() {
                     refillDays = 10,
                     dosage = 1,
                     frequency = "Daily",
-                    owner = "User 1"
+                    owner = 1
                 ),
                 Medication(
                     medicationName = "Medication 2",
@@ -115,7 +107,7 @@ class MainActivity : ComponentActivity() {
                     refillDays = 10,
                     dosage = 1,
                     frequency = "Daily",
-                    owner = "User 1"
+                    owner = 1
                 ),
                 Medication(
                     medicationName = "Medication 3",
@@ -124,7 +116,7 @@ class MainActivity : ComponentActivity() {
                     refillDays = 10,
                     dosage = 1,
                     frequency = "Daily",
-                    owner = "User 1"
+                    owner = 1
                 ),
             )
 
@@ -133,13 +125,6 @@ class MainActivity : ComponentActivity() {
 //            sampleMedications.forEach() {
 //                medicationDao.upsertMedication(it)
 //            }
-
-
-            /*val userDao = DoseDiaryDatabase.getInstance(application).userDao
-            sampleUsers.forEach(){
-                userDao.upsertUser(it)
-            }*/
-
         }
 
         setContent {
