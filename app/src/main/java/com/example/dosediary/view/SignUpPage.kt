@@ -17,13 +17,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,14 +39,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.dosediary.viewmodel.SignUpState
 import com.example.dosediary.viewmodel.SignUpViewModel
-import kotlin.math.sign
-
+import com.example.dosediary.viewmodel.SignUpState
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun SignUpScreen(navHostController: NavHostController, viewModel:SignUpViewModel){
+fun SignUpScreen(navHostController: NavHostController, viewModel: SignUpViewModel){
     val signUpState by viewModel.signUpState.collectAsState()
     when(signUpState){
         is SignUpState.Idle -> {
@@ -77,14 +72,13 @@ fun SignUpScreen(navHostController: NavHostController, viewModel:SignUpViewModel
             SignUpAttempt{firstName, lastName, email, password ->
                 viewModel.addUser(firstName, lastName, email,password)
             }
-
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
+fun SignUpAttempt(onSignUp: (String, String, String,String) -> Unit){
     val email = remember { mutableStateOf("") }
     val password = remember{ mutableStateOf("") }
     val firstName = remember{mutableStateOf("")}
@@ -162,7 +156,7 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                     cursorColor = Color.Blue
                 )
             )
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(80.dp))
             Button(
                 onClick = {onSignUp(firstName.value, lastName.value, email.value, password.value)},
                 modifier = Modifier

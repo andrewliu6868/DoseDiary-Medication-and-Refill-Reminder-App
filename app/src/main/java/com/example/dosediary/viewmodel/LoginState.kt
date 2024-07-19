@@ -1,6 +1,7 @@
 package com.example.dosediary.viewmodel
 
-import com.example.dosediary.model.User
+import com.example.dosediary.model.dao.UserDao
+import com.example.dosediary.model.entity.User
 
 sealed class LoginState {
     object Idle : LoginState()

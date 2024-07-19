@@ -21,7 +21,7 @@ data class Medication(
     val startDate: Date,
     val endDate: Date,
     val frequency: String,
-    val times: List<Date>,
+    //val times: List<Date>,
     val refillDays: Int,
     val note: String,
     val address: String,
