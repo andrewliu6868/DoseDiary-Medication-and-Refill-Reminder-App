@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
+import com.example.dosediary.model.entity.User
 
 @Dao
 interface UserDao {
@@ -19,5 +20,13 @@ interface UserDao {
 
     @Query("SELECT * FROM User WHERE email = :tryEmail")
     fun verifyUserExist(tryEmail:String): Flow<User?>
+    @Query("SELECT * FROM User WHERE id = :id")
+    fun getUserById(id: Int): Flow<User>
+
+    @Query("SELECT * FROM User WHERE firstName = :firstName AND lastname = :lastName")
+    fun getUserByFullName(firstName: String, lastName: String): Flow<User>
+
+    @Query("UPDATE User SET firstName = :firstName, lastname = :lastName, email = :email, password = :password WHERE id = :id")
+    suspend fun updateUser(id: Int, firstName: String, lastName: String, email: String, password: String)
 
 }

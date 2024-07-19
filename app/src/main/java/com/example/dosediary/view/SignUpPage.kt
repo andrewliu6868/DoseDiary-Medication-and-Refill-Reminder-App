@@ -63,7 +63,7 @@ fun SignUpScreen(navHostController: NavHostController, viewModel:SignUpViewModel
             navHostController.navigate("login")
         }
 
-        is SignUpState.Error ->{
+        is SignUpState.Error -> {
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -73,7 +73,6 @@ fun SignUpScreen(navHostController: NavHostController, viewModel:SignUpViewModel
             SignUpAttempt{firstName, lastName, email, password ->
                 viewModel.addUser(firstName, lastName, email,password)
             }
-
         }
     }
 }

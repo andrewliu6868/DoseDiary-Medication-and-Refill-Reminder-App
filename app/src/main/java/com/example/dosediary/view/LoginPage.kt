@@ -20,6 +20,8 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -68,9 +71,9 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel)
 
     when(loginState){
         is LoginState.Idle ->{
-            LoginAttempt({email, password ->
-                viewModel.login(email, password)},
-                navHostController)
+            LoginAttempt( {email, password ->
+                    viewModel.login(email, password) },
+                    navHostController)
         }
 
         is LoginState.Loading -> {

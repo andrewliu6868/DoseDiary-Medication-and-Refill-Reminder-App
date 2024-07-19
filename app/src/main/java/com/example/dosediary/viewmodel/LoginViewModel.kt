@@ -6,14 +6,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.dosediary.model.UserState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import com.example.dosediary.model.DoseDiaryDatabase
-import com.example.dosediary.model.Medication
+import com.example.dosediary.utils.DoseDiaryDatabase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class LoginViewModel(application: Application): ViewModel(){
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val userState: UserState,
+    application: Application): ViewModel(){
     private val _userDao = DoseDiaryDatabase.getInstance(application).userDao
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> get() = _loginState
@@ -40,11 +45,11 @@ class LoginViewModel(application: Application): ViewModel(){
     }
 
 }
-class LoginViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
+/*class LoginViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(LoginViewModel::class.java)){
             return LoginViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
+}*/

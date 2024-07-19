@@ -5,14 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.dosediary.model.DoseDiaryDatabase
-import com.example.dosediary.model.User
+import com.example.dosediary.model.UserState
+import com.example.dosediary.utils.DoseDiaryDatabase
+import com.example.dosediary.model.entity.User
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class SignUpViewModel(application: Application): ViewModel(){
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
+    private val userState: UserState,
+    application: Application): ViewModel(){
     private val _userDao = DoseDiaryDatabase.getInstance(application).userDao
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Idle)
     val signUpState: StateFlow<SignUpState> get() = _signUpState
@@ -40,11 +46,11 @@ class SignUpViewModel(application: Application): ViewModel(){
     }
 
 }
-class SignUpViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
+/*class SignUpViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(SignUpViewModel::class.java)){
             return SignUpViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
+}*/
