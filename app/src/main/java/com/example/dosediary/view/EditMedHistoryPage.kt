@@ -9,28 +9,59 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import java.text.SimpleDateFormat
 import java.util.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.DatePicker
 import com.example.dosediary.components.TimePicker
+import com.example.dosediary.event.EditMedHistoryEvent
+import com.example.dosediary.model.entity.MedicationHistory
 import com.example.dosediary.ui.theme.Primary
+import com.example.dosediary.viewmodel.EditMedHistoryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditMedicationPage(navController: NavHostController) {
+fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHistoryViewModel = hiltViewModel()) {
+    val state by viewModel.state.collectAsState()
     val medicationName = remember { mutableStateOf("") }
     val effectivenessOptions = listOf("Effective", "Moderate", "Marginal", "Ineffective")
-    val selectedEffectiveness = remember { mutableStateOf("") }
+    val selectedEffectiveness = remember { mutableStateOf(state.effectiveness) }
     val calendar = Calendar.getInstance()
     val date = remember { mutableStateOf(calendar.time) }
     val time = remember { mutableStateOf(calendar.time) }
-    val text = remember { mutableStateOf("") }
+    val additionalDetails = remember { mutableStateOf(state.additionalDetails) }
+    val showConfirmDialog = remember { mutableStateOf(false) }
+
+    // Formats (Talk to group if this needs to be changed)
+    val dateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+    val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+
+    val formattedDate = dateFormat.format(date.value)
+    val formattedTime = timeFormat.format(time.value)
+
+    if (showConfirmDialog.value) {
+        EditMedicationConfirmationDialog(
+            onDismiss = { showConfirmDialog.value = false },
+            onConfirm = {
+                val medicationHistory = MedicationHistory(
+                    name = medicationName.value,
+                    timeTaken = formattedTime,
+                    dateTaken = formattedDate,
+                    effectiveness = selectedEffectiveness.value
+                )
+                viewModel.onEvent(EditMedHistoryEvent.AddMedicationHistory(medicationHistory))
+                showConfirmDialog.value = false
+                navController.navigate("history")
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -38,7 +69,7 @@ fun EditMedicationPage(navController: NavHostController) {
                 header = "Add Medication History",
                 showNavigationIcon = true,
                 navController = navController,
-                imageResId = R.drawable.icon,  // Customizable icon
+                imageResId = R.drawable.icon,
                 imageDescription = "App Icon"
             )
         }
@@ -52,7 +83,10 @@ fun EditMedicationPage(navController: NavHostController) {
         ) {
             MedicationNameField(medicationName)
             Spacer(modifier = Modifier.height(16.dp))
-            EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
+            EffectivenessDropdown(
+                selectedEffectiveness = selectedEffectiveness,
+                effectivenessOptions = effectivenessOptions
+            )
             Spacer(modifier = Modifier.height(16.dp))
 
             DatePicker(date.value, "Select Date") { selectedDate ->
@@ -63,9 +97,16 @@ fun EditMedicationPage(navController: NavHostController) {
                 time.value = selectedTime
             }
             Spacer(modifier = Modifier.height(16.dp))
-            TextField(text)
+            AdditionalDetailsField(additionalDetails)
             Spacer(modifier = Modifier.height(16.dp))
-            ButtonRow(navController)
+            ButtonRow(
+                onSave = {
+                    showConfirmDialog.value = true
+                },
+                onDiscard = {
+                    navController.navigate("history")
+                }
+            )
         }
     }
 }
@@ -126,18 +167,19 @@ fun EffectivenessDropdown(
 }
 
 @Composable
-fun TextField(text: MutableState<String>) {
+fun AdditionalDetailsField(additionalDetails: MutableState<String>) {
     OutlinedTextField(
-        value = text.value,
-        onValueChange = { text.value = it },
-        label = { Text("Other Information") },
-        placeholder = { Text("Enter Additional Information") },
-        modifier = Modifier.fillMaxWidth()
+        value = additionalDetails.value,
+        onValueChange = { },
+        label = { Text("Additional Details") },
+        placeholder = { Text("Enter Additional Details") },
+        modifier = Modifier.fillMaxWidth(),
+        readOnly = true
     )
 }
 
 @Composable
-fun ButtonRow(navController: NavHostController) {
+fun ButtonRow(onSave: () -> Unit, onDiscard: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -145,15 +187,15 @@ fun ButtonRow(navController: NavHostController) {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(
-            onClick = {navController.navigate("history")},
+            onClick = onSave,
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ) {
-            Text("Create")
+            Text("Save")
         }
         Spacer(modifier = Modifier.width(16.dp))
         Button(
-            onClick = {navController.navigate("history")},
+            onClick = onDiscard,
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
             modifier = Modifier.weight(1f)
         ) {
@@ -162,6 +204,24 @@ fun ButtonRow(navController: NavHostController) {
     }
 }
 
+@Composable
+fun EditMedicationConfirmationDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Confirm Save") },
+        text = { Text("Are you sure you want to save this medication history?") },
+        confirmButton = {
+            Button(onClick = onConfirm) {
+                Text("Yes")
+            }
+        },
+        dismissButton = {
+            OutlinedButton(onClick = onDismiss) {
+                Text("No")
+            }
+        }
+    )
+}
 
 @Preview(showBackground =true, name = "EditMedication Preview")
 @Composable
