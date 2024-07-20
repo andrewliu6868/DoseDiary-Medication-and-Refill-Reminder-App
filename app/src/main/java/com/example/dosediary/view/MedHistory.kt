@@ -43,25 +43,43 @@ import com.example.dosediary.components.CustomTopAppBar
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import android.widget.Toast;
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.google.android.material.snackbar.Snackbar;
+import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
+import com.example.dosediary.viewmodel.MedicationHistoryViewModel
 
 @Composable
 fun MedicationHistory(navController: NavHostController) {
+    val viewModel = hiltViewModel<MedicationHistoryViewModel>()
+    val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+//    LaunchedEffect(Unit) {
+//        viewModel.addTestEntries()
+//    }
+
     Scaffold(
+        topBar = {
+            CustomTopAppBar(
+                header = "Medication History",
+                showNavigationIcon = true,
+                navController = navController,
+                imageResId = R.drawable.icon,  // Customizable icon
+                imageDescription = "App Icon"
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    generatePDF(context, sampleMedications) { result ->
+                    generatePDF(context, state.medicationHistories) { result ->
                         scope.launch {
                             if (result) {
                                 snackbarHostState.showSnackbar("PDF generated successfully")
@@ -76,15 +94,6 @@ fun MedicationHistory(navController: NavHostController) {
                 Icon(Icons.Filled.BarChart, contentDescription = "Generate PDF")
             }
         },
-        topBar = {
-            CustomTopAppBar(
-                header = "Medication History",
-                showNavigationIcon = false,
-                navController = navController,
-                imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon"
-            )
-        },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
@@ -94,9 +103,10 @@ fun MedicationHistory(navController: NavHostController) {
                 .fillMaxSize()
                 .background(Color.White)
                 .padding(innerPadding)
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            items(sampleMedications) { medication ->
+            items(state.medicationHistories) { medication ->
                 MedicationItem(medication, navController)
             }
         }
