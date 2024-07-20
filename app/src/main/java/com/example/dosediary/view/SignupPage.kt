@@ -38,7 +38,7 @@ import com.example.dosediary.viewmodel.SignUpViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun SignUpPage(navHostController: NavHostController, viewModel:SignUpViewModel){
+fun SignupPage(navHostController: NavHostController, viewModel:SignUpViewModel){
     val signUpState by viewModel.signUpState.collectAsState()
     when(signUpState){
         is SignUpState.Idle -> {

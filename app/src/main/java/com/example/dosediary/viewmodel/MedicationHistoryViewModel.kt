@@ -26,7 +26,7 @@ class MedicationHistoryViewModel @Inject constructor(
 
     fun onEvent(event: MedicationHistoryEvent) {
         when (event) {
-            MedicationHistoryEvent.FetchMedicationHistories -> {
+            is MedicationHistoryEvent.FetchMedicationHistories -> {
                 fetchMedicationHistories()
             }
             is MedicationHistoryEvent.DeleteMedicationHistory -> {
