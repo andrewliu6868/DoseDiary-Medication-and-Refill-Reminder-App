@@ -112,31 +112,44 @@ fun MedicationHistoryPage(navController: NavHostController) {
 
 fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult: (Boolean) -> Unit) {
     val pdfDocument = PdfDocument()
-    val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
-    val page = pdfDocument.startPage(pageInfo)
-
-    val canvas = page.canvas
-
-    // Create a Paint object
+    val pageWidth = 300
+    val pageHeight = 600
     val paint = Paint().apply {
         textSize = 12f
         isAntiAlias = true
     }
 
-    var yPosition = 10
+    val itemsPerPage = 6
+    val totalPages = (medications.size + itemsPerPage - 1) / itemsPerPage
 
-    medications.forEach { medication ->
-        canvas.drawText("Name: ${medication.name}", 10f, yPosition.toFloat(), paint)
-        yPosition += 20
-        canvas.drawText("Time: ${medication.timeTaken}", 10f, yPosition.toFloat(), paint)
-        yPosition += 20
-        canvas.drawText("Date: ${medication.dateTaken}", 10f, yPosition.toFloat(), paint)
-        yPosition += 20
-        canvas.drawText("Effectiveness: ${medication.effectiveness}", 10f, yPosition.toFloat(), paint)
-        yPosition += 30
+    for (pageIndex in 0 until totalPages) {
+        val pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageIndex + 1).create()
+        val page = pdfDocument.startPage(pageInfo)
+        val canvas = page.canvas
+
+        var yPosition = 40f // Start drawing position
+        val startItemIndex = pageIndex * itemsPerPage
+        val endItemIndex = minOf(startItemIndex + itemsPerPage, medications.size)
+
+        for (i in startItemIndex until endItemIndex) {
+            val medication = medications[i]
+            canvas.drawText("Name: ${medication.name}", 10f, yPosition, paint)
+            yPosition += 20
+            canvas.drawText("Time: ${medication.timeTaken}", 10f, yPosition, paint)
+            yPosition += 20
+            canvas.drawText("Date: ${medication.dateTaken}", 10f, yPosition, paint)
+            yPosition += 20
+            canvas.drawText("Effectiveness: ${medication.effectiveness}", 10f, yPosition, paint)
+            yPosition += 30
+
+            // Check if the current page is full
+            if (yPosition + 30 > pageHeight) {
+                break
+            }
+        }
+
+        pdfDocument.finishPage(page)
     }
-
-    pdfDocument.finishPage(page)
 
     val file = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "MedicationHistory.pdf")
     try {
@@ -151,6 +164,8 @@ fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult
         pdfDocument.close()
     }
 }
+
+
 
 @Composable
 fun MedicationItem(medication: MedicationHistory, navController: NavHostController) {
