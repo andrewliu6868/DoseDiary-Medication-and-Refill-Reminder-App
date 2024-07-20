@@ -5,22 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-
-import androidx.compose.material3.Surface
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.state.UserState
-
-import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.ui.theme.Background
+import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.view.AppEntry
 import com.example.dosediary.view.LoginPage
 import com.example.dosediary.view.SignUpPage
+import com.example.dosediary.view.SignupPage
 import com.example.dosediary.viewmodel.LoginViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
