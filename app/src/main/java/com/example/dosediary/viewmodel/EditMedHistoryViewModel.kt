@@ -7,11 +7,13 @@ import com.example.dosediary.event.EditMedHistoryEvent
 import com.example.dosediary.model.dao.MedicationHistoryDao
 import com.example.dosediary.model.entity.MedicationHistory
 import com.example.dosediary.state.EditMedHistoryState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class EditMedHistoryViewModel @Inject constructor(
     application: Application,
     private val medicationHistoryDao: MedicationHistoryDao
