@@ -17,6 +17,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.components.DatePicker
+import com.example.dosediary.components.TimePicker
 import com.example.dosediary.ui.theme.Primary
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,8 +28,8 @@ fun EditMedicationPage(navController: NavHostController) {
     val effectivenessOptions = listOf("Effective", "Moderate", "Marginal", "Ineffective")
     val selectedEffectiveness = remember { mutableStateOf("") }
     val calendar = Calendar.getInstance()
-    val date = remember { mutableStateOf(calendar.time)}
-    val time = remember { mutableStateOf(calendar.time)}
+    val date = remember { mutableStateOf(calendar.time) }
+    val time = remember { mutableStateOf(calendar.time) }
     val text = remember { mutableStateOf("") }
 
     Scaffold(
@@ -53,9 +55,13 @@ fun EditMedicationPage(navController: NavHostController) {
             EffectivenessDropdown(selectedEffectiveness, effectivenessOptions)
             Spacer(modifier = Modifier.height(16.dp))
 
-//            DatePicker(date, "Select Date")
+            DatePicker(date.value, "Select Date") { selectedDate ->
+                date.value = selectedDate
+            }
             Spacer(modifier = Modifier.height(16.dp))
-//            TimePicker(time, "Select Time")
+            TimePicker(time.value, "Select Time") { selectedTime ->
+                time.value = selectedTime
+            }
             Spacer(modifier = Modifier.height(16.dp))
             TextField(text)
             Spacer(modifier = Modifier.height(16.dp))
