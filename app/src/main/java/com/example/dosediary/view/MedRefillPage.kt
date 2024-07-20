@@ -49,11 +49,10 @@ import java.util.Locale
 //@Preview
 @Composable
 fun MedicationRefillPage(
-    navController: NavController
-){
-    val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
-    val state by medRefillViewModel.state.collectAsState()
-
+    navController: NavController,
+    state: MedRefillState,
+    onEvent: (MedRefillEvent) -> Unit
+) {
     Scaffold(
         topBar = {
             CustomTopAppBar(
@@ -77,8 +76,8 @@ fun MedicationRefillPage(
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp)
             )
             LazyColumn {
-                item { MedicationRefillTodayList(navController, state, medRefillViewModel) }
-                item { MedicationRefillNextWeekList(navController, state, medRefillViewModel) }
+                item { MedicationRefillTodayList(navController, state, onEvent) }
+                item { MedicationRefillNextWeekList(navController, state, onEvent) }
             }
         }
     }
@@ -89,7 +88,7 @@ fun MedicationRefillPage(
 fun MedicationRefillTodayList(
     navController: NavController,
     state: MedRefillState,
-    medRefillViewModel: MedRefillViewModel,
+    onEvent: (MedRefillEvent) -> Unit,
     isHomePage: Boolean = false
 ) {
     Card(
@@ -124,7 +123,7 @@ fun MedicationRefillTodayList(
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
                             navController.navigate("refillDetails/${medication.medication.id}")
-                        }, medRefillViewModel)
+                        }, onEvent)
                     }
                 }
             }
@@ -145,7 +144,7 @@ fun MedicationRefillTodayList(
 fun MedicationRefillNextWeekList(
     navController: NavController,
     state: MedRefillState,
-    medRefillViewModel: MedRefillViewModel
+    onEvent: (MedRefillEvent) -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(35.dp),
@@ -172,7 +171,7 @@ fun MedicationRefillNextWeekList(
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
                             navController.navigate("refillDetails/${medication.medication.id}")
-                        }, medRefillViewModel)
+                        }, onEvent)
                     }
                 }
             }
@@ -184,7 +183,7 @@ fun MedicationRefillNextWeekList(
 fun MedicationRefillDetailedItem(
     medicationWithNextRefillDate: MedicationWithNextRefillDate,
     onItemClick: () -> Unit,
-    medRefillViewModel: MedRefillViewModel
+    onEvent: (MedRefillEvent) -> Unit,
 ) {
 //    val shouldCheck = shouldCheckCheckbox(
 //        medicationWithNextRefillDate.medication.lastRefilledDate,
@@ -233,7 +232,7 @@ fun MedicationRefillDetailedItem(
                 checked = false,
                 colors = CheckboxDefaults.colors(Primary),
                 onCheckedChange = {
-                    medRefillViewModel.onEvent(MedRefillEvent.SetRefillCompleted(medicationWithNextRefillDate))
+                    onEvent(MedRefillEvent.SetRefillCompleted(medicationWithNextRefillDate))
                 },
             )
         }

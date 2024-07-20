@@ -10,9 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Directions
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -23,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dosediary.R
 import androidx.navigation.NavController
 import com.example.dosediary.components.CustomTopAppBar
@@ -33,19 +29,16 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.example.dosediary.model.entity.Medication
-import com.example.dosediary.viewmodel.MedRefillDetailViewModel
+import com.example.dosediary.state.MedRefillState
+import com.google.maps.android.compose.rememberMarkerState
 
 @Composable
-fun MedicationRefillDetailPage(navController: NavController, medicationId: Int){
-    val medRefillDetailViewModel = hiltViewModel<MedRefillDetailViewModel>()
-    LaunchedEffect(medicationId) {
-        medRefillDetailViewModel.fetchMedById(medicationId)
-    }
-    val state by medRefillDetailViewModel.state.collectAsState()
-
+fun MedicationRefillDetailPage(
+    navController: NavController,
+    medRefillState: MedRefillState,
+){
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -66,9 +59,7 @@ fun MedicationRefillDetailPage(navController: NavController, medicationId: Int){
                 .padding(horizontal = 16.dp)
 
         ) {
-            state.medRefillsMedication.let { medication ->
-                MedicationRefillDetail(medication)
-            }
+            MedicationRefillDetail(medRefillState.selectedRefillDetail)
         }
     }
 
@@ -239,7 +230,7 @@ fun MedRefillGoogleMaps(location: LatLng) {
         }
     ){
         Marker(
-            state = MarkerState(position = location),
+            state = rememberMarkerState(position = location),
             title = "Current Location",
             snippet = "Marker in ${location.latitude}, ${location.longitude}"
         )

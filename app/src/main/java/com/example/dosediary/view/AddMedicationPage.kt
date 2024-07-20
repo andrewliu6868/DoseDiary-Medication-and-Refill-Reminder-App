@@ -51,6 +51,7 @@ import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.DatePicker
 import com.example.dosediary.components.TimePicker
 import com.example.dosediary.events.AddMedicationEvent
+import com.example.dosediary.state.AddMedicationState
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.viewmodel.AddMedicationViewModel
 import java.text.SimpleDateFormat
@@ -58,9 +59,11 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun AddMedicationPage(navController: NavHostController){
-    val viewModel = hiltViewModel<AddMedicationViewModel>()
-    val state by viewModel.state.collectAsState()
+fun AddMedicationPage(
+    navController: NavHostController,
+    state: AddMedicationState,
+    onEvent: (AddMedicationEvent) -> Unit
+) {
 
     Scaffold(
         topBar = {
@@ -82,20 +85,20 @@ fun AddMedicationPage(navController: NavHostController){
             contentPadding = PaddingValues(vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            item { MedicationNameSection(state.medicationName) { viewModel.onEvent(it) } }
-            item { MedDurationSection(state.startDate, state.endDate) { viewModel.onEvent(it) } }
-            item { MedFrequencySection(state.frequency, state.times) { viewModel.onEvent(it) } }
-            item { RefillDaysSection(state.refillDays) { viewModel.onEvent(it) } }
-            item { AddressSection(state.address, state.postalCode, state.postalCodeError) { viewModel.onEvent(it) } }
-            item { NoteSection(state.note) { viewModel.onEvent(it) } }
-            item { SaveDeleteRow(navController) { viewModel.onEvent(it) } }
+            item { MedicationNameSection(state.medicationName) { onEvent(it) } }
+            item { MedDurationSection(state.startDate, state.endDate) { onEvent(it) } }
+            item { MedFrequencySection(state.frequency, state.times) { onEvent(it) } }
+            item { RefillDaysSection(state.refillDays) { onEvent(it) } }
+            item { AddressSection(state.address, state.postalCode, state.postalCodeError) { onEvent(it) } }
+            item { NoteSection(state.note) { onEvent(it) } }
+            item { SaveDeleteRow(navController) { onEvent(it) } }
         }
         if (state.showConfirmDialog) {
             ConfirmationDialog(
                 onConfirm = {
-                    viewModel.onEvent(AddMedicationEvent.ConfirmSaveMedication)
+                    onEvent(AddMedicationEvent.ConfirmSaveMedication)
                     navController.navigate("home") },
-                onDismiss = { viewModel.onEvent(AddMedicationEvent.DismissDialog) }
+                onDismiss = { onEvent(AddMedicationEvent.DismissDialog) }
             )
         }
     }
@@ -343,8 +346,10 @@ fun ConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
 
 @Preview(showBackground =true, name = "AddMedication Preview")
 @Composable
-fun AddMedPreview(){
+fun AddMedPreview() {
     val navController = rememberNavController()
-    AddMedicationPage(navController);
+    val state = AddMedicationState()
+    val onEvent: (AddMedicationEvent) -> Unit = {}
+    AddMedicationPage(navController = navController, state = state, onEvent = onEvent)
 }
 

@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.event.MedRefillEvent
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.state.MedRefillState
@@ -28,9 +29,11 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun HomePage(navController: NavController) {
-    val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
-    val state by medRefillViewModel.state.collectAsState()
+fun HomePage(
+    navController: NavController,
+    state: MedRefillState,
+    onEvent: (MedRefillEvent) -> Unit
+) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -61,7 +64,7 @@ fun HomePage(navController: NavController) {
             ) {
                 item { MedicationReminder() }
                 item { DailyMedicationChecklist() }
-                item { UpcomingMedicationRefills(navController, state, medRefillViewModel) }
+                item { UpcomingMedicationRefills(navController, state, onEvent) }
             }
         }
     }
@@ -162,7 +165,7 @@ fun DailyMedicationChecklist() {
 fun UpcomingMedicationRefills(
     navController: NavController,
     state: MedRefillState,
-    medRefillViewModel: MedRefillViewModel
+    onEvent: (MedRefillEvent) -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(35.dp),
@@ -172,6 +175,6 @@ fun UpcomingMedicationRefills(
             .padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
-        MedicationRefillTodayList(navController, state, medRefillViewModel, true)
+        MedicationRefillTodayList(navController, state, onEvent, true)
     }
 }

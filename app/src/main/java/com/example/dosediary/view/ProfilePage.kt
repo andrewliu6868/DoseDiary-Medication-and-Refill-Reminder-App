@@ -63,11 +63,10 @@ import com.example.dosediary.viewmodel.ProfileViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfilePage(
-    navController: NavController
+    navController: NavController,
+    state: ProfileState,
+    onEvent: (ProfileEvent) -> Unit
 ) {
-    val profileViewModel = hiltViewModel<ProfileViewModel>()
-    val state by profileViewModel.state.collectAsState()
-
     var isAddingUser by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -108,7 +107,7 @@ fun ProfilePage(
                             OutlinedTextField(
                                 value = state.addUserFirstName,
                                 onValueChange = { newText ->
-                                    profileViewModel.onEvent(ProfileEvent.onAddUserFirstNameChanged(newText))
+                                    onEvent(ProfileEvent.onAddUserFirstNameChanged(newText))
                                 },
                                 label = { Text("First Name") },
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -122,7 +121,7 @@ fun ProfilePage(
                             OutlinedTextField(
                                 value = state.addUserLastName,
                                 onValueChange = {newText ->
-                                    profileViewModel.onEvent(ProfileEvent.onAddUserLastNameChanged(newText))
+                                    onEvent(ProfileEvent.onAddUserLastNameChanged(newText))
                                 },
                                 label = { Text("Last Name") },
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -148,7 +147,7 @@ fun ProfilePage(
 
                                 Button(
                                     onClick = {
-                                        profileViewModel.onEvent(ProfileEvent.addUser)
+                                        onEvent(ProfileEvent.addUser)
                                         isAddingUser = false
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
@@ -177,10 +176,10 @@ fun ProfilePage(
                         onItemClick = {
                             isAddingUser = true
                         },
-                        profileViewModel = profileViewModel
+                        onEvent = onEvent
                     )
                 }
-                item { UserDetail(state, profileViewModel) }
+                item { UserDetail(state, onEvent) }
 //                item { MedicationHistory(navController) }
 //                item { MedicationDetail(navController)}
             }
@@ -194,7 +193,7 @@ fun ManageUsers(
     navController: NavController,
     state: ProfileState,
     onItemClick: () -> Unit,
-    profileViewModel: ProfileViewModel
+    onEvent: (ProfileEvent) -> Unit
 ) {
 
     Card(
@@ -216,7 +215,7 @@ fun ManageUsers(
                     Users(
                         user = user,
                         onItemClick = {
-                            profileViewModel.onEvent(ProfileEvent.onChangeUser(user))
+                            onEvent(ProfileEvent.onChangeUser(user))
                         }
                     )
                 }
@@ -303,7 +302,7 @@ fun AddUsers(onItemClick: () -> Unit = {}) {
 @Composable
 fun UserDetail(
     state: ProfileState,
-    profileViewModel: ProfileViewModel
+    onEvent: (ProfileEvent) -> Unit
 ) {
 
     var showPassword by remember { mutableStateOf(value = false) }
@@ -327,7 +326,7 @@ fun UserDetail(
                 OutlinedTextField(
                     value = state.editMainUserFirstName,
                     onValueChange = {
-                        profileViewModel.onEvent(ProfileEvent.onMainUserFirstNameChanged(it))
+                        onEvent(ProfileEvent.onMainUserFirstNameChanged(it))
                     },
                     label = { Text("First Name") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -345,7 +344,7 @@ fun UserDetail(
                 OutlinedTextField(
                     value = state.editMainUserLastName,
                     onValueChange = {
-                        profileViewModel.onEvent(ProfileEvent.onMainUserLastNameChanged(it))
+                        onEvent(ProfileEvent.onMainUserLastNameChanged(it))
                     },
                     label = { Text("Last Name") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -362,7 +361,7 @@ fun UserDetail(
                 OutlinedTextField(
                     value = state.editMainUserEmail,
                     onValueChange = {
-                        profileViewModel.onEvent(ProfileEvent.onMainUserEmailChanged(it))
+                        onEvent(ProfileEvent.onMainUserEmailChanged(it))
                     },
                     label = { Text("Email") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -386,7 +385,7 @@ fun UserDetail(
                         .fillMaxWidth(),
                     value = state.editMainUserPassword,
                     onValueChange = {
-                        profileViewModel.onEvent(ProfileEvent.onMainUserPasswordChanged(it))
+                        onEvent(ProfileEvent.onMainUserPasswordChanged(it))
                     },
                     label = {
                         Text(text = "Password")
@@ -436,7 +435,7 @@ fun UserDetail(
                     ) {
                         Button(
                             onClick = {
-                                profileViewModel.onEvent(ProfileEvent.cancelUpdateMainUser)
+                                onEvent(ProfileEvent.cancelUpdateMainUser)
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
                             modifier = Modifier.align(Alignment.CenterVertically)
@@ -446,7 +445,7 @@ fun UserDetail(
 
                         Button(
                             onClick = {
-                                profileViewModel.onEvent(ProfileEvent.updateMainUser)
+                                onEvent(ProfileEvent.updateMainUser)
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Primary),
                             modifier = Modifier.align(Alignment.CenterVertically)

@@ -19,9 +19,7 @@ import com.example.dosediary.ui.theme.DoseDiaryTheme
 import com.example.dosediary.view.AppEntry
 import com.example.dosediary.view.LoginPage
 import com.example.dosediary.view.SignUpPage
-import com.example.dosediary.view.SignupPage
 import com.example.dosediary.viewmodel.LoginViewModel
-import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,16 +34,6 @@ class MainActivity : ComponentActivity() {
     lateinit var userState: UserState
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-
-            val start_calendar = Calendar.getInstance()
-            val end_calendar = Calendar.getInstance()
-            start_calendar.add(Calendar.DAY_OF_YEAR, 2)
-            end_calendar.add(Calendar.DAY_OF_YEAR, 30)
-
-        }
         setContent {
             DoseDiaryTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {

@@ -51,13 +51,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.dosediary.events.MedicationHistoryEvent
+import com.example.dosediary.state.MedicationHistoryState
 import com.example.dosediary.viewmodel.MedicationHistoryViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun MedicationHistoryPage(navController: NavHostController) {
-    val viewModel = hiltViewModel<MedicationHistoryViewModel>()
-    val state by viewModel.state.collectAsState()
+fun MedicationHistoryPage(
+    navController: NavHostController,
+    state: MedicationHistoryState,
+    onEvent: (MedicationHistoryEvent) -> Unit
+) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -216,9 +220,11 @@ fun MedicationItem(medication: MedicationHistory, navController: NavHostControll
 
 @Preview(showBackground =true, name = "MedHistory Preview")
 @Composable
-fun MedHistoryPreview(){
+fun MedHistoryPreview() {
     val navController = rememberNavController()
-    MedicationHistoryPage(navController = navController);
+    val state = MedicationHistoryState()
+    val onEvent: (MedicationHistoryEvent) -> Unit = {}
+    MedicationHistoryPage(navController = navController, state = state, onEvent = onEvent)
 }
 
 
