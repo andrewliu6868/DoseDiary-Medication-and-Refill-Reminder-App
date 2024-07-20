@@ -32,13 +32,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.dosediary.state.SignUpState
+import com.example.dosediary.viewmodel.LoginViewModel
 import com.example.dosediary.viewmodel.SignUpViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun SignUpPage(navHostController: NavHostController, viewModel:SignUpViewModel){
+fun SignUpPage(navHostController: NavHostController){
+    val viewModel = hiltViewModel<SignUpViewModel>()
     val signUpState by viewModel.signUpState.collectAsState()
     when(signUpState){
         is SignUpState.Idle -> {

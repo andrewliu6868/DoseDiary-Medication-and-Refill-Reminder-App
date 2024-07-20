@@ -35,13 +35,6 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var userState: UserState
-
-    private val loginViewModel: LoginViewModel by viewModels()
-    private val signUpViewModel: SignUpViewModel by viewModels()
-    private val medRefillViewModel: MedRefillViewModel by viewModels()
-    private val medRefillDetailViewModel: MedRefillDetailViewModel by viewModels()
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,40 +47,22 @@ class MainActivity : ComponentActivity() {
             end_calendar.add(Calendar.DAY_OF_YEAR, 30)
 
         }
-
         setContent {
             DoseDiaryTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
-
-                    // HomeScreen(_medRefillViewModel, _medRefillDetailViewModel)
                     val navController = rememberNavController()
-                    LoginNavigation(navController, loginViewModel, signUpViewModel, medRefillViewModel, medRefillDetailViewModel)
-
+                    LoginNavigation(navController)
                 }
             }
         }
-
-
     }
 }
 @Composable
-fun LoginNavigation(
-    navController: NavHostController,
-    loginViewModel: LoginViewModel,
-    signUpViewModel: SignUpViewModel,
-    medRefillViewModel: MedRefillViewModel,
-    medRefillDetailViewModel: MedRefillDetailViewModel
-) {
+fun LoginNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "login") {
-        composable("login") {
-            LoginPage(navController, loginViewModel)
-        }
-        composable("home") {
-            AppEntry(medRefillViewModel, medRefillDetailViewModel)
-        }
-        composable("signup"){
-            SignUpPage(navController, viewModel = signUpViewModel)
-        }
+        composable("login") { LoginPage(navController) }
+        composable("home") { AppEntry() }
+        composable("signup"){ SignUpPage(navController) }
     }
 }
 

@@ -17,9 +17,8 @@ import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppEntry(medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: MedRefillDetailViewModel) {
+fun AppEntry() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
@@ -31,28 +30,18 @@ fun AppEntry(medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: M
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            MainAppNavigation(navController, medRefillViewModel,medRefillDetailViewModel)
+            MainAppNavigation(navController)
         }
     }
 }
 
 
 @Composable
-fun MainAppNavigation (navController: NavHostController, medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: MedRefillDetailViewModel){
+fun MainAppNavigation (navController: NavHostController){
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { HomePage(navController)}
-        composable("refill") { MedicationRefillPage(navController) }
+        composable("refill") { MedicationRefillPage() }
         composable("history") { MedicationHistoryPage(navController) }
         composable("profile") { ProfilePage(navController) }
-        composable("Add Medication") { AddMedicationPage(navController) }
-        composable(
-            "refillDetails/{medicationId}",
-            arguments = listOf(navArgument("medicationId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val medicationId = backStackEntry.arguments?.getInt("medicationId")?:0
-            MedicationRefillDetailPage(navController, medicationId)
-        }
-        composable("editMedication") { EditMedicationPage(navController) }
-
     }
 }

@@ -49,13 +49,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.dosediary.state.LoginState
 import com.example.dosediary.viewmodel.LoginViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun LoginPage(navHostController: NavHostController, viewModel: LoginViewModel){
+fun LoginPage(navHostController: NavHostController){
+    val viewModel = hiltViewModel<LoginViewModel>()
     val loginState by viewModel.loginState.collectAsState()
 
     when(loginState){
