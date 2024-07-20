@@ -2,10 +2,10 @@ package com.example.dosediary.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dosediary.events.MedicationHistoryEvent
 import com.example.dosediary.model.entity.MedicationHistory
 import com.example.dosediary.model.dao.MedicationHistoryDao
 import com.example.dosediary.state.MedicationHistoryState
-import com.example.dosediary.events.MedicationHistoryEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -46,21 +46,36 @@ import java.io.FileOutputStream
 import java.io.IOException
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.dosediary.viewmodel.MedicationHistoryViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun MedicationHistoryPage(navController: NavHostController) {
+    val viewModel = hiltViewModel<MedicationHistoryViewModel>()
+    val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
     Scaffold(
+        topBar = {
+            CustomTopAppBar(
+                header = "Medication History",
+                showNavigationIcon = true,
+                navController = navController,
+                imageResId = R.drawable.icon,  // Customizable icon
+                imageDescription = "App Icon"
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    generatePDF(context, sampleMedications) { result ->
+                    generatePDF(context, state.medicationHistories) { result ->
                         scope.launch {
                             if (result) {
                                 snackbarHostState.showSnackbar("PDF generated successfully")
@@ -75,15 +90,6 @@ fun MedicationHistoryPage(navController: NavHostController) {
                 Icon(Icons.Filled.BarChart, contentDescription = "Generate PDF")
             }
         },
-        topBar = {
-            CustomTopAppBar(
-                header = "Medication History",
-                showNavigationIcon = false,
-                navController = navController,
-                imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon"
-            )
-        },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
@@ -93,14 +99,16 @@ fun MedicationHistoryPage(navController: NavHostController) {
                 .fillMaxSize()
                 .background(Color.White)
                 .padding(innerPadding)
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            items(sampleMedications) { medication ->
+            items(state.medicationHistories) { medication ->
                 MedicationItem(medication, navController)
             }
         }
     }
 }
+
 
 fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult: (Boolean) -> Unit) {
     val pdfDocument = PdfDocument()
@@ -143,17 +151,6 @@ fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult
         pdfDocument.close()
     }
 }
-
-
-val sampleMedications = listOf(
-    MedicationHistory(0,"Ibuprofen", "Wednesday 6:00 PM", "2024/06/26", "Effective"),
-    MedicationHistory(1,"Amoxicillin", "Wednesday 7:30 PM", "2024/06/26", "Effective"),
-    MedicationHistory(2,"Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
-    MedicationHistory(3,"Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
-    MedicationHistory(4,"Amoxicillin", "Wednesday 7:30 PM", "2024/06/26","Effective"),
-    MedicationHistory(5,"Amoxicillin", "Wednesday 7:30 PM","2024/06/26", "Effective"),
-    MedicationHistory(6,"Oxaprozin", "Thursday 5:00 AM","2024/06/27", "Effective")
-)
 
 @Composable
 fun MedicationItem(medication: MedicationHistory, navController: NavHostController) {
