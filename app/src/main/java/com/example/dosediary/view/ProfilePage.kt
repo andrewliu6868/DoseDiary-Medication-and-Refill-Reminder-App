@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -33,12 +32,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,17 +55,14 @@ import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.event.ProfileEvent
 import com.example.dosediary.model.entity.User
 import com.example.dosediary.state.ProfileState
-import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.OutlineTextField
 import com.example.dosediary.ui.theme.Primary
-import com.example.dosediary.viewmodel.MedRefillDetailViewModel
-import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.ProfileViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Profile(
+fun ProfilePage(
     navController: NavController
 ) {
     val profileViewModel = hiltViewModel<ProfileViewModel>()

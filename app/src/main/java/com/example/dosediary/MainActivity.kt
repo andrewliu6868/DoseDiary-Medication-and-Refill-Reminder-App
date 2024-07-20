@@ -5,59 +5,30 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.runtime.CompositionLocal
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.dosediary.model.UserState
-import com.example.dosediary.utils.DoseDiaryDatabase
-import com.example.dosediary.model.entity.Medication
-import com.example.dosediary.model.entity.User
+import com.example.dosediary.state.UserState
 
 import com.example.dosediary.ui.theme.DoseDiaryTheme
-import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.ui.theme.Background
-import com.example.dosediary.view.AddMedicationPage
-import com.example.dosediary.view.EditMedication
-import com.example.dosediary.view.HomeScreen
-import com.example.dosediary.view.LoginAttempt
-import com.example.dosediary.view.LoginScreen
-import com.example.dosediary.view.MedicationHistory
-import com.example.dosediary.view.MedicationListScreen
-import com.example.dosediary.view.Profile
-import com.example.dosediary.view.MedicationRefillScreen
-import com.example.dosediary.view.MedicationRefillDetailScreen
-import com.example.dosediary.view.SignUpScreen
-import com.example.dosediary.viewmodel.LoginState
+import com.example.dosediary.view.AppEntry
+import com.example.dosediary.view.LoginPage
+import com.example.dosediary.view.SignUpPage
 import com.example.dosediary.viewmodel.LoginViewModel
 import com.example.dosediary.viewmodel.MedRefillDetailViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -90,7 +61,7 @@ class MainActivity : ComponentActivity() {
 
                     // HomeScreen(_medRefillViewModel, _medRefillDetailViewModel)
                     val navController = rememberNavController()
-                    AppNavigation(navController, loginViewModel, signUpViewModel, medRefillViewModel, medRefillDetailViewModel)
+                    LoginNavigation(navController, loginViewModel, signUpViewModel, medRefillViewModel, medRefillDetailViewModel)
 
                 }
             }
@@ -100,7 +71,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 @Composable
-fun AppNavigation(
+fun LoginNavigation(
     navController: NavHostController,
     loginViewModel: LoginViewModel,
     signUpViewModel: SignUpViewModel,
@@ -109,13 +80,13 @@ fun AppNavigation(
 ) {
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
-            LoginScreen(navController, loginViewModel)
+            LoginPage(navController, loginViewModel)
         }
         composable("home") {
-            HomeScreen(medRefillViewModel, medRefillDetailViewModel)
+            AppEntry(medRefillViewModel, medRefillDetailViewModel)
         }
         composable("signup"){
-            SignUpScreen(navController, viewModel = signUpViewModel)
+            SignUpPage(navController, viewModel = signUpViewModel)
         }
     }
 }

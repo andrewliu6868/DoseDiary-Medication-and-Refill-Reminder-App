@@ -19,7 +19,7 @@ import com.example.dosediary.viewmodel.MedRefillViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: MedRefillDetailViewModel) {
+fun AppEntry(medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: MedRefillDetailViewModel) {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
@@ -31,28 +31,28 @@ fun HomeScreen(medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel:
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            HomeNavigation(navController, medRefillViewModel,medRefillDetailViewModel)
+            MainAppNavigation(navController, medRefillViewModel,medRefillDetailViewModel)
         }
     }
 }
 
 
 @Composable
-fun HomeNavigation (navController: NavHostController, medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: MedRefillDetailViewModel){
+fun MainAppNavigation (navController: NavHostController, medRefillViewModel: MedRefillViewModel, medRefillDetailViewModel: MedRefillDetailViewModel){
     NavHost(navController = navController, startDestination = "home") {
-        composable("home") { MedicationListScreen(navController)}
-        composable("refill") { MedicationRefillScreen(navController) }
-        composable("history") { MedicationHistory(navController) }
-        composable("profile") { Profile(navController) }
+        composable("home") { HomePage(navController)}
+        composable("refill") { MedicationRefillPage(navController) }
+        composable("history") { MedicationHistoryPage(navController) }
+        composable("profile") { ProfilePage(navController) }
         composable("Add Medication") { AddMedicationPage(navController) }
         composable(
             "refillDetails/{medicationId}",
             arguments = listOf(navArgument("medicationId") { type = NavType.IntType })
         ) { backStackEntry ->
             val medicationId = backStackEntry.arguments?.getInt("medicationId")?:0
-            MedicationRefillDetailScreen(navController, medicationId)
+            MedicationRefillDetailPage(navController, medicationId)
         }
-        composable("editMedication") { EditMedication(navController) }
+        composable("editMedication") { EditMedicationPage(navController) }
 
     }
 }
