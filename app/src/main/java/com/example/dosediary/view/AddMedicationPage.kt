@@ -1,37 +1,15 @@
 package com.example.dosediary.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -50,8 +28,7 @@ import com.example.dosediary.events.AddMedicationEvent
 import com.example.dosediary.state.AddMedicationState
 import com.example.dosediary.ui.theme.Primary
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 @Composable
 fun AddMedicationPage(
@@ -63,14 +40,14 @@ fun AddMedicationPage(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = "Add Medication",
+                header = stringResource(R.string.add_medication),
                 showNavigationIcon = true,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon"
+                imageDescription = stringResource(R.string.app_icon)
             )
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -92,7 +69,8 @@ fun AddMedicationPage(
             SaveConfirmationDialog(
                 onConfirm = {
                     onEvent(AddMedicationEvent.ConfirmSaveMedication)
-                    navController.navigateUp() },
+                    navController.navigateUp()
+                },
                 onDismiss = { onEvent(AddMedicationEvent.DismissSaveDialog) }
             )
         }
@@ -110,33 +88,43 @@ fun AddMedicationPage(
 
 @Composable
 fun MedicationNameSection(medicationName: String, onEvent: (AddMedicationEvent) -> Unit) {
-    Text(text = "Medication Name", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
+    Text(
+        text = stringResource(R.string.medication_name),
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
+    )
     Spacer(modifier = Modifier.height(5.dp))
     OutlinedTextField(
         value = medicationName,
         onValueChange = { onEvent(AddMedicationEvent.OnMedicationNameChanged(it)) },
-        label = { Text("Name") },
+        label = { Text(stringResource(R.string.name)) },
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
 fun MedDurationSection(startDate: Date, endDate: Date, onEvent: (AddMedicationEvent) -> Unit) {
-    Text(text = "Medication Period", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
+    Text(
+        text = stringResource(R.string.medication_period),
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
+    )
     Spacer(modifier = Modifier.height(5.dp))
-    DatePicker(date = startDate, placeholder = "Start Date") {
+    DatePicker(date = startDate, placeholder = stringResource(R.string.start_date)) {
         onEvent(AddMedicationEvent.OnStartDateChanged(it))
     }
     Spacer(modifier = Modifier.height(5.dp))
-    DatePicker(date = endDate, placeholder = "End Date") {
+    DatePicker(date = endDate, placeholder = stringResource(R.string.end_date)) {
         onEvent(AddMedicationEvent.OnEndDateChanged(it))
-    }}
+    }
+}
 
 @Composable
 fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedicationEvent) -> Unit) {
     var frequencyState by remember { mutableStateOf(TextFieldValue(frequency)) }
 
-    Text(text = "Intake Frequency", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
+    Text(
+        text = stringResource(R.string.intake_frequency),
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
+    )
     Spacer(modifier = Modifier.height(5.dp))
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -144,7 +132,10 @@ fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedic
     ) {
         Column {
             Spacer(modifier = Modifier.height(15.dp))
-            Text(text = "Number of times per day:", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Medium, fontSize = 15.sp))
+            Text(
+                text = stringResource(R.string.times_per_day),
+                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Medium, fontSize = 15.sp)
+            )
         }
         Spacer(modifier = Modifier.width(8.dp))
         OutlinedTextField(
@@ -170,7 +161,7 @@ fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedic
     }
     Spacer(modifier = Modifier.height(10.dp))
     times.forEachIndexed { index, time ->
-        TimePicker(time = time, placeholder = "Select Time ${index + 1}") {
+        TimePicker(time = time, placeholder = stringResource(R.string.select_time, index + 1)) {
             onEvent(AddMedicationEvent.OnTimeChanged(index, it))
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -180,14 +171,16 @@ fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedic
     // Testing Purpose
     val dateFormat = remember { SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.getDefault()) }
     times.forEachIndexed { index, time ->
-        Text(text = "Time ${index + 1}: ${dateFormat.format(time)}")
+        Text(text = stringResource(R.string.time, index + 1, dateFormat.format(time)))
     }
 }
 
-
 @Composable
 fun RefillDaysSection(sliderPosition: Int, onEvent: (AddMedicationEvent) -> Unit) {
-    Text(text = "Refill Days", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
+    Text(
+        text = stringResource(R.string.refill_days),
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
+    )
     Spacer(modifier = Modifier.height(8.dp))
     Slider(
         value = sliderPosition.toFloat(),
@@ -202,30 +195,35 @@ fun RefillDaysSection(sliderPosition: Int, onEvent: (AddMedicationEvent) -> Unit
     Text(modifier = Modifier.fillMaxWidth(), text = sliderPosition.toString(), textAlign = TextAlign.Center)
 }
 
-
 @Composable
 fun NoteSection(note: String, onEvent: (AddMedicationEvent) -> Unit) {
-    Text(text = "Notes", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
+    Text(
+        text = stringResource(R.string.notes),
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
+    )
     Spacer(modifier = Modifier.height(5.dp))
 
     OutlinedTextField(
         value = note,
         onValueChange = { onEvent(AddMedicationEvent.OnNoteChanged(it)) },
-        label = { Text("Add a note") },
+        label = { Text(stringResource(R.string.add_note)) },
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
 fun AddressSection(address: String, postalCode: String, postalCodeError: String?, onEvent: (AddMedicationEvent) -> Unit) {
-    Text(text = "Pharmacy Location", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
+    Text(
+        text = stringResource(R.string.pharmacy_location),
+        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
+    )
     Spacer(modifier = Modifier.height(10.dp))
 
     // Address
     OutlinedTextField(
         value = address,
         onValueChange = { onEvent(AddMedicationEvent.OnAddressChanged(it)) },
-        label = { Text("Address") },
+        label = { Text(stringResource(R.string.address)) },
         modifier = Modifier.fillMaxWidth()
     )
 
@@ -235,7 +233,7 @@ fun AddressSection(address: String, postalCode: String, postalCodeError: String?
     OutlinedTextField(
         value = postalCode,
         onValueChange = { onEvent(AddMedicationEvent.OnPostalCodeChanged(it)) },
-        label = { Text("Postal Code") },
+        label = { Text(stringResource(R.string.postal_code)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         modifier = Modifier.fillMaxWidth(),
         isError = postalCodeError != null
@@ -257,14 +255,13 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        //TODO: Add Validation For Save (All fields besides Notes should be filled)
         Button(
             onClick = { onEvent(AddMedicationEvent.SaveMedication) },
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f),
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
         ) {
-            Text("Save")
+            Text(stringResource(R.string.save))
         }
 
         if (medicationId != 0) {
@@ -275,7 +272,7 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
                 modifier = Modifier.weight(1f),
                 elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
             ) {
-                Text("Delete")
+                Text(stringResource(R.string.delete))
             }
         }
     }
@@ -285,16 +282,16 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
 fun SaveConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = "Confirm Save") },
-        text = { Text(text = "Are you sure the information is correct?") },
+        title = { Text(text = stringResource(R.string.confirm_save)) },
+        text = { Text(text = stringResource(R.string.confirm_save_message)) },
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text("Yes")
+                Text(stringResource(R.string.yes))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("No")
+                Text(stringResource(R.string.no))
             }
         }
     )
@@ -304,22 +301,22 @@ fun SaveConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
 fun DeleteConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = "Confirm Delete") },
-        text = { Text(text = "Are you sure you want to delete this medication?") },
+        title = { Text(text = stringResource(R.string.confirm_delete)) },
+        text = { Text(text = stringResource(R.string.confirm_delete_message)) },
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text("Yes")
+                Text(stringResource(R.string.yes))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("No")
+                Text(stringResource(R.string.no))
             }
         }
     )
 }
 
-@Preview(showBackground =true, name = "AddMedication Preview")
+@Preview(showBackground = true, name = "AddMedication Preview")
 @Composable
 fun AddMedPreview() {
     val navController = rememberNavController()
@@ -327,4 +324,3 @@ fun AddMedPreview() {
     val onEvent: (AddMedicationEvent) -> Unit = {}
     AddMedicationPage(navController = navController, state = state, onEvent = onEvent)
 }
-

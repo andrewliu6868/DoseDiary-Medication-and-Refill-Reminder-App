@@ -1,0 +1,98 @@
+<resources>
+    <string name="app_name">DoseDiary</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_add_medication">AgregarMedicamento</string>
+
+    <!-- General Strings -->
+    <string name="confirm_save">Confirmar Guardar</string>
+    <string name="error_generating_pdf">Error al generar el PDF</string>
+    <string name="pdf_generated_successfully">PDF generado con éxito</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+
+    <!-- Medication History Page -->
+    <string name="medication_history">Historial de Medicamentos</string>
+    <string name="add_medication">Agregar Medicamento</string>
+    <string name="view_medication_history">Ver Historial de Medicamentos</string>
+    <string name="name">Nombre</string>
+    <string name="time">Hora</string>
+    <string name="date">Fecha</string>
+    <string name="effectiveness">Efectividad</string>
+
+    <!-- Add Medication Page -->
+    <string name="add_medication_header">Agregar Medicamento</string>
+    <string name="medication_name">Nombre del Medicamento</string>
+    <string name="name_placeholder">Ingrese el Nombre del Medicamento</string>
+    <string name="medication_period">Período de Medicación</string>
+    <string name="select_date">Seleccionar Fecha</string>
+    <string name="select_time">Seleccionar Hora</string>
+    <string name="intake_frequency">Frecuencia de Ingesta</string>
+    <string name="number_of_times_per_day">Número de veces al día:</string>
+    <string name="refill_days">Días de Recarga</string>
+    <string name="notes">Notas</string>
+    <string name="add_note">Agregar una nota</string>
+    <string name="pharmacy_location">Ubicación de la Farmacia</string>
+    <string name="address">Dirección</string>
+    <string name="postal_code">Código Postal</string>
+    <string name="additional_details">Detalles Adicionales</string>
+    <string name="save">Guardar</string>
+    <string name="discard">Descartar</string>
+    <string name="confirm_save_message">¿Está seguro de que la información es correcta?</string>
+    <string name="save_changes">Guardar Cambios</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
+    <string name="app_icon">Icono de la Aplicación</string>
+    <string name="confirm_delete">Confirmar Eliminación</string>
+    <string name="confirm_delete_message">¿Está seguro de que desea eliminar este medicamento?</string>
+    <string name="times_per_day">Número de veces al día:</string>
+    <string name="start_date">Fecha de Inicio</string>
+    <string name="end_date">Fecha de Finalización</string>
+
+    <!-- Home Page -->
+    <string name="upcoming_medication_refills">Recargas de Medicamentos Próximas</string>
+    <string name="daily_medication_checklist">Lista de Verificación Diaria de Medicamentos</string>
+    <string name="no_medication_refills_today">No hay Recargas de Medicamentos Hoy</string>
+    <string name="no_medication_refills_next_week">No hay Recargas de Medicamentos en los Próximos 7 Días</string>
+    <string name="today">Hoy</string>
+    <string name="next_7_days">Próximos 7 Días</string>
+    <string name="view_all_medication_details">Ver Todos los Detalles del Medicamento</string>
+
+    <!-- Login Page -->
+    <string name="login">Iniciar Sesión</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="show_password">Mostrar Contraseña</string>
+    <string name="hide_password">Ocultar Contraseña</string>
+    <string name="sign_up_here">Regístrate Aquí</string>
+    <string name="error">Error:</string>
+
+    <!-- Sign Up Page -->
+    <string name="register">Registrarse</string>
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellido</string>
+
+    <!-- Profile Page -->
+    <string name="profile">Perfil: %1$s %2$s</string>
+    <string name="manage_users">Gestionar Usuarios</string>
+    <string name="add_user">Agregar Usuario</string>
+    <string name="add_users">Agregar Usuarios</string>
+    <string name="add">Agregar</string>
+    <string name="user_details">Detalles del Usuario</string>
+    <string name="you_cannot_edit_sub_user">No puedes editar los detalles del usuario para un usuario secundario, por favor cambia al usuario principal para editar los detalles del usuario</string>
+    <string name="change_user">Cambiar Usuario</string>
+    <string name="user_initials">%1$s%2$s</string>
+
+    <!-- Medication Refill Page -->
+    <string name="medication_refill">Recarga de Medicamentos</string>
+    <string name="medication_refill_detail">Detalle de Recarga de Medicamentos</string>
+    <string name="direction">Dirección</string>
+    <string name="call">Llamar</string>
+    <string name="refill_information">Información de Recarga:</string>
+    <string name="next_refill_date">Próxima Fecha de Recarga: %1$s</string>
+    <string name="pharmacy_name">Nombre de la Farmacia: %1$s</string>
+    <string name="pharmacy_contact">Contacto de la Farmacia: %1$s</string>
+    <string name="pharmacy_address">Dirección de la Farmacia: %1$s</string>
+    <string name="more_information">Más información sobre el medicamento:</string>
+    <string name="quantity">Cantidad: %1$s</string>
+    <string name="notes_details">Notas: %1$s</string>
+</resources>
