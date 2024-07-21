@@ -1,6 +1,7 @@
 package com.example.dosediary.utils
 
 import androidx.room.TypeConverter
+import com.google.android.gms.maps.model.LatLng
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -27,5 +28,16 @@ class TypeConverter {
     @TypeConverter
     fun toDateList(datesString: String): List<Date> {
         return datesString.split(",").map { dateFormat.parse(it) }
+    }
+
+    @TypeConverter
+    fun fromLatLng(latLng: String): LatLng {
+        val (latitude, longitude) = latLng.split(",")
+        return LatLng(latitude.toDouble(), longitude.toDouble())
+    }
+
+    @TypeConverter
+    fun toLatLng(latLng: LatLng): String {
+        return "${latLng.latitude},${latLng.longitude}"
     }
 }

@@ -121,9 +121,10 @@ fun MedicationRefillTodayList(
             } else {
                 LazyColumn(modifier = Modifier.height(min(state.medRefillsToday.size * 75.dp, 4 * 75.dp))) {
                     items(state.medRefillsToday) { medication ->
+                        onEvent(MedRefillEvent.SetSelectedRefillDetail(medication))
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
-                            navController.navigate("refillDetails/${medication.medication.id}")
+                            navController.navigate("refillDetails")
                         }, onEvent)
                     }
                 }
@@ -171,7 +172,9 @@ fun MedicationRefillNextWeekList(
                     items(state.medRefillsUpcoming) { medication ->
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
-                            navController.navigate("refillDetails/${medication.medication.id}")
+//                            navController.navigate("refillDetails/${medication.medication.id}")
+                            onEvent(MedRefillEvent.SetSelectedRefillDetail(medication))
+                            navController.navigate("refillDetails")
                         }, onEvent)
                     }
                 }

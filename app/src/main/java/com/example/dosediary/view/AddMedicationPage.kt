@@ -1,8 +1,11 @@
 package com.example.dosediary.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -26,6 +29,7 @@ import com.example.dosediary.components.DatePicker
 import com.example.dosediary.components.TimePicker
 import com.example.dosediary.events.AddMedicationEvent
 import com.example.dosediary.state.AddMedicationState
+import com.example.dosediary.state.AutocompleteResult
 import com.example.dosediary.ui.theme.Primary
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,7 +65,7 @@ fun AddMedicationPage(
             item { MedDurationSection(state.startDate, state.endDate) { onEvent(it) } }
             item { MedFrequencySection(state.frequency, state.times) { onEvent(it) } }
             item { RefillDaysSection(state.refillDays) { onEvent(it) } }
-            item { AddressSection(state.address, state.postalCode, state.postalCodeError) { onEvent(it) } }
+            item { AddressSection(state.address, state.postalCode, state.locationAutofill, state.postalCodeError) { onEvent(it) } }
             item { NoteSection(state.note) { onEvent(it) } }
             item { SaveDeleteRow(navController, state.medicationId) { onEvent(it) } }
         }
@@ -212,13 +216,39 @@ fun NoteSection(note: String, onEvent: (AddMedicationEvent) -> Unit) {
 }
 
 @Composable
-fun AddressSection(address: String, postalCode: String, postalCodeError: String?, onEvent: (AddMedicationEvent) -> Unit) {
+fun AddressSection(address: String, postalCode: String, locationAutofill:List<AutocompleteResult>, postalCodeError: String?, onEvent: (AddMedicationEvent) -> Unit) {
     Text(
         text = stringResource(R.string.pharmacy_location),
         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
     )
     Spacer(modifier = Modifier.height(10.dp))
 
+    AnimatedVisibility(
+        locationAutofill.isNotEmpty(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .height(150.dp)
+        ) {
+            items(locationAutofill) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clickable {
+                        onEvent(AddMedicationEvent.OnClickWithRipple(it))
+                    }
+
+                ) {
+                    Text(it.address)
+                }
+            }
+        }
+        Spacer(Modifier.height(16.dp))
+    }
     // Address
     OutlinedTextField(
         value = address,

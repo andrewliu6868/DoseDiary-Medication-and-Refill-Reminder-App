@@ -3,6 +3,7 @@ package com.example.dosediary.model.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.google.android.gms.maps.model.LatLng
 import java.util.Date
 
 @Entity(
@@ -25,6 +26,7 @@ data class Medication(
     val refillDays: Int,
     val note: String,
     val address: String,
+    val addressLatLng: LatLng,
     val postalCode: String,
     val postalCodeError: String?,
     //

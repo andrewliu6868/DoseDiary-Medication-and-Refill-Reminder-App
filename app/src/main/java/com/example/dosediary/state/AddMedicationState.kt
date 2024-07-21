@@ -1,7 +1,13 @@
 package com.example.dosediary.state
 
 import android.app.TimePickerDialog
+import com.google.android.gms.maps.model.LatLng
 import java.util.Date
+
+data class AutocompleteResult(
+    val address: String,
+    val placeId: String,
+)
 
 data class AddMedicationState(
     val medicationId: Int = 0,
@@ -16,5 +22,7 @@ data class AddMedicationState(
     val postalCode: String = "",
     val postalCodeError: String? = null,
     val showDeleteConfirmDialog: Boolean = false,
-    val showConfirmDialog: Boolean = false
+    val showConfirmDialog: Boolean = false,
+    val addressLatLng: LatLng = LatLng(0.0, 0.0),
+    val locationAutofill: List<AutocompleteResult> = emptyList(),
 )

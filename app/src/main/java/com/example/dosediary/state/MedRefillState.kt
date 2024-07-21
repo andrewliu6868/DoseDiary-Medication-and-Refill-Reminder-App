@@ -1,6 +1,7 @@
 package com.example.dosediary.state
 
 import com.example.dosediary.model.entity.Medication
+import com.google.android.gms.maps.model.LatLng
 import java.util.Date
 
 data class MedicationWithNextRefillDate(
@@ -11,7 +12,7 @@ data class MedicationWithNextRefillDate(
 data class MedRefillState(
     val medRefillsToday: List<MedicationWithNextRefillDate> = emptyList(),
     val medRefillsUpcoming: List<MedicationWithNextRefillDate> = emptyList(),
-    val selectedRefillDetail: Medication = defaultMedication()
+    val selectedRefillDetail: MedicationWithNextRefillDate = MedicationWithNextRefillDate(defaultMedication(), null)
 )
 
 fun defaultMedication(): Medication{
@@ -24,6 +25,7 @@ fun defaultMedication(): Medication{
         refillDays = 0,
         note = "",
         address = "",
+        addressLatLng = LatLng(0.0, 0.0),
         postalCode = "",
         postalCodeError = null,
         lastRefilledDate = Date(),

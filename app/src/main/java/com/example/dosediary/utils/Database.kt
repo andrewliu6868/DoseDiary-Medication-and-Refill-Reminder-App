@@ -17,7 +17,7 @@ import com.example.dosediary.model.entity.UserRelationship
 @Database(
 //    entities = [User::class, Medication::class, MedicationHistory::class, UserRelationship::class],
     entities = [User::class, Medication::class, MedicationHistory::class, UserRelationship::class],
-    version = 7
+    version = 8
 )
 @TypeConverters(TypeConverter::class)
 abstract class DoseDiaryDatabase: RoomDatabase() {

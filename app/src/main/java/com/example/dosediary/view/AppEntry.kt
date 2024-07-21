@@ -1,5 +1,6 @@
 package com.example.dosediary.view
 
+import android.os.Bundle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,9 +20,11 @@ import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedicationHistoryViewModel
 import com.example.dosediary.viewmodel.MedicationListViewModel
 import com.example.dosediary.viewmodel.ProfileViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.libraries.places.api.net.PlacesClient
 
 @Composable
-fun AppEntry() {
+fun AppEntry(placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient) {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
@@ -33,20 +36,23 @@ fun AppEntry() {
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            MainAppNavigation(navController)
+            MainAppNavigation(navController, placesClient, fusedLocationClient)
         }
     }
 }
 
 
 @Composable
-fun MainAppNavigation (navController: NavHostController){
+fun MainAppNavigation (navController: NavHostController, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient){
     //View Model
     val addMedicationViewModel = hiltViewModel<AddMedicationViewModel>()
     val medicationHistoryViewModel = hiltViewModel<MedicationHistoryViewModel>()
     val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
     val profileViewModel = hiltViewModel<ProfileViewModel>()
     val medicationListViewModel = hiltViewModel<MedicationListViewModel>()
+
+    addMedicationViewModel.placesClient = placesClient
+    addMedicationViewModel.fusedLocationClient = fusedLocationClient
 
     //State
     val addMedicationState = addMedicationViewModel.state.collectAsState().value
@@ -70,6 +76,13 @@ fun MainAppNavigation (navController: NavHostController){
             AddMedicationPage(navController, addMedicationState, addMedicationViewModel::onEvent)
         }
         //RefillDetails: State is the Med Refill State, No Event because this page is just displaying, no input from user.
+//        composable(
+//            "refillDetails/{medicationId}",
+//            arguments = listOf(navArgument("medicationId") { type = NavType.IntType })
+//        ) { backStackEntry ->
+//            val medicationId = backStackEntry.arguments?.getInt("medicationId")?:0
+//            MedicationRefillDetailPage(navController, medRefillDetailViewModel, medicationId)
+//        }
         composable("refillDetails") { MedicationRefillDetailPage(navController, medRefillState) }
         composable("editMedication") { UpsertMedicationPage(navController) }  //Todo
     }
