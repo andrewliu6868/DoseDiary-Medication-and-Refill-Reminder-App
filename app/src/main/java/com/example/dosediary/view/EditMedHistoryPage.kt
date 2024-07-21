@@ -50,11 +50,13 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
         EditMedicationConfirmationDialog(
             onDismiss = { showConfirmDialog.value = false },
             onConfirm = {
+                val ownerId = 1
                 val medicationHistory = MedicationHistory(
                     name = medicationName.value,
                     timeTaken = formattedTime,
                     dateTaken = formattedDate,
-                    effectiveness = selectedEffectiveness.value
+                    effectiveness = selectedEffectiveness.value,
+                    ownerId = ownerId
                 )
                 viewModel.onEvent(EditMedHistoryEvent.AddMedicationHistory(medicationHistory))
                 showConfirmDialog.value = false
