@@ -1,6 +1,7 @@
 package com.example.dosediary.view
 
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -148,7 +149,12 @@ fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedic
                 .width(80.dp)
                 .onFocusChanged { focusState ->
                     if (focusState.isFocused) {
-                        frequencyState = frequencyState.copy(selection = TextRange(0, frequencyState.text.length))
+                        frequencyState = frequencyState.copy(
+                            selection = TextRange(
+                                0,
+                                frequencyState.text.length
+                            )
+                        )
                     }
                 },
             value = frequencyState,
