@@ -175,10 +175,10 @@ fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (UpsertMe
     Spacer(modifier = Modifier.height(5.dp))
 
     // Testing Purpose
-    val dateFormat = remember { SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.getDefault()) }
-    times.forEachIndexed { index, time ->
-        Text(text = stringResource(R.string.time, index + 1, dateFormat.format(time)))
-    }
+//    val dateFormat = remember { SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.getDefault()) }
+//    times.forEachIndexed { index, time ->
+//        Text(text = stringResource(R.string.time, index + 1, dateFormat.format(time)))
+//    }
 }
 
 @Composable
