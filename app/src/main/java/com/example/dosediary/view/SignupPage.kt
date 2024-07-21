@@ -31,9 +31,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -74,7 +74,7 @@ fun SignUpPage(navHostController: NavHostController){
                     .fillMaxWidth(),
                 fontWeight = FontWeight.Bold,
                 color = Color.Red,
-                text="Error: ${signUpState.error}")
+                text = stringResource(R.string.error, signUpState.error))
             SignUpAttempt{firstName, lastName, email, password ->
                 viewModel.addUser(firstName, lastName, email,password)
             }
@@ -112,7 +112,7 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(4.dp)),
-                        label = {Text(text = "First Name")},
+                        label = { Text(text = stringResource(R.string.first_name)) },
                         value = firstName.value,
                         onValueChange = {newText->
                             firstName.value = newText
@@ -128,7 +128,7 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(4.dp)),
-                        label = {Text(text = "Last Name")},
+                        label = { Text(text = stringResource(R.string.last_name)) },
                         value = lastName.value,
                         onValueChange = {newText->
                             lastName.value = newText
@@ -144,7 +144,7 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(4.dp)),
-                        label = {Text(text = "Email")},
+                        label = { Text(text = stringResource(R.string.email)) },
                         value = email.value,
                         onValueChange = {newText->
                             email.value = newText
@@ -160,7 +160,7 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(4.dp)),
-                        label = {Text(text = "Password")},
+                        label = { Text(text = stringResource(R.string.password)) },
                         value = password.value,
                         onValueChange = {newText->
                             password.value = newText
@@ -191,7 +191,7 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                         ),
                     contentAlignment = Alignment.Center
                 ){
-                    Text(text="Register",
+                    Text(text = stringResource(R.string.register),
                         fontSize=18.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -213,7 +213,7 @@ fun SignUpIcon(){
         contentAlignment = Alignment.Center
     ){
         Image(painter = painterResource(id = R.drawable.icon),
-            contentDescription = "App Main Icon",
+            contentDescription = stringResource(R.string.app_main_icon),
             modifier = Modifier.size(100.dp))
     }
 }

@@ -23,7 +23,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardDefaults.shape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,11 +40,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -128,7 +125,7 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                         modifier = Modifier
                             .fillMaxWidth(),
                         shape = RoundedCornerShape(4.dp),
-                        label = {Text(text = "Email")},
+                        label = { Text(text = stringResource(R.string.email)) },
                         value = email.value,
                         onValueChange = {newText->
                             email.value = newText
@@ -144,7 +141,7 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                         modifier = Modifier
                             .fillMaxWidth(),
                         shape = RoundedCornerShape(4.dp),
-                        label = {Text(text = "Password")},
+                        label = { Text(text = stringResource(R.string.password)) },
                         value = password.value,
                         onValueChange = {newText->
                             password.value = newText
@@ -164,14 +161,14 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                                 IconButton(onClick = { showPassword = false }) {
                                     Icon(
                                         imageVector = Icons.Filled.Visibility,
-                                        contentDescription = "hide_password"
+                                        contentDescription = stringResource(R.string.hide_password)
                                     )
                                 }
                             }else{
                                 IconButton(onClick = { showPassword = true}) {
                                     Icon(
                                         imageVector = Icons.Filled.VisibilityOff,
-                                        contentDescription = "show_password"
+                                        contentDescription = stringResource(R.string.show_password)
                                     )
 
                                 }
@@ -206,7 +203,7 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                         ),
                     contentAlignment = Alignment.Center
                 ){
-                    Text(text="Login",
+                    Text(text = stringResource(R.string.login),
                         fontSize=18.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -217,9 +214,7 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                text = AnnotatedString(
-                    "Sign Up Here",
-                ),
+                text = AnnotatedString(stringResource(R.string.sign_up_here)),
                 style = TextStyle(
                     textAlign = TextAlign.Center,
                     fontSize = 18.sp,
@@ -246,7 +241,7 @@ fun LoginIcon(){
         contentAlignment = Alignment.Center
     ){
         Image(painter = painterResource(id = R.drawable.icon),
-            contentDescription = "App Main Icon",
+            contentDescription = stringResource(R.string.app_icon),
             modifier = Modifier.size(100.dp))
     }
 }

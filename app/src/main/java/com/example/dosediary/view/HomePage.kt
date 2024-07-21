@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +42,7 @@ fun HomePage(
                 showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon"
+                imageDescription = stringResource(R.string.app_icon)
             )
         }
     ){ padding -> Column(
@@ -80,7 +81,7 @@ fun MedicationReminder() {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     BasicText(
-                        text = "Medication Reminder - 7:00pm",
+                        text = stringResource(R.string.medication_reminder_time, "7:00pm"),
                         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
                     )
                     BasicText(text = "Tylenol")
@@ -89,7 +90,7 @@ fun MedicationReminder() {
                     onClick = { /*TODO*/ },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
                 ) {
-                    Text("View")
+                    Text(stringResource(R.string.view))
                 }
             }
         }
@@ -120,7 +121,7 @@ fun DailyMedicationChecklist() {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             BasicText(
-                text = "Daily Medication Checklist",
+                text = stringResource(R.string.daily_medication_checklist),
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -147,7 +148,7 @@ fun DailyMedicationChecklist() {
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 colors = ButtonDefaults.buttonColors(containerColor = Primary)
             ) {
-                Text("View All Medication Details")
+                Text(stringResource(R.string.view_all_medication_details))
             }
         }
     }

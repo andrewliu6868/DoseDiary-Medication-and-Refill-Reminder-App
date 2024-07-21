@@ -32,7 +32,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -48,7 +48,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
@@ -58,7 +57,6 @@ import com.example.dosediary.state.ProfileState
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.OutlineTextField
 import com.example.dosediary.ui.theme.Primary
-import com.example.dosediary.viewmodel.ProfileViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,7 +74,7 @@ fun ProfilePage(
                 showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon"
+                imageDescription = stringResource(R.string.app_icon)
             )
         }
     ) { padding ->
@@ -99,7 +97,7 @@ fun ProfilePage(
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             BasicText(
-                                text = "Add User",
+                                text = stringResource(R.string.add_user),
                                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp),
                             )
                             Spacer(modifier = Modifier.height(8.dp))
@@ -109,7 +107,7 @@ fun ProfilePage(
                                 onValueChange = { newText ->
                                     onEvent(ProfileEvent.onAddUserFirstNameChanged(newText))
                                 },
-                                label = { Text("First Name") },
+                                label = { Text(stringResource(R.string.first_name)) },
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     unfocusedTextColor = Color.Black,
                                     focusedBorderColor = OutlineTextField, // Custom focused border color
@@ -123,7 +121,7 @@ fun ProfilePage(
                                 onValueChange = {newText ->
                                     onEvent(ProfileEvent.onAddUserLastNameChanged(newText))
                                 },
-                                label = { Text("Last Name") },
+                                label = { Text(stringResource(R.string.last_name)) },
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     unfocusedTextColor = Color.Black,
                                     focusedBorderColor = OutlineTextField, // Custom focused border color
@@ -142,7 +140,7 @@ fun ProfilePage(
                                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
                                     modifier = Modifier.align(Alignment.CenterVertically)
                                 ) {
-                                    Text("Cancel")
+                                    Text(stringResource(R.string.cancel))
                                 }
 
                                 Button(
@@ -153,7 +151,7 @@ fun ProfilePage(
                                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
                                     modifier = Modifier.align(Alignment.CenterVertically)
                                 ) {
-                                    Text("Add")
+                                    Text(stringResource(R.string.add))
                                 }
 
                             }
@@ -205,7 +203,7 @@ fun ManageUsers(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             BasicText(
-                text = "Manage Users",
+                text = stringResource(R.string.manage_users),
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -291,7 +289,7 @@ fun AddUsers(onItemClick: () -> Unit = {}) {
         )
         Spacer(modifier = Modifier.height(1.dp))
         BasicText(
-            text = "Add Users",
+            text = stringResource(R.string.add_users),
             style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 10.sp)
         )
     }
@@ -317,7 +315,7 @@ fun UserDetail(
 
         Column(modifier = Modifier.padding(16.dp)) {
             BasicText(
-                text = "User Details",
+                text = stringResource(R.string.user_details),
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -328,7 +326,7 @@ fun UserDetail(
                     onValueChange = {
                         onEvent(ProfileEvent.onMainUserFirstNameChanged(it))
                     },
-                    label = { Text("First Name") },
+                    label = { Text(stringResource(R.string.first_name)) },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         unfocusedTextColor = Color.Black,
                         focusedBorderColor = OutlineTextField, // Custom focused border color
@@ -346,7 +344,7 @@ fun UserDetail(
                     onValueChange = {
                         onEvent(ProfileEvent.onMainUserLastNameChanged(it))
                     },
-                    label = { Text("Last Name") },
+                    label = { Text(stringResource(R.string.last_name)) },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         unfocusedTextColor = Color.Black,
                         focusedBorderColor = OutlineTextField, // Custom focused border color
@@ -363,7 +361,7 @@ fun UserDetail(
                     onValueChange = {
                         onEvent(ProfileEvent.onMainUserEmailChanged(it))
                     },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(R.string.email)) },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         unfocusedTextColor = Color.Black,
                         focusedBorderColor = OutlineTextField, // Custom focused border color
@@ -388,9 +386,9 @@ fun UserDetail(
                         onEvent(ProfileEvent.onMainUserPasswordChanged(it))
                     },
                     label = {
-                        Text(text = "Password")
+                        Text(text = stringResource(R.string.password))
                     },
-                    placeholder = { Text(text = "Type password here") },
+                    placeholder = { Text(text = stringResource(R.string.type_password_here)) },
                     shape = RoundedCornerShape(percent = 20),
                     visualTransformation = if (showPassword) {
 
@@ -407,7 +405,7 @@ fun UserDetail(
                             IconButton(onClick = { showPassword = false }) {
                                 Icon(
                                     imageVector = Icons.Filled.Visibility,
-                                    contentDescription = "hide_password"
+                                    contentDescription = stringResource(R.string.hide_password)
                                 )
                             }
                         } else {
@@ -415,7 +413,7 @@ fun UserDetail(
                                 onClick = { showPassword = true }) {
                                 Icon(
                                     imageVector = Icons.Filled.VisibilityOff,
-                                    contentDescription = "hide_password"
+                                    contentDescription = stringResource(R.string.show_password)
                                 )
                             }
                         }
@@ -440,7 +438,7 @@ fun UserDetail(
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ) {
-                            Text("Cancel")
+                            Text(stringResource(R.string.cancel))
                         }
 
                         Button(
@@ -450,14 +448,14 @@ fun UserDetail(
                             colors = ButtonDefaults.buttonColors(containerColor = Primary),
                             modifier = Modifier.align(Alignment.CenterVertically)
                         ) {
-                            Text("Save Changes")
+                            Text(stringResource(R.string.save_changes))
                         }
                     }
                 }
             } else {
                 //sub text saying you can not edit user detail for a sub user
                 BasicText(
-                    text = "You can not edit user detail for a sub user, please switch to main user to edit user detail",
+                    text = stringResource(R.string.you_cannot_edit_sub_user),
                     style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 10.sp)
                 )
             }

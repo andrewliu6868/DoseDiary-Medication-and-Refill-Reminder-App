@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +35,12 @@ import com.example.dosediary.viewmodel.EditMedHistoryViewModel
 fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHistoryViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val medicationName = remember { mutableStateOf("") }
-    val effectivenessOptions = listOf("Effective", "Moderate", "Marginal", "Ineffective")
+    val effectivenessOptions = listOf(
+        stringResource(id = R.string.effective),
+        stringResource(id = R.string.moderate),
+        stringResource(id = R.string.marginal),
+        stringResource(id = R.string.ineffective)
+    )
     val selectedEffectiveness = remember { mutableStateOf(state.effectiveness) }
     val calendar = Calendar.getInstance()
     val date = remember { mutableStateOf(calendar.time) }
@@ -78,11 +84,11 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = "Add Medication History",
+                header = stringResource(id = R.string.add_medication_history),
                 showNavigationIcon = true,
                 navController = navController,
                 imageResId = R.drawable.icon,
-                imageDescription = "App Icon"
+                imageDescription = stringResource(id = R.string.app_icon)
             )
         }
     ) {innerPadding ->
@@ -101,11 +107,11 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            DatePicker(date.value, "Select Date") { selectedDate ->
+            DatePicker(date.value, stringResource(id = R.string.select_date)) { selectedDate ->
                 date.value = selectedDate
             }
             Spacer(modifier = Modifier.height(16.dp))
-            TimePicker(time.value, "Select Time") { selectedTime ->
+            TimePicker(time.value, stringResource(id = R.string.select_time)) { selectedTime ->
                 time.value = selectedTime
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -131,8 +137,8 @@ fun MedicationNameField(medicationName: MutableState<String>) {
     OutlinedTextField(
         value = medicationName.value,
         onValueChange = { medicationName.value = it },
-        label = { Text("Medication Name") },
-        placeholder = { Text("Enter Medication Name") },
+        label = { Text(stringResource(id = R.string.medication_name)) },
+        placeholder = { Text(stringResource(id = R.string.enter_medication_name)) },
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -153,8 +159,8 @@ fun EffectivenessDropdown(
             value = selectedEffectiveness.value,
             onValueChange = { },
             readOnly = true,
-            label = { Text("Effectiveness") },
-            placeholder = { Text("Select Effectiveness") },
+            label = { Text(stringResource(id = R.string.effectiveness)) },
+            placeholder = { Text(stringResource(id = R.string.select_effectiveness)) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
@@ -191,8 +197,8 @@ fun AdditionalDetailsField(
             additionalDetails.value = it
             onAdditionalDetailsChanged(it.text)
         },
-        label = { Text("Additional Details") },
-        placeholder = { Text("Enter Additional Details") },
+        label = { Text(stringResource(id = R.string.additional_details)) },
+        placeholder = { Text(stringResource(id = R.string.enter_additional_details)) },
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
     )
@@ -211,7 +217,7 @@ fun ButtonRow(onSave: () -> Unit, onDiscard: () -> Unit) {
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f)
         ) {
-            Text("Save")
+            Text(stringResource(id = R.string.save))
         }
         Spacer(modifier = Modifier.width(16.dp))
         Button(
@@ -219,7 +225,7 @@ fun ButtonRow(onSave: () -> Unit, onDiscard: () -> Unit) {
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
             modifier = Modifier.weight(1f)
         ) {
-            Text("Discard")
+            Text(stringResource(id = R.string.discard))
         }
     }
 }
@@ -228,16 +234,16 @@ fun ButtonRow(onSave: () -> Unit, onDiscard: () -> Unit) {
 fun EditMedicationConfirmationDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Confirm Save") },
-        text = { Text("Are you sure you want to save this medication history?") },
+        title = { Text(stringResource(id = R.string.confirm_save)) },
+        text = { Text(stringResource(id = R.string.confirm_save_message)) },
         confirmButton = {
             Button(onClick = onConfirm) {
-                Text("Yes")
+                Text(stringResource(id = R.string.yes))
             }
         },
         dismissButton = {
             OutlinedButton(onClick = onDismiss) {
-                Text("No")
+                Text(stringResource(id = R.string.no))
             }
         }
     )

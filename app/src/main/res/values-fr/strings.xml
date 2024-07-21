@@ -56,6 +56,8 @@
     <string name="today">Aujourd\'hui</string>
     <string name="next_7_days">7 Prochains Jours</string>
     <string name="view_all_medication_details">Voir Tous les Détails du Médicament</string>
+    <string name="medication_reminder_time">Rappel de Médication - %1$s</string>
+    <string name="view">Voir</string>
 
     <!-- Login Page -->
     <string name="login">Connexion</string>
@@ -70,6 +72,7 @@
     <string name="register">S\'inscrire</string>
     <string name="first_name">Prénom</string>
     <string name="last_name">Nom</string>
+    <string name="app_main_icon">Icône Principale de l\'Application</string>
 
     <!-- Profile Page -->
     <string name="profile">Profil : %1$s %2$s</string>
@@ -81,6 +84,7 @@
     <string name="you_cannot_edit_sub_user">Vous ne pouvez pas modifier les détails de l\'utilisateur pour un utilisateur secondaire, veuillez passer à l\'utilisateur principal pour modifier les détails de l\'utilisateur</string>
     <string name="change_user">Changer d\'Utilisateur</string>
     <string name="user_initials">%1$s%2$s</string>
+    <string name="type_password_here">Tapez le mot de passe ici</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">Recharge de Médicaments</string>
@@ -95,4 +99,19 @@
     <string name="more_information">Plus d\'informations sur le médicament :</string>
     <string name="quantity">Quantité : %1$s</string>
     <string name="notes_details">Notes : %1$s</string>
+    <string name="pills_left">pilules restantes</string>
+
+    <!-- Edit Medication History Page -->
+    <string name="enter_additional_details">Entrez des détails supplémentaires</string>
+    <string name="select_effectiveness">Sélectionner l\'efficacité</string>
+    <string name="enter_medication_name">Entrez le nom du médicament</string>
+    <string name="add_medication_history">Ajouter un historique des médicaments</string>
+    <string name="effective">Efficace</string>
+    <string name="moderate">Modéré</string>
+    <string name="marginal">Marginal</string>
+    <string name="ineffective">Inefficace</string>
+
+    <!-- Medication List Page -->
+    <string name="medication_list">Liste des Médicaments</string>
+    <string name="pill_pics">Photos de Pilules</string>
 </resources>

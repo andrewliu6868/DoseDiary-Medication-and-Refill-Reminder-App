@@ -56,6 +56,8 @@
     <string name="today">Today</string>
     <string name="next_7_days">Next 7 Days</string>
     <string name="view_all_medication_details">View All Medication Details</string>
+    <string name="medication_reminder_time">Medication Reminder - %1$s</string>
+    <string name="view">View</string>
 
     <!-- Login Page -->
     <string name="login">Login</string>
@@ -70,6 +72,7 @@
     <string name="register">Register</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="app_main_icon">App Main Icon</string>
 
     <!-- Profile Page -->
     <string name="profile">Profile: %1$s %2$s</string>
@@ -81,6 +84,7 @@
     <string name="you_cannot_edit_sub_user">You can not edit user detail for a sub user, please switch to main user to edit user detail</string>
     <string name="change_user">Change User</string>
     <string name="user_initials">%1$s%2$s</string>
+    <string name="type_password_here">Type password here</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">Medication Refill</string>
@@ -95,4 +99,20 @@
     <string name="more_information">More information about the medication:</string>
     <string name="quantity">Quantity: %1$s</string>
     <string name="notes_details">Notes: %1$s</string>
+    <string name="pills_left">pills left</string>
+
+    <!-- Edit Medication History Page -->
+    <string name="enter_additional_details">Enter Additional Details</string>
+    <string name="select_effectiveness">Select Effectiveness</string>
+    <string name="enter_medication_name">Enter Medication Name</string>
+    <string name="add_medication_history">Add Medication History</string>
+    <string name="effective">Effective</string>
+    <string name="moderate">Moderate</string>
+    <string name="marginal">Marginal</string>
+    <string name="ineffective">Ineffective</string>
+
+    <!-- Medication List Page -->
+    <string name="pill_pics">Pill Pics</string>
+    <string name="medication_list">Medication List</string>
+
 </resources>

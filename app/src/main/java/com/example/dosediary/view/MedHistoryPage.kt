@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,11 +71,11 @@ fun MedicationHistoryPage(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = "Medication History",
+                header = stringResource(R.string.medication_history),
                 showNavigationIcon = true,
                 navController = navController,
                 imageResId = R.drawable.icon,
-                imageDescription = "App Icon",
+                imageDescription = stringResource(R.string.app_icon),
                 onActionButtonClick = {
                     generatePDF(context, state.medicationHistories) { result ->
                         scope.launch {
@@ -96,7 +97,7 @@ fun MedicationHistoryPage(
                 },
                 containerColor = Color(0xFF7DCBFF)
             ) {
-                Icon(Icons.Filled.Add, contentDescription = "Add Medication")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_medication))
             }
         },
         snackbarHost = {
