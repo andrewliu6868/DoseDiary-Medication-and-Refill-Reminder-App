@@ -106,7 +106,7 @@ fun MedicationHistoryPage(
                 .background(Color.White)
                 .padding(innerPadding)
                 .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(state.medicationHistories) { medication ->
                 MedicationItem(medication, navController)
