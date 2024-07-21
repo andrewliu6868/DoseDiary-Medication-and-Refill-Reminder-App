@@ -15,12 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -73,12 +69,8 @@ fun MedicationHistoryPage(
                 showNavigationIcon = true,
                 navController = navController,
                 imageResId = R.drawable.icon,
-                imageDescription = "App Icon"
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
+                imageDescription = "App Icon",
+                onActionButtonClick = {
                     generatePDF(context, state.medicationHistories) { result ->
                         scope.launch {
                             if (result) {
@@ -88,11 +80,8 @@ fun MedicationHistoryPage(
                             }
                         }
                     }
-                },
-                containerColor = Color(0xFF7DCBFF)
-            ) {
-                Icon(Icons.Filled.BarChart, contentDescription = "Generate PDF")
-            }
+                }
+            )
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)

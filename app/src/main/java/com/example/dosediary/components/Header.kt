@@ -4,7 +4,9 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -67,33 +70,40 @@ fun CustomTopAppBar(
     showNavigationIcon: Boolean,
     navController: NavController,
     @DrawableRes imageResId: Int? = null,
-    imageDescription: String = "App Logo"
+    imageDescription: String = "App Logo",
+    onActionButtonClick: (() -> Unit)? = null
 ) {
     CenterAlignedTopAppBar(
-        modifier = Modifier.padding(vertical = 16.dp).background(color = Background),
+        modifier = Modifier
+            .padding(vertical = 16.dp)
+            .background(color = Background),
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Background
         ),
         title = {
-            Row(
-                modifier = Modifier.fillMaxWidth().background(color = Background),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
             ) {
-                if (imageResId != null) {
-                    Image(
-                        painter = painterResource(id = imageResId),
-                        contentDescription = imageDescription,
-                        modifier = Modifier.width(25.dp)
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (imageResId != null) {
+                        Image(
+                            painter = painterResource(id = imageResId),
+                            contentDescription = imageDescription,
+                            modifier = Modifier.width(25.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = header,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Serif,
                     )
                 }
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = header,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.Serif,
-                )
             }
         },
         navigationIcon = {
@@ -107,7 +117,12 @@ fun CustomTopAppBar(
             }
         },
         actions = {
-            if (showNavigationIcon) {
+            if (onActionButtonClick != null) {
+                IconButton(onClick = onActionButtonClick) {
+                    Icon(imageVector = Icons.Filled.BarChart, contentDescription = "Generate PDF")
+                }
+            }
+            if (showNavigationIcon && onActionButtonClick == null) {
                 Spacer(modifier = Modifier.width(50.dp)) // Adjust width to balance space
             }
         }
@@ -124,6 +139,7 @@ fun CustomTopAppBarPreview() {
         showNavigationIcon = true,
         navController = navController,
         imageResId = R.drawable.icon,
-        imageDescription = "Image"
+        imageDescription = "Image",
+        onActionButtonClick = { }
     )
 }
