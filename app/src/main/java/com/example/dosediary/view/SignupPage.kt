@@ -42,6 +42,7 @@ import androidx.navigation.NavHostController
 import com.example.dosediary.R
 import com.example.dosediary.state.SignUpState
 import com.example.dosediary.ui.theme.ContainerBackground
+import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.viewmodel.SignUpViewModel
 
 @Composable
@@ -179,13 +180,13 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                     .fillMaxWidth()
                     .heightIn(48.dp),
                 contentPadding = PaddingValues(),
-                colors = ButtonDefaults.buttonColors(Color.Transparent)){
+                colors = ButtonDefaults.buttonColors(containerColor = Primary)){
                 Box (
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(48.dp)
                         .background(
-                            brush = Brush.horizontalGradient(listOf(Color.Blue, Color.Cyan)),
+                            color = Primary,
                             shape = RoundedCornerShape(50.dp)
                         ),
                     contentAlignment = Alignment.Center
