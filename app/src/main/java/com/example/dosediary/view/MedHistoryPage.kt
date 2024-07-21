@@ -1,4 +1,3 @@
-
 package com.example.dosediary.view
 
 import android.content.Context
@@ -46,25 +45,28 @@ import java.io.FileOutputStream
 import java.io.IOException
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dosediary.events.MedicationHistoryEvent
 import com.example.dosediary.state.MedicationHistoryState
-import com.example.dosediary.viewmodel.MedicationHistoryViewModel
 import kotlinx.coroutines.launch
+import kotlin.reflect.KFunction0
 
 @Composable
 fun MedicationHistoryPage(
     navController: NavHostController,
     state: MedicationHistoryState,
-    onEvent: (MedicationHistoryEvent) -> Unit
+    onEvent: (MedicationHistoryEvent) -> Unit,
+    addTestEntries: () -> Unit
 ) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+
+//    LaunchedEffect(Unit) {
+//        addTestEntries()
+//    }
 
     Scaffold(
         topBar = {
@@ -72,7 +74,7 @@ fun MedicationHistoryPage(
                 header = "Medication History",
                 showNavigationIcon = true,
                 navController = navController,
-                imageResId = R.drawable.icon,  // Customizable icon
+                imageResId = R.drawable.icon,
                 imageDescription = "App Icon"
             )
         },
@@ -113,7 +115,6 @@ fun MedicationHistoryPage(
     }
 }
 
-
 fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult: (Boolean) -> Unit) {
     val pdfDocument = PdfDocument()
     val pageWidth = 300
@@ -131,7 +132,7 @@ fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult
         val page = pdfDocument.startPage(pageInfo)
         val canvas = page.canvas
 
-        var yPosition = 40f // Start drawing position
+        var yPosition = 40f
         val startItemIndex = pageIndex * itemsPerPage
         val endItemIndex = minOf(startItemIndex + itemsPerPage, medications.size)
 
@@ -169,8 +170,6 @@ fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult
     }
 }
 
-
-
 @Composable
 fun MedicationItem(medication: MedicationHistory, navController: NavHostController) {
     Card(
@@ -180,7 +179,7 @@ fun MedicationItem(medication: MedicationHistory, navController: NavHostControll
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate("editMedication")},
+            .clickable { navController.navigate("editMedication") },
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Row(
@@ -189,44 +188,51 @@ fun MedicationItem(medication: MedicationHistory, navController: NavHostControll
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row (
+            Row(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
-            ){
+            ) {
                 Column(
-                    modifier = Modifier.weight(1f)  // This makes the column take up all space except for the button
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = medication.name,
-                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
-                    Text(text = medication.timeTaken,
-                        style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
-                    Text(text = medication.dateTaken,
-                        style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
+                    Text(
+                        text = medication.name,
+                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                    )
+                    Text(
+                        text = medication.timeTaken,
+                        style = LocalTextStyle.current.copy(fontSize = 10.sp, fontStyle = FontStyle.Italic)
+                    )
+                    Text(
+                        text = medication.dateTaken,
+                        style = LocalTextStyle.current.copy(fontSize = 10.sp, fontStyle = FontStyle.Italic)
+                    )
                 }
-                Column (
-                    modifier = Modifier
-                        .weight(1f),
+                Column(
+                    modifier = Modifier.weight(1f),
                     horizontalAlignment = Alignment.End
-                ){
-                    Text(text = medication.effectiveness,
-                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
-
+                ) {
+                    Text(
+                        text = medication.effectiveness,
+                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                    )
                 }
             }
         }
     }
 }
 
-@Preview(showBackground =true, name = "MedHistory Preview")
+@Preview(showBackground = true, name = "MedHistory Preview")
 @Composable
 fun MedHistoryPreview() {
     val navController = rememberNavController()
     val state = MedicationHistoryState()
     val onEvent: (MedicationHistoryEvent) -> Unit = {}
-    MedicationHistoryPage(navController = navController, state = state, onEvent = onEvent)
+    MedicationHistoryPage(
+        navController = navController,
+        state = state,
+        onEvent = onEvent,
+        addTestEntries = {}
+    )
 }
-
-
-
-
