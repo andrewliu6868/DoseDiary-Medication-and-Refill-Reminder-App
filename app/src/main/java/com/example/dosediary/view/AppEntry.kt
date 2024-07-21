@@ -71,6 +71,6 @@ fun MainAppNavigation (navController: NavHostController){
         }
         //RefillDetails: State is the Med Refill State, No Event because this page is just displaying, no input from user.
         composable("refillDetails") { MedicationRefillDetailPage(navController, medRefillState) }
-        composable("editMedication") { EditMedicationPage(navController) }  //Todo
+        composable("edtMedication") { UpsertMedicationPage(navController) }  //Todo
     }
 }
