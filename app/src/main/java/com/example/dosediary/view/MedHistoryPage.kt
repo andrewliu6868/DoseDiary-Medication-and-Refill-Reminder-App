@@ -15,14 +15,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -58,9 +63,9 @@ fun MedicationHistoryPage(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-//    LaunchedEffect(Unit) {
-//        addTestEntries()
-//    }
+    LaunchedEffect(Unit) {
+        addTestEntries()
+    }
 
     Scaffold(
         topBar = {
@@ -82,6 +87,17 @@ fun MedicationHistoryPage(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    //navigate to add medication page?
+                    navController.navigate("addMedication")
+                },
+                containerColor = Color(0xFF7DCBFF)
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = "Add Medication")
+            }
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
