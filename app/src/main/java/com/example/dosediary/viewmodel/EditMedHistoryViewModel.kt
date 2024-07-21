@@ -30,6 +30,9 @@ class EditMedHistoryViewModel @Inject constructor(
             is EditMedHistoryEvent.OnEffectivenessChanged -> {
                 _state.value = _state.value.copy(effectiveness = event.effectiveness)
             }
+            is EditMedHistoryEvent.OnAdditionalDetailsChanged -> {
+                _state.value = _state.value.copy(additionalDetails = event.additionalDetails)
+            }
             is EditMedHistoryEvent.AddMedicationHistory -> {
                 addMedicationHistory(event.medicationHistory)
             }
@@ -64,10 +67,13 @@ class EditMedHistoryViewModel @Inject constructor(
         viewModelScope.launch {
             val selectedHistory = _state.value.selectedMedicationHistory
             if (selectedHistory != null) {
-                val updatedHistory = selectedHistory.copy(effectiveness = _state.value.effectiveness)
+                val updatedHistory = selectedHistory.copy(
+                    effectiveness = _state.value.effectiveness,
+                    additionalDetails = _state.value.additionalDetails
+                )
                 medicationHistoryDao.upsertMedicationHistory(updatedHistory)
                 fetchMedicationHistories()
-                resetInputFields()
+                _state.value = _state.value.copy(selectedMedicationHistory = null, effectiveness = "", additionalDetails = "")
             }
         }
     }

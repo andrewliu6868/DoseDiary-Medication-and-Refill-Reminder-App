@@ -5,6 +5,7 @@ package com.example.dosediary.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -13,6 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -36,7 +39,7 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
     val calendar = Calendar.getInstance()
     val date = remember { mutableStateOf(calendar.time) }
     val time = remember { mutableStateOf(calendar.time) }
-    val additionalDetails = remember { mutableStateOf(state.additionalDetails) }
+    val additionalDetails = remember { mutableStateOf(TextFieldValue(state.additionalDetails)) }
     val showConfirmDialog = remember { mutableStateOf(false) }
 
     // Formats (Talk to group if this needs to be changed)
@@ -56,7 +59,8 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
                     timeTaken = formattedTime,
                     dateTaken = formattedDate,
                     effectiveness = selectedEffectiveness.value,
-                    ownerId = ownerId
+                    ownerId = ownerId,
+                    additionalDetails = additionalDetails.value.text
                 )
                 viewModel.onEvent(EditMedHistoryEvent.AddMedicationHistory(medicationHistory))
                 showConfirmDialog.value = false
@@ -66,7 +70,7 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
                 selectedEffectiveness.value = ""
                 date.value = calendar.time
                 time.value = calendar.time
-                additionalDetails.value = ""
+                additionalDetails.value = TextFieldValue("")
             }
         )
     }
@@ -105,7 +109,9 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
                 time.value = selectedTime
             }
             Spacer(modifier = Modifier.height(16.dp))
-            AdditionalDetailsField(additionalDetails)
+            AdditionalDetailsField(additionalDetails) { details ->
+                viewModel.onEvent(EditMedHistoryEvent.OnAdditionalDetailsChanged(details))
+            }
             Spacer(modifier = Modifier.height(16.dp))
             ButtonRow(
                 onSave = {
@@ -175,14 +181,20 @@ fun EffectivenessDropdown(
 }
 
 @Composable
-fun AdditionalDetailsField(additionalDetails: MutableState<String>) {
+fun AdditionalDetailsField(
+    additionalDetails: MutableState<TextFieldValue>,
+    onAdditionalDetailsChanged: (String) -> Unit
+) {
     OutlinedTextField(
         value = additionalDetails.value,
-        onValueChange = { },
+        onValueChange = {
+            additionalDetails.value = it
+            onAdditionalDetailsChanged(it.text)
+        },
         label = { Text("Additional Details") },
         placeholder = { Text("Enter Additional Details") },
         modifier = Modifier.fillMaxWidth(),
-        readOnly = true
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
     )
 }
 

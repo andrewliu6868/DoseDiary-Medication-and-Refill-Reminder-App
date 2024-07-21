@@ -13,5 +13,6 @@ data class MedicationHistory (
     val timeTaken: String,
     val dateTaken: String,
     val effectiveness: String,
-    val ownerId: Int
+    val ownerId: Int,
+    val additionalDetails: String = ""
 )

@@ -63,9 +63,9 @@ fun MedicationHistoryPage(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
-        addTestEntries()
-    }
+//    LaunchedEffect(Unit) {
+//        addTestEntries()
+//    }
 
     Scaffold(
         topBar = {
