@@ -115,5 +115,6 @@
     <string name="pill_pics">Изображения таблеток</string>
     <string name="medication_list">Список лекарств</string>
     <string name="view_all_medication_refills">Посмотреть все пополнения лекарств</string>
+    <string name="edit_medication">Редактировать лекарство</string>
 
 </resources>

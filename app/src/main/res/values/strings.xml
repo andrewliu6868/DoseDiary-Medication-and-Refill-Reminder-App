@@ -115,5 +115,6 @@
     <!-- Medication List Page -->
     <string name="pill_pics">Pill Pics</string>
     <string name="medication_list">Medication List</string>
+    <string name="edit_medication">Edit Medication</string>
 
 </resources>

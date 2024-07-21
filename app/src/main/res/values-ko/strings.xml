@@ -115,5 +115,6 @@
     <string name="pill_pics">알약 사진</string>
     <string name="medication_list">약 목록</string>
     <string name="view_all_medication_refills">모든 약물 리필 보기</string>
+    <string name="edit_medication">약물 수정</string>
 
 </resources>

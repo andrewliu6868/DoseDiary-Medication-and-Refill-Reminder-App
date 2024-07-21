@@ -55,7 +55,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
-//@Preview
 @Composable
 fun MedicationListPage(
     navController: NavController,
@@ -65,7 +64,10 @@ fun MedicationListPage(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate("Add Medication") },
+                onClick = {
+                    onEvent(MedicationListEvent.SelectMedication(null))  // Ensure selected medication is null
+                    navController.navigate("UpsertMedicationPage?mode=add")
+                },
                 containerColor = Color(0xFF7DCBFF)
             ) {
                 Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_medication))
@@ -80,7 +82,7 @@ fun MedicationListPage(
                 imageDescription = stringResource(R.string.app_icon),
             )
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -90,9 +92,8 @@ fun MedicationListPage(
         ) {
             items(state.medicationList) { medication ->
                 MedicationItem(medication, onItemClick = {
-                    // Navigate to Edit Medication
                     onEvent(MedicationListEvent.SelectMedication(medication))
-                    navController.navigate("Edit Medication")
+                    navController.navigate("UpsertMedicationPage?mode=edit")
                 })
             }
         }
@@ -143,5 +144,3 @@ fun MedicationItem(
         }
     }
 }
-
-

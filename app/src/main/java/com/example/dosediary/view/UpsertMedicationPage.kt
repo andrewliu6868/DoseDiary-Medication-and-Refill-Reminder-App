@@ -36,14 +36,16 @@ fun UpsertMedicationPage(
     state: UpsertMedicationState,
     onEvent: (UpsertMedicationEvent) -> Unit
 ) {
+    val navBackStackEntry = navController.currentBackStackEntry
+    val mode = navBackStackEntry?.arguments?.getString("mode") ?: "edit"
 
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = stringResource(R.string.add_medication),
+                header = if (mode == "add") stringResource(R.string.add_medication) else stringResource(R.string.edit_medication),
                 showNavigationIcon = true,
                 navController = navController,
-                imageResId = R.drawable.icon,  // Customizable icon
+                imageResId = R.drawable.icon,
                 imageDescription = stringResource(R.string.app_icon)
             )
         }
@@ -63,7 +65,11 @@ fun UpsertMedicationPage(
             item { RefillDaysSection(state.refillDays) { onEvent(it) } }
             item { AddressSection(state.address, state.postalCode, state.postalCodeError) { onEvent(it) } }
             item { NoteSection(state.note) { onEvent(it) } }
-            item { SaveDeleteRow(navController, state.medicationId) { onEvent(it) } }
+            if (mode == "edit") {
+                item { SaveDeleteRow(navController, state.medicationId) { onEvent(it) } }
+            } else {
+                item { SaveRow(navController) { onEvent(it) } }
+            }
         }
         if (state.showConfirmDialog) {
             SaveConfirmationDialog(
@@ -274,6 +280,23 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
             ) {
                 Text(stringResource(R.string.delete))
             }
+        }
+    }
+}
+
+@Composable
+fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Button(
+            onClick = { onEvent(UpsertMedicationEvent.SaveMedication) },
+            colors = ButtonDefaults.buttonColors(containerColor = Primary),
+            modifier = Modifier.weight(1f),
+            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
+        ) {
+            Text(stringResource(R.string.save))
         }
     }
 }

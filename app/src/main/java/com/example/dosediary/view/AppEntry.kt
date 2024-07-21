@@ -17,7 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.navigation.BottomNavigationBar
-import com.example.dosediary.viewmodel.AddMedicationViewModel
+import com.example.dosediary.viewmodel.UpsertMedicationViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedicationHistoryViewModel
 import com.example.dosediary.viewmodel.MedicationListViewModel
@@ -50,7 +50,7 @@ fun AppEntry() {
 @Composable
 fun MainAppNavigation (navController: NavHostController){
     //View Model
-    val addMedicationViewModel = hiltViewModel<AddMedicationViewModel>()
+    val addMedicationViewModel = hiltViewModel<UpsertMedicationViewModel>()
     val medicationHistoryViewModel = hiltViewModel<MedicationHistoryViewModel>()
     val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
     val profileViewModel = hiltViewModel<ProfileViewModel>()
@@ -63,18 +63,28 @@ fun MainAppNavigation (navController: NavHostController){
     val profileState = profileViewModel.state.collectAsState().value
     val medicationListState = medicationListViewModel.state.collectAsState().value
 
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") { LoginPage(navController)}
+        composable("signup") { SignUpPage(navController)}
         composable("home") { HomePage(navController, medRefillState, medRefillViewModel::onEvent)} //Todo
         composable("refill") { MedicationRefillPage(navController, medRefillState, medRefillViewModel::onEvent) }
         composable("history") { MedicationHistoryPage(navController, medicationHistoryState, medicationHistoryViewModel::onEvent, addTestEntries = medicationHistoryViewModel::addTestEntries)}
         composable("profile") { ProfilePage(navController, profileState, profileViewModel::onEvent) }
         composable("medication") { MedicationListPage(navController, medicationListState, medicationListViewModel::onEvent) }
-        composable("Add Medication") { UpsertMedicationPage(navController, addMedicationState, addMedicationViewModel::onEvent) }
-        composable("Edit Medication") {
+        composable("UpsertMedicationPage?mode={mode}") { backStackEntry ->
+            val mode = backStackEntry.arguments?.getString("mode")
             val selectedMedication = medicationListState.selectedMedicationDetail
-            LaunchedEffect(selectedMedication) {
-                addMedicationViewModel.initialize(selectedMedication)
+
+            if (mode == "edit" && selectedMedication != null) {
+                LaunchedEffect(selectedMedication) {
+                    addMedicationViewModel.initialize(selectedMedication)
+                }
+            } else if (mode == "add") {
+                LaunchedEffect(Unit) {
+                    addMedicationViewModel.initialize(null)
+                }
             }
+
             UpsertMedicationPage(navController, addMedicationState, addMedicationViewModel::onEvent)
         }
         //RefillDetails: State is the Med Refill State, No Event because this page is just displaying, no input from user.

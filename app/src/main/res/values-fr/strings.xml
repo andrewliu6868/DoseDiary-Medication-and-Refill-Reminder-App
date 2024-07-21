@@ -115,4 +115,5 @@
     <string name="medication_list">Liste des Médicaments</string>
     <string name="pill_pics">Photos de Pilules</string>
     <string name="view_all_medication_refills">Voir tous les renouvellements de médicaments</string>
+    <string name="edit_medication">Modifier le médicament</string>
 </resources>
