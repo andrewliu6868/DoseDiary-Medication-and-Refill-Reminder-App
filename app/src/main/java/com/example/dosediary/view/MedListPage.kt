@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -15,6 +17,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,6 +39,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.event.MedRefillEvent
+import com.example.dosediary.event.MedicationListEvent
+import com.example.dosediary.events.AddMedicationEvent
 import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
@@ -52,10 +58,18 @@ import java.util.Locale
 @Composable
 fun MedicationListPage(
     navController: NavController,
-    state: MedicationListState
-//    onEvent: (MedRefillEvent) -> Unit
+    state: MedicationListState,
+    onEvent: (MedicationListEvent) -> Unit
 ) {
     Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navController.navigate("Add Medication") },
+                containerColor = Color(0xFF7DCBFF)
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = "Add Medication")
+            }
+        },
         topBar = {
             CustomTopAppBar(
                 header = "Medication List",
@@ -66,72 +80,19 @@ fun MedicationListPage(
             )
         }
     ){ innerPadding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            BasicText(
-                text = "List of Upcoming Medications",
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp)
-            )
-            LazyColumn {
-                item { MedicationList(navController, state) }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun MedicationList(
-    navController: NavController,
-    state: MedicationListState,
-//    onEvent: (MedRefillEvent) -> Unit,
-    isHomePage: Boolean = false
-) {
-    Card(
-        shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            if (isHomePage) {
-                BasicText(
-                    text = "List of Upcoming Medications",
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-            if (state.medicationList.isEmpty()) {
-                BasicText(
-                    text = "No Medications",
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                )
-            } else {
-                LazyColumn(modifier = Modifier.height(min(state.medicationList.size * 75.dp, 4 * 75.dp))) {
-                    items(state.medicationList) { medication ->
-                        MedicationItem(medication, onItemClick = {
-                            // Navigate to Add Medication
-                            navController.navigate("AddMedicationPage")
-                        })
-                    }
-                }
-            }
-
-            if (isHomePage) {
-                Button(onClick = { navController.navigate("medication") },
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    colors = ButtonDefaults.buttonColors(containerColor = Primary)
-                ) {
-                    Text("View All Medications")
-                }
+            items(state.medicationList) { medication ->
+                MedicationItem(medication, onItemClick = {
+                    // Navigate to Edit Medication
+                    onEvent(MedicationListEvent.SelectMedication(medication))
+                    navController.navigate("Edit Medication")
+                })
             }
         }
     }
@@ -141,13 +102,7 @@ fun MedicationList(
 fun MedicationItem(
     medication: Medication,
     onItemClick: () -> Unit,
-//    onEvent: (MedRefillEvent) -> Unit,
 ) {
-//    val shouldCheck = shouldCheckCheckbox(
-//        medicationWithNextRefillDate.medication.lastRefilledDate,
-//        medicationWithNextRefillDate.medication.refillDays
-//    )
-//    val checkedState = remember { mutableStateOf(shouldCheck) }
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     Card(
@@ -184,14 +139,6 @@ fun MedicationItem(
                     text = "${dateFormat.format(medication.startDate)}",
                 )
             }
-
-            Checkbox(
-                checked = false,
-                colors = CheckboxDefaults.colors(Primary),
-                onCheckedChange = {
-//                    onEvent(MedRefillEvent.SetRefillCompleted(medicationWithNextRefillDate))
-                },
-            )
         }
     }
 }

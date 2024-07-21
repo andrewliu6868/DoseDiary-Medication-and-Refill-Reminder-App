@@ -35,14 +35,6 @@ fun HomePage(
     onEvent: (MedRefillEvent) -> Unit
 ) {
     Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate("Add Medication") },
-                containerColor = Color(0xFF7DCBFF)
-            ) {
-                Icon(Icons.Filled.Add, contentDescription = "Add Medication")
-            }
-        },
         topBar = {
             CustomTopAppBar(
                 header = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),

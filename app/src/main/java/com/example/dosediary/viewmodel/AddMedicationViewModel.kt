@@ -24,6 +24,24 @@ class AddMedicationViewModel @Inject constructor(
     private val _state = MutableStateFlow(AddMedicationState())
     val state = _state.asStateFlow()
 
+
+    fun initialize(medication: Medication?) {
+        if (medication != null) {
+            _state.value = _state.value.copy(
+                medicationId = medication.id,
+                medicationName = medication.medicationName,
+                startDate = medication.startDate,
+                endDate = medication.endDate,
+                frequency = medication.frequency,
+                times = medication.times,
+                refillDays = medication.refillDays,
+                note = medication.note,
+                address = medication.address,
+                postalCode = medication.postalCode
+            )
+        }
+    }
+
     fun onEvent(event: AddMedicationEvent) {
         when (event) {
             is AddMedicationEvent.OnMedicationNameChanged -> {
@@ -74,29 +92,46 @@ class AddMedicationViewModel @Inject constructor(
                 _state.value = _state.value.copy(showConfirmDialog = true)
             }
             AddMedicationEvent.ConfirmSaveMedication -> {
-                val medication = Medication(
-                    medicationName = _state.value.medicationName,
-                    startDate = _state.value.startDate,
-                    endDate = _state.value.endDate,
-                    frequency = _state.value.frequency,
-                    times = _state.value.times,
-                    refillDays = _state.value.refillDays,
-                    note = _state.value.note,
-                    address = _state.value.address,
-                    postalCode = _state.value.postalCode,
-                    postalCodeError = _state.value.postalCodeError,
-                    lastRefilledDate = _state.value.startDate,
-                    owner = 1           //TODO: Change this after User Profile is Ready
-                )
                 viewModelScope.launch {
+                    val medication = _state.value.toMedication()
                     medicationDao.upsertMedication(medication)
                     _state.value = AddMedicationState()
                 }
             }
-            AddMedicationEvent.DismissDialog -> {
+            AddMedicationEvent.DismissSaveDialog -> {
                 _state.value = _state.value.copy(showConfirmDialog = false)
             }
+            AddMedicationEvent.DeleteMedication -> {
+                _state.value = _state.value.copy(showDeleteConfirmDialog = true)
+            }
+            AddMedicationEvent.ConfirmDeleteMedication -> {
+                viewModelScope.launch {
+                    medicationDao.deleteMedicationById(_state.value.medicationId)
+                    _state.value = AddMedicationState()
+                }
+            }
+            AddMedicationEvent.DismissDeleteDialog -> {
+                _state.value = _state.value.copy(showDeleteConfirmDialog = false)
+            }
         }
+    }
+
+    private fun AddMedicationState.toMedication(): Medication {
+        return Medication(
+            id = this.medicationId,
+            medicationName = this.medicationName,
+            startDate = this.startDate,
+            endDate = this.endDate,
+            frequency = this.frequency,
+            times = this.times,
+            refillDays = this.refillDays,
+            note = this.note,
+            address = this.address,
+            postalCode = this.postalCode,
+            postalCodeError = this.postalCodeError,
+            lastRefilledDate = this.startDate,
+            owner = 1  // TODO: Change this after User Profile is Ready
+        )
     }
 
 }

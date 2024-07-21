@@ -27,7 +27,6 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +42,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
@@ -53,7 +51,6 @@ import com.example.dosediary.components.TimePicker
 import com.example.dosediary.events.AddMedicationEvent
 import com.example.dosediary.state.AddMedicationState
 import com.example.dosediary.ui.theme.Primary
-import com.example.dosediary.viewmodel.AddMedicationViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -91,14 +88,23 @@ fun AddMedicationPage(
             item { RefillDaysSection(state.refillDays) { onEvent(it) } }
             item { AddressSection(state.address, state.postalCode, state.postalCodeError) { onEvent(it) } }
             item { NoteSection(state.note) { onEvent(it) } }
-            item { SaveDeleteRow(navController) { onEvent(it) } }
+            item { SaveDeleteRow(navController, state.medicationId) { onEvent(it) } }
         }
         if (state.showConfirmDialog) {
-            ConfirmationDialog(
+            SaveConfirmationDialog(
                 onConfirm = {
                     onEvent(AddMedicationEvent.ConfirmSaveMedication)
-                    navController.navigate("home") },
-                onDismiss = { onEvent(AddMedicationEvent.DismissDialog) }
+                    navController.navigateUp() },
+                onDismiss = { onEvent(AddMedicationEvent.DismissSaveDialog) }
+            )
+        }
+        if (state.showDeleteConfirmDialog) {
+            DeleteConfirmationDialog(
+                onConfirm = {
+                    onEvent(AddMedicationEvent.ConfirmDeleteMedication)
+                    navController.navigateUp()
+                },
+                onDismiss = { onEvent(AddMedicationEvent.DismissDeleteDialog) }
             )
         }
     }
@@ -209,67 +215,6 @@ fun NoteSection(note: String, onEvent: (AddMedicationEvent) -> Unit) {
 
 
 @Composable
-fun NoteSection() {
-    var note by remember { mutableStateOf("") }
-
-    Text(text = "Notes", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
-    Spacer(modifier = Modifier.height(5.dp))
-
-    OutlinedTextField(
-        value = note,
-        onValueChange = { note = it },
-        label = { Text("Add a note") },
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-fun AddressSection() {
-    var address by remember { mutableStateOf("") }
-    var postalCode by remember { mutableStateOf("") }
-    var postalCodeError by remember { mutableStateOf<String?>(null) }
-
-    val postalCodeRegex = Regex("^[A-Za-z]\\d[A-Za-z][ -]?\\d[A-Za-z]\\d$")
-
-    Text(text = "Pharmacy Location", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
-    Spacer(modifier = Modifier.height(10.dp))
-
-    // Address
-    OutlinedTextField(
-        value = address,
-        onValueChange = { address = it },
-        label = { Text("Address") },
-        modifier = Modifier.fillMaxWidth()
-    )
-
-    Spacer(modifier = Modifier.height(10.dp))
-
-    // Postal code
-    OutlinedTextField(
-        value = postalCode,
-        onValueChange = { value ->
-            postalCode = value
-            postalCodeError = if (postalCodeRegex.matches(value)) null else "Invalid postal code format"
-        },
-        label = { Text("Postal Code") },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        modifier = Modifier.fillMaxWidth(),
-        isError = postalCodeError != null
-    )
-
-    if (postalCodeError != null) {
-        Text(
-            text = postalCodeError!!,
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-    }
-}
-
-
-
-@Composable
 fun AddressSection(address: String, postalCode: String, postalCodeError: String?, onEvent: (AddMedicationEvent) -> Unit) {
     Text(text = "Pharmacy Location", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
     Spacer(modifier = Modifier.height(10.dp))
@@ -307,7 +252,7 @@ fun AddressSection(address: String, postalCode: String, postalCodeError: String?
 
 
 @Composable
-fun SaveDeleteRow(navController: NavHostController, onEvent: (AddMedicationEvent) -> Unit) {
+fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: (AddMedicationEvent) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -321,16 +266,47 @@ fun SaveDeleteRow(navController: NavHostController, onEvent: (AddMedicationEvent
         ) {
             Text("Save")
         }
+
+        if (medicationId != 0) {
+            Spacer(modifier = Modifier.width(10.dp))
+            Button(
+                onClick = { onEvent(AddMedicationEvent.DeleteMedication) },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                modifier = Modifier.weight(1f),
+                elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
+            ) {
+                Text("Delete")
+            }
+        }
     }
 }
 
 
 @Composable
-fun ConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+fun SaveConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = "Confirm Save") },
         text = { Text(text = "Are you sure the information is correct?") },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text("Yes")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("No")
+            }
+        }
+    )
+}
+
+@Composable
+fun DeleteConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = "Confirm Delete") },
+        text = { Text(text = "Are you sure you want to delete this medication?") },
         confirmButton = {
             TextButton(onClick = onConfirm) {
                 Text("Yes")

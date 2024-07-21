@@ -4,6 +4,7 @@ import android.app.TimePickerDialog
 import java.util.Date
 
 data class AddMedicationState(
+    val medicationId: Int = 0,
     val medicationName: String = "",
     val startDate: Date = Date(),
     val endDate: Date = Date(),
@@ -14,5 +15,6 @@ data class AddMedicationState(
     val address: String = "",
     val postalCode: String = "",
     val postalCodeError: String? = null,
+    val showDeleteConfirmDialog: Boolean = false,
     val showConfirmDialog: Boolean = false
 )
