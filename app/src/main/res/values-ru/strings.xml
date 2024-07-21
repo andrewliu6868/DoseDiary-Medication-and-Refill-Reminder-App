@@ -114,5 +114,6 @@
     <!-- Medication List Page -->
     <string name="pill_pics">Изображения таблеток</string>
     <string name="medication_list">Список лекарств</string>
+    <string name="view_all_medication_refills">Посмотреть все пополнения лекарств</string>
 
 </resources>

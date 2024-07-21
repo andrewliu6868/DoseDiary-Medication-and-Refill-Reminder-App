@@ -107,18 +107,19 @@ fun MedicationRefillTodayList(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            BasicText(
-                text = stringResource(R.string.today),
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            // for medication in medication list render MedicationRefillDetailedItem(medication)
+
             if (state.medRefillsToday.isEmpty()) {
                 BasicText(
                     text = stringResource(R.string.no_medication_refills_today),
                     style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
                 )
             } else {
+                BasicText(
+                    text = stringResource(R.string.today),
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
                 LazyColumn(modifier = Modifier.height(min(state.medRefillsToday.size * 75.dp, 4 * 75.dp))) {
                     items(state.medRefillsToday) { medication ->
                         MedicationRefillDetailedItem(medication, onItemClick = {
@@ -126,15 +127,6 @@ fun MedicationRefillTodayList(
                             navController.navigate("refillDetails/${medication.medication.id}")
                         }, onEvent)
                     }
-                }
-            }
-
-            if (isHomePage) {
-                Button(onClick = { navController.navigate("refill") },
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    colors = ButtonDefaults.buttonColors(containerColor = Primary)
-                ) {
-                    Text(stringResource(R.string.view_all_medication_details))
                 }
             }
         }

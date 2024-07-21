@@ -114,4 +114,5 @@
     <!-- Medication List Page -->
     <string name="pill_pics">藥片圖片</string>
     <string name="medication_list">藥物列表</string>
+    <string name="view_all_medication_refills">查看所有藥品補充</string>
 </resources>

@@ -114,4 +114,5 @@
     <!-- Medication List Page -->
     <string name="pill_pics">Tablettenbilder</string>
     <string name="medication_list">Medikamentenliste</string>
+    <string name="view_all_medication_refills">Alle Medikamenten-Nachfüllungen anzeigen</string>
 </resources>
