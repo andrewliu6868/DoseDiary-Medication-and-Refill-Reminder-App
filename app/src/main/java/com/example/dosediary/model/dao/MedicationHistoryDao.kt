@@ -17,4 +17,7 @@ interface MedicationHistoryDao {
 
     @Query("SELECT * FROM medicationhistory ORDER BY dateTaken ASC")
     fun getContactsOrderedByFirstName(): Flow<List<MedicationHistory>>
+
+    @Query("SELECT * FROM medicationhistory WHERE ownerId = :ownerId ORDER BY dateTaken ASC")
+    fun getMedicationHistoriesByOwner(ownerId: Int): Flow<List<MedicationHistory>>
 }

@@ -3,6 +3,10 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
+    // just added
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
@@ -49,6 +53,9 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {
+        // just added
+        buildConfig = true
+
         compose = true
     }
     composeOptions {
@@ -101,15 +108,17 @@ dependencies {
 
     //Google Maps
     // Google maps
-    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    //implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
     // Google maps for compose
     implementation("com.google.maps.android:maps-compose:6.0.0")
+    // Google Places API for autocompelete
+    implementation("com.google.android.libraries.places:places:3.0.0")
 
     // KTX for the Maps SDK for Android
     implementation("com.google.maps.android:maps-ktx:5.1.0")
     // KTX for the Maps SDK for Android Utility Library
     implementation("com.google.maps.android:android-maps-utils:3.8.0")
-
 
 }

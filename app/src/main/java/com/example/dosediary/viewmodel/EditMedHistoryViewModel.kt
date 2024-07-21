@@ -17,18 +17,21 @@ import javax.inject.Inject
 class EditMedHistoryViewModel @Inject constructor(
     application: Application,
     private val medicationHistoryDao: MedicationHistoryDao
-) : ViewModel(){
+) : ViewModel() {
     private val _state = MutableStateFlow(EditMedHistoryState())
     val state = _state.asStateFlow()
 
-    init{
+    init {
         fetchMedicationHistories()
     }
 
-    fun onEvent(event: EditMedHistoryEvent){
-        when(event){
+    fun onEvent(event: EditMedHistoryEvent) {
+        when (event) {
             is EditMedHistoryEvent.OnEffectivenessChanged -> {
                 _state.value = _state.value.copy(effectiveness = event.effectiveness)
+            }
+            is EditMedHistoryEvent.OnAdditionalDetailsChanged -> {
+                _state.value = _state.value.copy(additionalDetails = event.additionalDetails)
             }
             is EditMedHistoryEvent.AddMedicationHistory -> {
                 addMedicationHistory(event.medicationHistory)
@@ -45,30 +48,42 @@ class EditMedHistoryViewModel @Inject constructor(
         }
     }
 
-    private fun fetchMedicationHistories(){
+    private fun fetchMedicationHistories() {
         viewModelScope.launch {
-            medicationHistoryDao.getContactsOrderedByFirstName().collect{
-                histories -> _state.value = _state.value.copy(medicationHistories = histories)
+            medicationHistoryDao.getContactsOrderedByFirstName().collect { histories ->
+                _state.value = _state.value.copy(medicationHistories = histories)
             }
         }
     }
 
-    private fun addMedicationHistory(medicationHistory: MedicationHistory){
-        viewModelScope.launch{
+    private fun addMedicationHistory(medicationHistory: MedicationHistory) {
+        viewModelScope.launch {
             medicationHistoryDao.upsertMedicationHistory(medicationHistory)
             fetchMedicationHistories()
         }
     }
 
-    private fun saveMedicationHistory(){
+    private fun saveMedicationHistory() {
         viewModelScope.launch {
             val selectedHistory = _state.value.selectedMedicationHistory
-            if(selectedHistory != null){
-                val updatedHistory = selectedHistory.copy(effectiveness = _state.value.effectiveness)
+            if (selectedHistory != null) {
+                val updatedHistory = selectedHistory.copy(
+                    effectiveness = _state.value.effectiveness,
+                    additionalDetails = _state.value.additionalDetails
+                )
                 medicationHistoryDao.upsertMedicationHistory(updatedHistory)
                 fetchMedicationHistories()
-                _state.value = _state.value.copy(selectedMedicationHistory = null, effectiveness = "")
+                _state.value = _state.value.copy(selectedMedicationHistory = null, effectiveness = "", additionalDetails = "")
             }
         }
+    }
+
+    private fun resetInputFields() {
+        _state.value = _state.value.copy(
+            selectedMedicationHistory = null,
+            effectiveness = "",
+            additionalDetails = "",
+            showConfirmDialog = false
+        )
     }
 }

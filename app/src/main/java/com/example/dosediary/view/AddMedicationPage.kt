@@ -1,6 +1,5 @@
 package com.example.dosediary.view
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
-
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -154,7 +152,12 @@ fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedic
                 .width(80.dp)
                 .onFocusChanged { focusState ->
                     if (focusState.isFocused) {
-                        frequencyState = frequencyState.copy(selection = TextRange(0, frequencyState.text.length))
+                        frequencyState = frequencyState.copy(
+                            selection = TextRange(
+                                0,
+                                frequencyState.text.length
+                            )
+                        )
                     }
                 },
             value = frequencyState,
@@ -213,7 +216,6 @@ fun NoteSection(note: String, onEvent: (AddMedicationEvent) -> Unit) {
     )
 }
 
-
 @Composable
 fun AddressSection(address: String, postalCode: String, postalCodeError: String?, onEvent: (AddMedicationEvent) -> Unit) {
     Text(text = "Pharmacy Location", style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp))
@@ -249,8 +251,6 @@ fun AddressSection(address: String, postalCode: String, postalCodeError: String?
     }
 }
 
-
-
 @Composable
 fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: (AddMedicationEvent) -> Unit) {
     Row(
@@ -280,7 +280,6 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
         }
     }
 }
-
 
 @Composable
 fun SaveConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
