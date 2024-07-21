@@ -61,13 +61,13 @@ fun MainAppNavigation (navController: NavHostController){
         composable("history") { MedicationHistoryPage(navController, medicationHistoryState, medicationHistoryViewModel::onEvent, addTestEntries = medicationHistoryViewModel::addTestEntries)}
         composable("profile") { ProfilePage(navController, profileState, profileViewModel::onEvent) }
         composable("medication") { MedicationListPage(navController, medicationListState, medicationListViewModel::onEvent) }
-        composable("Add Medication") { AddMedicationPage(navController, addMedicationState, addMedicationViewModel::onEvent) }
+        composable("Add Medication") { UpsertMedicationPage(navController, addMedicationState, addMedicationViewModel::onEvent) }
         composable("Edit Medication") {
             val selectedMedication = medicationListState.selectedMedicationDetail
             LaunchedEffect(selectedMedication) {
                 addMedicationViewModel.initialize(selectedMedication)
             }
-            AddMedicationPage(navController, addMedicationState, addMedicationViewModel::onEvent)
+            UpsertMedicationPage(navController, addMedicationState, addMedicationViewModel::onEvent)
         }
         //RefillDetails: State is the Med Refill State, No Event because this page is just displaying, no input from user.
         composable("refillDetails") { MedicationRefillDetailPage(navController, medRefillState) }

@@ -41,7 +41,7 @@ import androidx.navigation.NavController
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.event.MedRefillEvent
 import com.example.dosediary.event.MedicationListEvent
-import com.example.dosediary.events.AddMedicationEvent
+import com.example.dosediary.events.UpsertMedicationEvent
 import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary

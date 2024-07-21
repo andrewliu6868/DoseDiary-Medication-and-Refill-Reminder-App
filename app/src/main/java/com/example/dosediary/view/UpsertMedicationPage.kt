@@ -24,17 +24,17 @@ import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.DatePicker
 import com.example.dosediary.components.TimePicker
-import com.example.dosediary.events.AddMedicationEvent
-import com.example.dosediary.state.AddMedicationState
+import com.example.dosediary.events.UpsertMedicationEvent
+import com.example.dosediary.state.UpsertMedicationState
 import com.example.dosediary.ui.theme.Primary
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun AddMedicationPage(
+fun UpsertMedicationPage(
     navController: NavHostController,
-    state: AddMedicationState,
-    onEvent: (AddMedicationEvent) -> Unit
+    state: UpsertMedicationState,
+    onEvent: (UpsertMedicationEvent) -> Unit
 ) {
 
     Scaffold(
@@ -68,26 +68,26 @@ fun AddMedicationPage(
         if (state.showConfirmDialog) {
             SaveConfirmationDialog(
                 onConfirm = {
-                    onEvent(AddMedicationEvent.ConfirmSaveMedication)
+                    onEvent(UpsertMedicationEvent.ConfirmSaveMedication)
                     navController.navigateUp()
                 },
-                onDismiss = { onEvent(AddMedicationEvent.DismissSaveDialog) }
+                onDismiss = { onEvent(UpsertMedicationEvent.DismissSaveDialog) }
             )
         }
         if (state.showDeleteConfirmDialog) {
             DeleteConfirmationDialog(
                 onConfirm = {
-                    onEvent(AddMedicationEvent.ConfirmDeleteMedication)
+                    onEvent(UpsertMedicationEvent.ConfirmDeleteMedication)
                     navController.navigateUp()
                 },
-                onDismiss = { onEvent(AddMedicationEvent.DismissDeleteDialog) }
+                onDismiss = { onEvent(UpsertMedicationEvent.DismissDeleteDialog) }
             )
         }
     }
 }
 
 @Composable
-fun MedicationNameSection(medicationName: String, onEvent: (AddMedicationEvent) -> Unit) {
+fun MedicationNameSection(medicationName: String, onEvent: (UpsertMedicationEvent) -> Unit) {
     Text(
         text = stringResource(R.string.medication_name),
         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
@@ -95,30 +95,30 @@ fun MedicationNameSection(medicationName: String, onEvent: (AddMedicationEvent) 
     Spacer(modifier = Modifier.height(5.dp))
     OutlinedTextField(
         value = medicationName,
-        onValueChange = { onEvent(AddMedicationEvent.OnMedicationNameChanged(it)) },
+        onValueChange = { onEvent(UpsertMedicationEvent.OnMedicationNameChanged(it)) },
         label = { Text(stringResource(R.string.name)) },
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
-fun MedDurationSection(startDate: Date, endDate: Date, onEvent: (AddMedicationEvent) -> Unit) {
+fun MedDurationSection(startDate: Date, endDate: Date, onEvent: (UpsertMedicationEvent) -> Unit) {
     Text(
         text = stringResource(R.string.medication_period),
         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
     )
     Spacer(modifier = Modifier.height(5.dp))
     DatePicker(date = startDate, placeholder = stringResource(R.string.start_date)) {
-        onEvent(AddMedicationEvent.OnStartDateChanged(it))
+        onEvent(UpsertMedicationEvent.OnStartDateChanged(it))
     }
     Spacer(modifier = Modifier.height(5.dp))
     DatePicker(date = endDate, placeholder = stringResource(R.string.end_date)) {
-        onEvent(AddMedicationEvent.OnEndDateChanged(it))
+        onEvent(UpsertMedicationEvent.OnEndDateChanged(it))
     }
 }
 
 @Composable
-fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedicationEvent) -> Unit) {
+fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (UpsertMedicationEvent) -> Unit) {
     var frequencyState by remember { mutableStateOf(TextFieldValue(frequency)) }
 
     Text(
@@ -154,7 +154,7 @@ fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedic
             value = frequencyState,
             onValueChange = {
                 frequencyState = it
-                onEvent(AddMedicationEvent.OnFrequencyChanged(it.text))
+                onEvent(UpsertMedicationEvent.OnFrequencyChanged(it.text))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
@@ -162,7 +162,7 @@ fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedic
     Spacer(modifier = Modifier.height(10.dp))
     times.forEachIndexed { index, time ->
         TimePicker(time = time, placeholder = stringResource(R.string.select_time, index + 1)) {
-            onEvent(AddMedicationEvent.OnTimeChanged(index, it))
+            onEvent(UpsertMedicationEvent.OnTimeChanged(index, it))
         }
         Spacer(modifier = Modifier.height(10.dp))
     }
@@ -176,7 +176,7 @@ fun MedFrequencySection(frequency: String, times: List<Date>, onEvent: (AddMedic
 }
 
 @Composable
-fun RefillDaysSection(sliderPosition: Int, onEvent: (AddMedicationEvent) -> Unit) {
+fun RefillDaysSection(sliderPosition: Int, onEvent: (UpsertMedicationEvent) -> Unit) {
     Text(
         text = stringResource(R.string.refill_days),
         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
@@ -184,7 +184,7 @@ fun RefillDaysSection(sliderPosition: Int, onEvent: (AddMedicationEvent) -> Unit
     Spacer(modifier = Modifier.height(8.dp))
     Slider(
         value = sliderPosition.toFloat(),
-        onValueChange = { onEvent(AddMedicationEvent.OnRefillDaysChanged(it.toInt())) },
+        onValueChange = { onEvent(UpsertMedicationEvent.OnRefillDaysChanged(it.toInt())) },
         valueRange = 0f..100f,
         steps = 100,
         colors = SliderDefaults.colors(
@@ -196,7 +196,7 @@ fun RefillDaysSection(sliderPosition: Int, onEvent: (AddMedicationEvent) -> Unit
 }
 
 @Composable
-fun NoteSection(note: String, onEvent: (AddMedicationEvent) -> Unit) {
+fun NoteSection(note: String, onEvent: (UpsertMedicationEvent) -> Unit) {
     Text(
         text = stringResource(R.string.notes),
         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
@@ -205,14 +205,14 @@ fun NoteSection(note: String, onEvent: (AddMedicationEvent) -> Unit) {
 
     OutlinedTextField(
         value = note,
-        onValueChange = { onEvent(AddMedicationEvent.OnNoteChanged(it)) },
+        onValueChange = { onEvent(UpsertMedicationEvent.OnNoteChanged(it)) },
         label = { Text(stringResource(R.string.add_note)) },
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Composable
-fun AddressSection(address: String, postalCode: String, postalCodeError: String?, onEvent: (AddMedicationEvent) -> Unit) {
+fun AddressSection(address: String, postalCode: String, postalCodeError: String?, onEvent: (UpsertMedicationEvent) -> Unit) {
     Text(
         text = stringResource(R.string.pharmacy_location),
         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
@@ -222,7 +222,7 @@ fun AddressSection(address: String, postalCode: String, postalCodeError: String?
     // Address
     OutlinedTextField(
         value = address,
-        onValueChange = { onEvent(AddMedicationEvent.OnAddressChanged(it)) },
+        onValueChange = { onEvent(UpsertMedicationEvent.OnAddressChanged(it)) },
         label = { Text(stringResource(R.string.address)) },
         modifier = Modifier.fillMaxWidth()
     )
@@ -232,7 +232,7 @@ fun AddressSection(address: String, postalCode: String, postalCodeError: String?
     // Postal code
     OutlinedTextField(
         value = postalCode,
-        onValueChange = { onEvent(AddMedicationEvent.OnPostalCodeChanged(it)) },
+        onValueChange = { onEvent(UpsertMedicationEvent.OnPostalCodeChanged(it)) },
         label = { Text(stringResource(R.string.postal_code)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         modifier = Modifier.fillMaxWidth(),
@@ -250,13 +250,13 @@ fun AddressSection(address: String, postalCode: String, postalCodeError: String?
 }
 
 @Composable
-fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: (AddMedicationEvent) -> Unit) {
+fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: (UpsertMedicationEvent) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(
-            onClick = { onEvent(AddMedicationEvent.SaveMedication) },
+            onClick = { onEvent(UpsertMedicationEvent.SaveMedication) },
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f),
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
@@ -267,7 +267,7 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
         if (medicationId != 0) {
             Spacer(modifier = Modifier.width(10.dp))
             Button(
-                onClick = { onEvent(AddMedicationEvent.DeleteMedication) },
+                onClick = { onEvent(UpsertMedicationEvent.DeleteMedication) },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                 modifier = Modifier.weight(1f),
                 elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
@@ -320,7 +320,7 @@ fun DeleteConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
 @Composable
 fun AddMedPreview() {
     val navController = rememberNavController()
-    val state = AddMedicationState()
-    val onEvent: (AddMedicationEvent) -> Unit = {}
-    AddMedicationPage(navController = navController, state = state, onEvent = onEvent)
+    val state = UpsertMedicationState()
+    val onEvent: (UpsertMedicationEvent) -> Unit = {}
+    UpsertMedicationPage(navController = navController, state = state, onEvent = onEvent)
 }
