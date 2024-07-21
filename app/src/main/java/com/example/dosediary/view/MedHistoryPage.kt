@@ -92,7 +92,7 @@ fun MedicationHistoryPage(
             FloatingActionButton(
                 onClick = {
                     //navigate to add medication page?
-                    navController.navigate("addMedication")
+                    navController.navigate("editMedication")
                 },
                 containerColor = Color(0xFF7DCBFF)
             ) {
