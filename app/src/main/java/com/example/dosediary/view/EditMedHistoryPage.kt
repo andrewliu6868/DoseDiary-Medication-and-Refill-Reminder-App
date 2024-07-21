@@ -59,6 +59,12 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
                 viewModel.onEvent(EditMedHistoryEvent.AddMedicationHistory(medicationHistory))
                 showConfirmDialog.value = false
                 navController.navigate("history")
+
+                medicationName.value = ""
+                selectedEffectiveness.value = ""
+                date.value = calendar.time
+                time.value = calendar.time
+                additionalDetails.value = ""
             }
         )
     }
