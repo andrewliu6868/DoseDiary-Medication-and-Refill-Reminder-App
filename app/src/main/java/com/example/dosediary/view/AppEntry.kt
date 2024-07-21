@@ -19,6 +19,7 @@ import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.viewmodel.AddMedicationViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedicationHistoryViewModel
+import com.example.dosediary.viewmodel.MedicationListViewModel
 import com.example.dosediary.viewmodel.ProfileViewModel
 
 @Composable
@@ -47,12 +48,14 @@ fun MainAppNavigation (navController: NavHostController){
     val medicationHistoryViewModel = hiltViewModel<MedicationHistoryViewModel>()
     val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
     val profileViewModel = hiltViewModel<ProfileViewModel>()
+    val medicationLiftModel = hiltViewModel<MedicationListViewModel>()
 
     //State
     val addMedicationState = addMedicationViewModel.state.collectAsState().value
     val medicationHistoryState = medicationHistoryViewModel.state.collectAsState().value
     val medRefillState = medRefillViewModel.state.collectAsState().value
     val profileState = profileViewModel.state.collectAsState().value
+    val medicationListState = medicationLiftModel.state.collectAsState().value
 
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { HomePage(navController, medRefillState, medRefillViewModel::onEvent)} //Todo
@@ -63,5 +66,6 @@ fun MainAppNavigation (navController: NavHostController){
         //RefillDetails: State is the Med Refill State, No Event because this page is just displaying, no input from user.
         composable("refillDetails") { MedicationRefillDetailPage(navController, medRefillState) }
         composable("editMedication") { EditMedicationPage(navController) }  //Todo
+        composable("medication") { MedicationListPage(navController, medicationListState) }  //Todo
     }
 }

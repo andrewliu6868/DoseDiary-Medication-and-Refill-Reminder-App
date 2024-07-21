@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
 }
 @Composable
 fun LoginNavigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "home") {
         composable("login") { LoginPage(navController) }
         composable("home") { AppEntry() }
         composable("signup"){ SignUpPage(navController) }

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MedicalServices
+import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -31,6 +32,11 @@ val items = listOf(
     BottomNavigation(
         title = "Home",
         icon = Icons.Outlined.Home
+    ),
+
+    BottomNavigation(
+        title = "Medications",
+        icon = Icons.Outlined.Medication
     ),
 
     BottomNavigation(
@@ -78,6 +84,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                         selectedItem = index
                         when (item.title) {
                             "Home" -> navController.navigate("home")
+                            "Medications" -> navController.navigate("medication")
                             "Refill" -> navController.navigate("refill")
                             "History" -> navController.navigate("history")
                             "Profile" -> navController.navigate("profile")
