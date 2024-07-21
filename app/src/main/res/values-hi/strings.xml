@@ -1,0 +1,117 @@
+<resources>
+    <string name="app_name">DoseDiary</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_add_medication">दवाईजोड़ें</string>
+
+    <!-- General Strings -->
+    <string name="confirm_save">सहेजने की पुष्टि करें</string>
+    <string name="error_generating_pdf">PDF जनरेट करने में त्रुटि</string>
+    <string name="pdf_generated_successfully">PDF सफलतापूर्वक जनरेट किया गया</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+
+    <!-- Medication History Page -->
+    <string name="medication_history">दवाइयों का इतिहास</string>
+    <string name="add_medication">दवाई जोड़ें</string>
+    <string name="view_medication_history">दवाइयों का इतिहास देखें</string>
+    <string name="name">नाम</string>
+    <string name="time">समय</string>
+    <string name="date">तारीख</string>
+    <string name="effectiveness">प्रभावशीलता</string>
+
+    <!-- Add Medication Page -->
+    <string name="add_medication_header">दवाई जोड़ें</string>
+    <string name="medication_name">दवाई का नाम</string>
+    <string name="name_placeholder">दवाई का नाम दर्ज करें</string>
+    <string name="medication_period">दवाई लेने की अवधि</string>
+    <string name="select_date">तारीख चुनें</string>
+    <string name="select_time">समय चुनें</string>
+    <string name="intake_frequency">लेने की आवृत्ति</string>
+    <string name="number_of_times_per_day">दिन में कितनी बार:</string>
+    <string name="refill_days">फिर से भरने के दिन</string>
+    <string name="notes">नोट्स</string>
+    <string name="add_note">नोट जोड़ें</string>
+    <string name="pharmacy_location">फार्मेसी का स्थान</string>
+    <string name="address">पता</string>
+    <string name="postal_code">पोस्टल कोड</string>
+    <string name="additional_details">अतिरिक्त विवरण</string>
+    <string name="save">सहेजें</string>
+    <string name="discard">रद्द करें</string>
+    <string name="confirm_save_message">क्या आप सुनिश्चित हैं कि जानकारी सही है?</string>
+    <string name="save_changes">परिवर्तनों को सहेजें</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="delete">हटाएं</string>
+    <string name="app_icon">ऐप आइकन</string>
+    <string name="confirm_delete">हटाने की पुष्टि करें</string>
+    <string name="confirm_delete_message">क्या आप वाकई इस दवाई को हटाना चाहते हैं?</string>
+    <string name="times_per_day">दिन में कितनी बार:</string>
+    <string name="start_date">प्रारंभ तिथि</string>
+    <string name="end_date">समाप्ति तिथि</string>
+
+    <!-- Home Page -->
+    <string name="upcoming_medication_refills">आगामी दवाइयों का पुनःपूर्ति</string>
+    <string name="daily_medication_checklist">दैनिक दवाई चेकलिस्ट</string>
+    <string name="no_medication_refills_today">आज कोई दवाइयों का पुनःपूर्ति नहीं</string>
+    <string name="no_medication_refills_next_week">अगले 7 दिनों में कोई दवाइयों का पुनःपूर्ति नहीं</string>
+    <string name="today">आज</string>
+    <string name="next_7_days">अगले 7 दिन</string>
+    <string name="view_all_medication_details">सभी दवाई विवरण देखें</string>
+    <string name="medication_reminder_time">दवाई अनुस्मारक - %1$s</string>
+    <string name="view">देखें</string>
+
+    <!-- Login Page -->
+    <string name="login">लॉगिन</string>
+    <string name="email">ईमेल</string>
+    <string name="password">पासवर्ड</string>
+    <string name="show_password">पासवर्ड दिखाएं</string>
+    <string name="hide_password">पासवर्ड छिपाएं</string>
+    <string name="sign_up_here">यहाँ साइन अप करें</string>
+    <string name="error">त्रुटि:</string>
+
+    <!-- Sign Up Page -->
+    <string name="register">पंजीकरण करें</string>
+    <string name="first_name">पहला नाम</string>
+    <string name="last_name">अंतिम नाम</string>
+    <string name="app_main_icon">ऐप मुख्य आइकन</string>
+
+    <!-- Profile Page -->
+    <string name="profile">प्रोफ़ाइल: %1$s %2$s</string>
+    <string name="manage_users">उपयोगकर्ताओं का प्रबंधन करें</string>
+    <string name="add_user">उपयोगकर्ता जोड़ें</string>
+    <string name="add_users">उपयोगकर्ताओं को जोड़ें</string>
+    <string name="add">जोड़ें</string>
+    <string name="user_details">उपयोगकर्ता विवरण</string>
+    <string name="you_cannot_edit_sub_user">आप उप-उपयोगकर्ता के लिए उपयोगकर्ता विवरण संपादित नहीं कर सकते, कृपया उपयोगकर्ता विवरण संपादित करने के लिए मुख्य उपयोगकर्ता पर स्विच करें</string>
+    <string name="change_user">उपयोगकर्ता बदलें</string>
+    <string name="user_initials">%1$s%2$s</string>
+    <string name="type_password_here">यहाँ पासवर्ड टाइप करें</string>
+
+    <!-- Medication Refill Page -->
+    <string name="medication_refill">दवाई पुनःपूर्ति</string>
+    <string name="medication_refill_detail">दवाई पुनःपूर्ति विवरण</string>
+    <string name="direction">दिशा-निर्देश</string>
+    <string name="call">कॉल करें</string>
+    <string name="refill_information">पुनःपूर्ति जानकारी:</string>
+    <string name="next_refill_date">अगली पुनःपूर्ति तिथि: %1$s</string>
+    <string name="pharmacy_name">फार्मेसी का नाम: %1$s</string>
+    <string name="pharmacy_contact">फार्मेसी संपर्क: %1$s</string>
+    <string name="pharmacy_address">फार्मेसी का पता: %1$s</string>
+    <string name="more_information">दवाई के बारे में अधिक जानकारी:</string>
+    <string name="quantity">मात्रा: %1$s</string>
+    <string name="notes_details">नोट्स: %1$s</string>
+    <string name="pills_left">गोलियां बाकी</string>
+
+    <!-- Edit Medication History Page -->
+    <string name="enter_additional_details">अतिरिक्त विवरण दर्ज करें</string>
+    <string name="select_effectiveness">प्रभावशीलता चुनें</string>
+    <string name="enter_medication_name">दवाई का नाम दर्ज करें</string>
+    <string name="add_medication_history">दवाई इतिहास जोड़ें</string>
+    <string name="effective">प्रभावी</string>
+    <string name="moderate">मध्यम</string>
+    <string name="marginal">सीमांत</string>
+    <string name="ineffective">अप्रभावी</string>
+
+    <!-- Medication List Page -->
+    <string name="pill_pics">गोलियों की तस्वीरें</string>
+    <string name="medication_list">दवाई सूची</string>
+</resources>

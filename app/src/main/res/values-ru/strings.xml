@@ -1,0 +1,118 @@
+<resources>
+    <string name="app_name">ДневникДоз</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_add_medication">ДобавитьЛекарство</string>
+
+    <!-- General Strings -->
+    <string name="confirm_save">Подтвердить сохранение</string>
+    <string name="error_generating_pdf">Ошибка при создании PDF</string>
+    <string name="pdf_generated_successfully">PDF успешно создан</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+    <!-- Medication History Page -->
+    <string name="medication_history">История лекарств</string>
+    <string name="add_medication">Добавить лекарство</string>
+    <string name="view_medication_history">Посмотреть историю лекарств</string>
+    <string name="name">Название</string>
+    <string name="time">Время</string>
+    <string name="date">Дата</string>
+    <string name="effectiveness">Эффективность</string>
+
+    <!-- Add Medication Page -->
+    <string name="add_medication_header">Добавить лекарство</string>
+    <string name="medication_name">Название лекарства</string>
+    <string name="name_placeholder">Введите название лекарства</string>
+    <string name="medication_period">Период приема лекарства</string>
+    <string name="select_date">Выбрать дату</string>
+    <string name="select_time">Выбрать время</string>
+    <string name="intake_frequency">Частота приема</string>
+    <string name="number_of_times_per_day">Количество раз в день:</string>
+    <string name="refill_days">Дни пополнения</string>
+    <string name="notes">Заметки</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="pharmacy_location">Местоположение аптеки</string>
+    <string name="address">Адрес</string>
+    <string name="postal_code">Почтовый индекс</string>
+    <string name="additional_details">Дополнительные сведения</string>
+    <string name="save">Сохранить</string>
+    <string name="discard">Отменить</string>
+    <string name="confirm_save_message">Вы уверены, что информация верна?</string>
+    <string name="save_changes">Сохранить изменения</string>
+    <string name="cancel">Отменить</string>
+    <string name="delete">Удалить</string>
+    <string name="app_icon">Иконка приложения</string>
+    <string name="confirm_delete">Подтвердить удаление</string>
+    <string name="confirm_delete_message">Вы уверены, что хотите удалить это лекарство?</string>
+    <string name="times_per_day">Количество раз в день:</string>
+    <string name="start_date">Дата начала</string>
+    <string name="end_date">Дата окончания</string>
+
+    <!-- Home Page -->
+    <string name="upcoming_medication_refills">Предстоящие пополнения лекарств</string>
+    <string name="daily_medication_checklist">Ежедневный список лекарств</string>
+    <string name="no_medication_refills_today">Сегодня нет пополнений лекарств</string>
+    <string name="no_medication_refills_next_week">Нет пополнений лекарств в ближайшие 7 дней</string>
+    <string name="today">Сегодня</string>
+    <string name="next_7_days">Следующие 7 дней</string>
+    <string name="view_all_medication_details">Посмотреть все детали лекарства</string>
+    <string name="medication_reminder_time">Напоминание о лекарстве - %1$s</string>
+    <string name="view">Просмотр</string>
+
+    <!-- Login Page -->
+    <string name="login">Вход</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
+    <string name="show_password">Показать пароль</string>
+    <string name="hide_password">Скрыть пароль</string>
+    <string name="sign_up_here">Зарегистрируйтесь здесь</string>
+    <string name="error">Ошибка:</string>
+
+    <!-- Sign Up Page -->
+    <string name="register">Регистрация</string>
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="app_main_icon">Главная иконка приложения</string>
+
+    <!-- Profile Page -->
+    <string name="profile">Профиль: %1$s %2$s</string>
+    <string name="manage_users">Управление пользователями</string>
+    <string name="add_user">Добавить пользователя</string>
+    <string name="add_users">Добавить пользователей</string>
+    <string name="add">Добавить</string>
+    <string name="user_details">Детали пользователя</string>
+    <string name="you_cannot_edit_sub_user">Вы не можете редактировать детали пользователя для подчиненного пользователя, перейдите к основному пользователю, чтобы изменить детали пользователя</string>
+    <string name="change_user">Сменить пользователя</string>
+    <string name="user_initials">%1$s%2$s</string>
+    <string name="type_password_here">Введите пароль здесь</string>
+
+    <!-- Medication Refill Page -->
+    <string name="medication_refill">Пополнение лекарств</string>
+    <string name="medication_refill_detail">Детали пополнения лекарств</string>
+    <string name="direction">Маршрут</string>
+    <string name="call">Звонок</string>
+    <string name="refill_information">Информация о пополнении:</string>
+    <string name="next_refill_date">Дата следующего пополнения: %1$s</string>
+    <string name="pharmacy_name">Название аптеки: %1$s</string>
+    <string name="pharmacy_contact">Контакт аптеки: %1$s</string>
+    <string name="pharmacy_address">Адрес аптеки: %1$s</string>
+    <string name="more_information">Дополнительная информация о лекарстве:</string>
+    <string name="quantity">Количество: %1$s</string>
+    <string name="notes_details">Заметки: %1$s</string>
+    <string name="pills_left">таблеток осталось</string>
+
+    <!-- Edit Medication History Page -->
+    <string name="enter_additional_details">Введите дополнительные сведения</string>
+    <string name="select_effectiveness">Выберите эффективность</string>
+    <string name="enter_medication_name">Введите название лекарства</string>
+    <string name="add_medication_history">Добавить историю приема лекарств</string>
+    <string name="effective">Эффективное</string>
+    <string name="moderate">Умеренное</string>
+    <string name="marginal">Малозначительное</string>
+    <string name="ineffective">Неэффективное</string>
+
+    <!-- Medication List Page -->
+    <string name="pill_pics">Изображения таблеток</string>
+    <string name="medication_list">Список лекарств</string>
+
+</resources>
