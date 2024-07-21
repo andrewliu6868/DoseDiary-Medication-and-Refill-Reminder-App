@@ -1,9 +1,8 @@
 package com.example.dosediary.state
 
-import android.app.TimePickerDialog
 import java.util.Date
 
-data class AddMedicationState(
+data class UpsertMedicationState(
     val medicationId: Int = 0,
     val medicationName: String = "",
     val startDate: Date = Date(),
