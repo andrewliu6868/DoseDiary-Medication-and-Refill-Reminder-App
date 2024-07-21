@@ -31,7 +31,7 @@ fun AppEntry() {
 
     Scaffold(
         bottomBar = {
-            if (currentRoute != "Add Medication") {
+            if (currentRoute in listOf("home", "refill", "history", "medication", "profile")) {
                 BottomNavigationBar(navController)
             }
         }
@@ -81,4 +81,10 @@ fun MainAppNavigation (navController: NavHostController){
         composable("refillDetails") { MedicationRefillDetailPage(navController, medRefillState) }
         composable("editMedication") { EditMedicationPage(navController) }  //Todo
     }
+}
+
+@Composable
+fun getCurrentRoute(navController: NavHostController): String? {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    return navBackStackEntry?.destination?.route
 }

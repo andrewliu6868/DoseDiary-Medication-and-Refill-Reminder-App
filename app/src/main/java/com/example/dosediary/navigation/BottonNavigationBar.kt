@@ -28,7 +28,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.navigation.BottomNavigation
 import com.example.dosediary.ui.theme.Background
 
-
 val items = listOf(
     BottomNavigation(
         title = "Home",
@@ -59,6 +58,18 @@ val items = listOf(
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(0) }
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
+
+    // Update selectedItem based on currentRoute
+    selectedItem = when (currentRoute) {
+        "home" -> 0
+        "medication", "add_medication" -> 1
+        "refill" -> 2
+        "history", "editMedication" -> 3
+        "profile" -> 4
+        else -> 0
+    }
 
     NavigationBar {
         Row(
@@ -97,9 +108,9 @@ fun BottomNavigationBar(navController: NavHostController) {
     }
 }
 
-@Preview(showBackground =true, name = "Bottom Navigation Preview")
+@Preview(showBackground = true, name = "Bottom Navigation Preview")
 @Composable
-fun BottomNavigationBarPreview(){
+fun BottomNavigationBarPreview() {
     val navController = rememberNavController()
     BottomNavigationBar(navController)
 }
