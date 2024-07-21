@@ -1,5 +1,6 @@
 package com.example.dosediary.view
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -7,11 +8,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.navigation.BottomNavigationBar
 import com.example.dosediary.viewmodel.AddMedicationViewModel
@@ -23,9 +26,14 @@ import com.example.dosediary.viewmodel.ProfileViewModel
 @Composable
 fun AppEntry() {
     val navController = rememberNavController()
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
+
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(navController)
+            if (currentRoute != "Add Medication") {
+                BottomNavigationBar(navController)
+            }
         }
     ) { padding ->
         Column(
