@@ -28,6 +28,9 @@ interface MedicationDao {
     @Query("SELECT * FROM medication WHERE id = :medID ORDER BY medicationName ASC LIMIT 1")
     fun getMedicationByID(medID: Int): Flow<Medication>
 
+    @Query("SELECT * FROM medication WHERE owner = :owner AND id = :id LIMIT 1")
+    fun getMedByOwnerAndId(owner: Int, id: Int): Flow<Medication>
+
     //update lastrefilldate
     @Query("UPDATE medication SET lastRefilledDate = :lastRefilledDate WHERE id = :medID")
     suspend fun updateLastRefillDate(medID: Int, lastRefilledDate: Date)
