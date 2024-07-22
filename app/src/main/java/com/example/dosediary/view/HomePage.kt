@@ -39,6 +39,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dosediary.model.entity.MedicationHistory
+import com.example.dosediary.viewmodel.MedicationHistoryViewModel
+import java.time.ZoneId
 import java.util.*
 
 @Composable
@@ -47,7 +50,8 @@ fun HomePage(
     Liststate: MedicationListState,
     Refillstate: MedRefillState,
     ListonEvent: MedicationListViewModel,
-    RefillonEvent: (MedRefillEvent) -> Unit
+    RefillonEvent: (MedRefillEvent) -> Unit,
+    HistoryonEvent: MedicationHistoryViewModel
 ) {
     Scaffold(
         topBar = {
@@ -70,7 +74,7 @@ fun HomePage(
                 modifier = Modifier.fillMaxSize()
             ) {
                 item { MedicationReminder() }
-                item{DailyMedicationChecklist(ListonEvent)}
+                item{DailyMedicationChecklist(ListonEvent, HistoryonEvent)}
                 item { UpcomingMedicationRefills(navController, Refillstate, RefillonEvent) }
             }
         }
@@ -111,7 +115,7 @@ fun MedicationReminder() {
 }
 
 @Composable
-fun DailyMedicationChecklist(viewModel: MedicationListViewModel) {
+fun DailyMedicationChecklist(viewModel: MedicationListViewModel, historyMode: MedicationHistoryViewModel) {
     val medicationList by viewModel.state.collectAsState()
     val dateFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
     var showDialog by remember { mutableStateOf<Pair<Medication, Date>?>(null) }
@@ -156,10 +160,33 @@ fun DailyMedicationChecklist(viewModel: MedicationListViewModel) {
                                 text = "${medication.medicationName} - ${dateFormat.format(time)}"
                             )
                             Spacer(modifier = Modifier.weight(1f))
+
                             Checkbox(
                                 checked = checked,
                                 onCheckedChange = {
+
+                                    // Convert Date to LocalDateTime
+                                    val localDateTime = time.toInstant()
+                                        .atZone(ZoneId.systemDefault())
+                                        .toLocalDateTime()
+
+                                    // Format the day as MM-DD-YYYY
+                                    val dayFormatted = localDateTime.format(DateTimeFormatter.ofPattern("MM-dd-yyyy"))
+
+                                    val timeFormatted = localDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
+
+
                                     showDialog = medication to time
+
+                                    var historyItem = MedicationHistory(
+                                        medication.id,
+                                        medication.medicationName,
+                                        dayFormatted,
+                                        timeFormatted,
+                                        "Effective",
+                                        medication.owner,
+                                        "")
+                                    historyMode.addOrUpdateMedicationHistory(historyItem)
                                 },
                                 colors = CheckboxDefaults.colors(checkedColor = Primary)
                             )

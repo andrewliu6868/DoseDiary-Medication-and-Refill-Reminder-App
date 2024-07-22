@@ -65,7 +65,7 @@ fun MainAppNavigation (navController: NavHostController){
     NavHost(navController = navController, startDestination = "login") {
         composable("login") { LoginPage(navController)}
         composable("signup") { SignUpPage(navController)}
-        composable("home") { HomePage(navController, medicationListState, medRefillState, medicationListViewModel, medRefillViewModel::onEvent)} //Todo
+        composable("home") { HomePage(navController, medicationListState, medRefillState, medicationListViewModel, medRefillViewModel::onEvent, medicationHistoryViewModel)} //Todo
         composable("refill") { MedicationRefillPage(navController, medRefillState, medRefillViewModel::onEvent) }
         composable("history") { MedicationHistoryPage(navController, medicationHistoryState, medicationHistoryViewModel::onEvent, addTestEntries = medicationHistoryViewModel::addTestEntries)}
         composable("profile") { ProfilePage(navController, profileState, profileViewModel::onEvent) }
