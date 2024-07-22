@@ -75,7 +75,7 @@
     <string name="app_main_icon">Icona Principale dell\'App</string>
 
     <!-- Profile Page -->
-    <string name="profile">Profilo:  %2$s</string>
+    <string name="profile">Profilo </string>
     <string name="manage_users">Gestisci Utenti</string>
     <string name="add_user">Aggiungi Utente</string>
     <string name="add_users">Aggiungi Utenti</string>
@@ -83,8 +83,12 @@
     <string name="user_details">Dettagli Utente</string>
     <string name="you_cannot_edit_sub_user">Non puoi modificare i dettagli dell\'utente per un utente subordinato, passa all\'utente principale per modificare i dettagli dell\'utente</string>
     <string name="change_user">Cambia Utente</string>
-    <string name="user_initials">%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">Digita la password qui</string>
+    <string name="home">Casa</string>
+    <string name="medications">Medicinali</string>
+    <string name="refill">Ricarica</string>
+    <string name="history">Storia</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">Rifornimento Farmaci</string>

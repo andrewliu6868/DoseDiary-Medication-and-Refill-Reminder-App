@@ -75,7 +75,7 @@
     <string name="app_main_icon">ऐप मुख्य आइकन</string>
 
     <!-- Profile Page -->
-    <string name="profile">प्रोफ़ाइल:  %2$s</string>
+    <string name="profile">प्रोफ़ाइल </string>
     <string name="manage_users">उपयोगकर्ताओं का प्रबंधन करें</string>
     <string name="add_user">उपयोगकर्ता जोड़ें</string>
     <string name="add_users">उपयोगकर्ताओं को जोड़ें</string>
@@ -83,8 +83,12 @@
     <string name="user_details">उपयोगकर्ता विवरण</string>
     <string name="you_cannot_edit_sub_user">आप उप-उपयोगकर्ता के लिए उपयोगकर्ता विवरण संपादित नहीं कर सकते, कृपया उपयोगकर्ता विवरण संपादित करने के लिए मुख्य उपयोगकर्ता पर स्विच करें</string>
     <string name="change_user">उपयोगकर्ता बदलें</string>
-    <string name="user_initials">%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">यहाँ पासवर्ड टाइप करें</string>
+    <string name="home">होम</string>
+    <string name="medications">दवाइयाँ</string>
+    <string name="refill">रीफिल</string>
+    <string name="history">इतिहास</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">दवाई पुनःपूर्ति</string>

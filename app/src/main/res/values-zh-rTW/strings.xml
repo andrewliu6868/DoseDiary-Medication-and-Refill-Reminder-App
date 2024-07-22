@@ -75,7 +75,7 @@
     <string name="app_main_icon">應用主圖標</string>
 
     <!-- Profile Page -->
-    <string name="profile">個人資料： %2$s</string>
+    <string name="profile">個人資料 </string>
     <string name="manage_users">管理用戶</string>
     <string name="add_user">添加用戶</string>
     <string name="add_users">添加用戶</string>
@@ -83,8 +83,12 @@
     <string name="user_details">用戶詳情</string>
     <string name="you_cannot_edit_sub_user">您不能編輯子用戶的用戶詳情，請切換到主用戶以編輯用戶詳情</string>
     <string name="change_user">更改用戶</string>
-    <string name="user_initials">%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">在此輸入密碼</string>
+    <string name="home">主頁</string>
+    <string name="medications">藥物</string>
+    <string name="refill">補充</string>
+    <string name="history">歷史</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">藥物補充</string>

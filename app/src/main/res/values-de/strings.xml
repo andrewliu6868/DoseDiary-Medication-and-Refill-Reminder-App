@@ -75,7 +75,7 @@
     <string name="app_main_icon">Haupt-App-Symbol</string>
 
     <!-- Profile Page -->
-    <string name="profile">Profil:  %2$s</string>
+    <string name="profile">Profil </string>
     <string name="manage_users">Benutzer verwalten</string>
     <string name="add_user">Benutzer hinzufügen</string>
     <string name="add_users">Benutzer hinzufügen</string>
@@ -83,8 +83,12 @@
     <string name="user_details">Benutzerdetails</string>
     <string name="you_cannot_edit_sub_user">Sie können die Benutzerdetails eines Unterbenutzers nicht bearbeiten. Wechseln Sie zum Hauptbenutzer, um die Benutzerdetails zu bearbeiten</string>
     <string name="change_user">Benutzer wechseln</string>
-    <string name="user_initials">%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">Passwort hier eingeben</string>
+    <string name="home">Startseite</string>
+    <string name="medications">Medikamente</string>
+    <string name="refill">Nachfüllen</string>
+    <string name="history">Verlauf</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">Medikamentennachfüllung</string>

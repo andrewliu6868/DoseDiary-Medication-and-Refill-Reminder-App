@@ -70,7 +70,7 @@ fun ProfilePage(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = "Profile: ${state.currentUser?.firstName} ${state.currentUser?.lastname}",
+                header = stringResource(R.string.profile, state.currentUser?.firstName ?: "", state.currentUser?.lastname ?: ""),
                 showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon

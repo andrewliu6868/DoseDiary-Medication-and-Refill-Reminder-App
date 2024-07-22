@@ -75,7 +75,7 @@
     <string name="app_main_icon">アプリメインアイコン</string>
 
     <!-- Profile Page -->
-    <string name="profile">プロファイル:  %2$s</string>
+    <string name="profile">プロファイル </string>
     <string name="manage_users">ユーザーを管理</string>
     <string name="add_user">ユーザーを追加</string>
     <string name="add_users">ユーザーを追加</string>
@@ -83,8 +83,12 @@
     <string name="user_details">ユーザー詳細</string>
     <string name="you_cannot_edit_sub_user">サブユーザーのユーザー詳細を編集できません。ユーザー詳細を編集するにはメインユーザーに切り替えてください</string>
     <string name="change_user">ユーザーを変更</string>
-    <string name="user_initials">%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">ここにパスワードを入力</string>
+    <string name="home">ホーム</string>
+    <string name="medications">薬</string>
+    <string name="refill">補充</string>
+    <string name="history">履歴</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">薬の補充</string>

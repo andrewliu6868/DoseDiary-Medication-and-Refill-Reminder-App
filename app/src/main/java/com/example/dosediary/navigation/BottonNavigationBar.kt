@@ -19,38 +19,32 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.dosediary.navigation.BottomNavigation
+import com.example.dosediary.R
 import com.example.dosediary.ui.theme.Background
-
 
 val items = listOf(
     BottomNavigation(
-        title = "Home",
+        titleResId = R.string.home,
         icon = Icons.Outlined.Home
     ),
-
     BottomNavigation(
-        title = "Medications",
+        titleResId = R.string.medications,
         icon = Icons.Outlined.Medication
     ),
-
     BottomNavigation(
-        title = "Refill",
+        titleResId = R.string.refill,
         icon = Icons.Outlined.MedicalServices
     ),
-
     BottomNavigation(
-        title = "History",
+        titleResId = R.string.history,
         icon = Icons.Outlined.History
     ),
-
     BottomNavigation(
-        title = "Profile",
+        titleResId = R.string.profile,
         icon = Icons.Outlined.AccountCircle
     )
 )
@@ -63,31 +57,30 @@ fun BottomNavigationBar(navController: NavHostController) {
         Row(
             modifier = Modifier.background(color = Background)
         ) {
-
             items.forEachIndexed { index, item ->
                 NavigationBarItem(
                     selected = selectedItem == index,
                     icon = {
                         Icon(
                             imageVector = item.icon,
-                            contentDescription = item.title,
+                            contentDescription = stringResource(id = item.titleResId),
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     },
                     label = {
                         Text(
-                            text = item.title,
+                            text = stringResource(id = item.titleResId),
                             color = MaterialTheme.colorScheme.onBackground
                         )
                     },
                     onClick = {
                         selectedItem = index
-                        when (item.title) {
-                            "Home" -> navController.navigate("home")
-                            "Medications" -> navController.navigate("medication")
-                            "Refill" -> navController.navigate("refill")
-                            "History" -> navController.navigate("history")
-                            "Profile" -> navController.navigate("profile")
+                        when (item.titleResId) {
+                            R.string.home -> navController.navigate("home")
+                            R.string.medications -> navController.navigate("medication")
+                            R.string.refill -> navController.navigate("refill")
+                            R.string.history -> navController.navigate("history")
+                            R.string.profile -> navController.navigate("profile")
                         }
                     }
                 )
@@ -96,9 +89,9 @@ fun BottomNavigationBar(navController: NavHostController) {
     }
 }
 
-@Preview(showBackground =true, name = "Bottom Navigation Preview")
+@Preview(showBackground = true, name = "Bottom Navigation Preview")
 @Composable
-fun BottomNavigationBarPreview(){
+fun BottomNavigationBarPreview() {
     val navController = rememberNavController()
     BottomNavigationBar(navController)
 }

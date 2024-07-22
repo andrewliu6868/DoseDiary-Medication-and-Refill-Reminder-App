@@ -75,7 +75,7 @@
     <string name="app_main_icon">App Main Icon</string>
 
     <!-- Profile Page -->
-    <string name="profile">Profile:  %2$s</string>
+    <string name="profile">Profile </string>
     <string name="manage_users">Manage Users</string>
     <string name="add_user">Add User</string>
     <string name="add_users">Add Users</string>
@@ -83,8 +83,12 @@
     <string name="user_details">User Details</string>
     <string name="you_cannot_edit_sub_user">You can not edit user detail for a sub user, please switch to main user to edit user detail</string>
     <string name="change_user">Change User</string>
-    <string name="user_initials">%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">Type password here</string>
+    <string name="home">Home</string>
+    <string name="medications">Medications</string>
+    <string name="refill">Refill</string>
+    <string name="history">History</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">Medication Refill</string>
