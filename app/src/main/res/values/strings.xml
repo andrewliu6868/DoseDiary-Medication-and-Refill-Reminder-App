@@ -56,7 +56,7 @@
     <string name="today">Today</string>
     <string name="next_7_days">Next 7 Days</string>
     <string name="view_all_medication_details">View All Medication Details</string>
-    <string name="medication_reminder_time">Medication Reminder - %1$s</string>
+    <string name="medication_reminder_time">Medication Reminder - </string>
     <string name="view">View</string>
 
     <!-- Login Page -->
@@ -75,7 +75,7 @@
     <string name="app_main_icon">App Main Icon</string>
 
     <!-- Profile Page -->
-    <string name="profile">Profile: %1$s %2$s</string>
+    <string name="profile">Profile:  %2$s</string>
     <string name="manage_users">Manage Users</string>
     <string name="add_user">Add User</string>
     <string name="add_users">Add Users</string>
@@ -83,7 +83,7 @@
     <string name="user_details">User Details</string>
     <string name="you_cannot_edit_sub_user">You can not edit user detail for a sub user, please switch to main user to edit user detail</string>
     <string name="change_user">Change User</string>
-    <string name="user_initials">%1$s%2$s</string>
+    <string name="user_initials">%2$s</string>
     <string name="type_password_here">Type password here</string>
 
     <!-- Medication Refill Page -->
@@ -92,13 +92,13 @@
     <string name="direction">Direction</string>
     <string name="call">Call</string>
     <string name="refill_information">Refill Information:</string>
-    <string name="next_refill_date">Next Refill Date: %1$s</string>
-    <string name="pharmacy_name">Pharmacy Name: %1$s</string>
-    <string name="pharmacy_contact">Pharmacy Contact: %1$s</string>
-    <string name="pharmacy_address">Pharmacy Address: %1$s</string>
+    <string name="next_refill_date">Next Refill Date: </string>
+    <string name="pharmacy_name">Pharmacy Name: </string>
+    <string name="pharmacy_contact">Pharmacy Contact: </string>
+    <string name="pharmacy_address">Pharmacy Address: </string>
     <string name="more_information">More information about the medication:</string>
-    <string name="quantity">Quantity: %1$s</string>
-    <string name="notes_details">Notes: %1$s</string>
+    <string name="quantity">Quantity: </string>
+    <string name="notes_details">Notes: </string>
     <string name="pills_left">pills left</string>
 
     <!-- Edit Medication History Page -->

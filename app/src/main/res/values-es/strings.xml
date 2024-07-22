@@ -56,7 +56,7 @@
     <string name="today">Hoy</string>
     <string name="next_7_days">Próximos 7 Días</string>
     <string name="view_all_medication_details">Ver Todos los Detalles del Medicamento</string>
-    <string name="medication_reminder_time">Recordatorio de Medicación - %1$s</string>
+    <string name="medication_reminder_time">Recordatorio de Medicación - </string>
     <string name="view">Ver</string>
 
     <!-- Login Page -->
@@ -75,7 +75,7 @@
     <string name="app_main_icon">Icono Principal de la Aplicación</string>
 
     <!-- Profile Page -->
-    <string name="profile">Perfil: %1$s %2$s</string>
+    <string name="profile">Perfil:  %2$s</string>
     <string name="manage_users">Gestionar Usuarios</string>
     <string name="add_user">Agregar Usuario</string>
     <string name="add_users">Agregar Usuarios</string>
@@ -83,7 +83,7 @@
     <string name="user_details">Detalles del Usuario</string>
     <string name="you_cannot_edit_sub_user">No puedes editar los detalles del usuario para un usuario secundario, por favor cambia al usuario principal para editar los detalles del usuario</string>
     <string name="change_user">Cambiar Usuario</string>
-    <string name="user_initials">%1$s%2$s</string>
+    <string name="user_initials">%2$s</string>
     <string name="type_password_here">Escriba la contraseña aquí</string>
 
     <!-- Medication Refill Page -->
@@ -92,13 +92,13 @@
     <string name="direction">Dirección</string>
     <string name="call">Llamar</string>
     <string name="refill_information">Información de Recarga:</string>
-    <string name="next_refill_date">Próxima Fecha de Recarga: %1$s</string>
-    <string name="pharmacy_name">Nombre de la Farmacia: %1$s</string>
-    <string name="pharmacy_contact">Contacto de la Farmacia: %1$s</string>
-    <string name="pharmacy_address">Dirección de la Farmacia: %1$s</string>
+    <string name="next_refill_date">Próxima Fecha de Recarga: </string>
+    <string name="pharmacy_name">Nombre de la Farmacia: </string>
+    <string name="pharmacy_contact">Contacto de la Farmacia: </string>
+    <string name="pharmacy_address">Dirección de la Farmacia: </string>
     <string name="more_information">Más información sobre el medicamento:</string>
-    <string name="quantity">Cantidad: %1$s</string>
-    <string name="notes_details">Notas: %1$s</string>
+    <string name="quantity">Cantidad: </string>
+    <string name="notes_details">Notas: </string>
     <string name="pills_left">pastillas restantes</string>
 
     <!-- Edit Medication History Page -->
