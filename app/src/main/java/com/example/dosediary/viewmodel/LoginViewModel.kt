@@ -2,6 +2,7 @@ package com.example.dosediary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.state.UserState
 import com.example.dosediary.model.entity.User
@@ -51,11 +52,11 @@ class LoginViewModel @Inject constructor(
     }
 
 }
-/*class LoginViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
+class LoginViewModelFactory(private val application: Application,private val userState: UserState) : ViewModelProvider.Factory{
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(LoginViewModel::class.java)){
-            return LoginViewModel(application) as T
+            return LoginViewModel(userState, application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}*/
+}

@@ -62,11 +62,12 @@ import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.ui.theme.PurpleGrey80
 import com.example.dosediary.viewmodel.LoginViewModel
+import com.example.dosediary.viewmodel.ProfileViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun LoginPage(navHostController: NavHostController){
-    val viewModel = hiltViewModel<LoginViewModel>()
+fun LoginPage(viewModel: LoginViewModel, navHostController: NavHostController){
+//    val viewModel = hiltViewModel<LoginViewModel>()
     val loginState by viewModel.loginState.collectAsState()
 
     when(loginState){

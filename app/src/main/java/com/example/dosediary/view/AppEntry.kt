@@ -26,7 +26,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.libraries.places.api.net.PlacesClient
 
 @Composable
-fun AppEntry(placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient) {
+fun AppEntry(profileViewModel: ProfileViewModel , medRefillViewModel: MedRefillViewModel, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
@@ -43,19 +43,19 @@ fun AppEntry(placesClient: PlacesClient, fusedLocationClient: FusedLocationProvi
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            MainAppNavigation(navController, placesClient, fusedLocationClient)
+            MainAppNavigation(profileViewModel, medRefillViewModel, navController, placesClient, fusedLocationClient)
         }
     }
 }
 
 
 @Composable
-fun MainAppNavigation (navController: NavHostController, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient){
+fun MainAppNavigation (profileViewModel: ProfileViewModel , medRefillViewModel: MedRefillViewModel, navController: NavHostController, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient){
     //View Model
     val addMedicationViewModel = hiltViewModel<UpsertMedicationViewModel>()
     val medicationHistoryViewModel = hiltViewModel<MedicationHistoryViewModel>()
-    val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
-    val profileViewModel = hiltViewModel<ProfileViewModel>()
+//    val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
+//    val profileViewModel = hiltViewModel<ProfileViewModel, >()
     val medicationListViewModel = hiltViewModel<MedicationListViewModel>()
     val addMedHistoryViewModel = hiltViewModel<UpsertMedHistoryViewModel>()
 

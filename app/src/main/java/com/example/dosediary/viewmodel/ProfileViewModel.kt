@@ -2,6 +2,7 @@ package com.example.dosediary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.event.ProfileEvent
 import com.example.dosediary.utils.DoseDiaryDatabase
@@ -9,6 +10,7 @@ import com.example.dosediary.model.entity.User
 import com.example.dosediary.state.UserState
 import com.example.dosediary.model.entity.UserRelationship
 import com.example.dosediary.state.ProfileState
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -51,16 +53,16 @@ class ProfileViewModel @Inject constructor(
     init {
         viewModelScope.launch {
 
-            val user1 = userDao.getUserById(1).firstOrNull() ?: User()
-            _mainUser.value = user1
-            _currentUser.value = user1
-
-            val newRelationShips = userRelationshipDao.getUserRelationshipsByMainUserId(1).first()
-            val managedUsers = (listOf(_mainUser.value) + newRelationShips.map { userRelationship ->
-                userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
-            }).filterIsInstance<User>()
-
-            _managedUsers.value = managedUsers
+//            val user1 = userDao.getUserById(1).firstOrNull() ?: User()
+//            _mainUser.value = user1
+//            _currentUser.value = user1
+//
+//            val newRelationShips = userRelationshipDao.getUserRelationshipsByMainUserId(1).first()
+//            val managedUsers = (listOf(_mainUser.value) + newRelationShips.map { userRelationship ->
+//                userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
+//            }).filterIsInstance<User>()
+//
+//            _managedUsers.value = managedUsers
 
             _currentUser.collect { currentUser ->
                 _editCurrentUserFirstName.value = currentUser?.firstName ?: ""
@@ -196,4 +198,14 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+}
+
+class ProfileViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            return ProfileViewModel(userState, application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }
