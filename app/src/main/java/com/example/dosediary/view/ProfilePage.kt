@@ -166,7 +166,8 @@ fun ProfilePage(
                                         isAddingUser = false
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                                    modifier = Modifier.align(Alignment.CenterVertically)
+                                    modifier = Modifier.align(Alignment.CenterVertically),
+                                    enabled = state.addUserFirstName.isNotBlank() && state.addUserLastName.isNotBlank()
                                 ) {
                                     Text(stringResource(R.string.add))
                                 }
