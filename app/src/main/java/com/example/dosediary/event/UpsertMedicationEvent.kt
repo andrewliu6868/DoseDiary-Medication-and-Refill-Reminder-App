@@ -12,7 +12,6 @@ sealed interface UpsertMedicationEvent {
     data class OnRefillDaysChanged(val refillDays: Int) : UpsertMedicationEvent
     data class OnNoteChanged(val note: String) : UpsertMedicationEvent
     data class OnAddressChanged(val address: String) : UpsertMedicationEvent
-    data class OnPostalCodeChanged(val postalCode: String) : UpsertMedicationEvent
     object SaveMedication : UpsertMedicationEvent
     object ConfirmSaveMedication : UpsertMedicationEvent
     object DismissSaveDialog : UpsertMedicationEvent

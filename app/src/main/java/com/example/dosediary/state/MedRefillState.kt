@@ -12,7 +12,9 @@ data class MedicationWithNextRefillDate(
 data class MedRefillState(
     val medRefillsToday: List<MedicationWithNextRefillDate> = emptyList(),
     val medRefillsUpcoming: List<MedicationWithNextRefillDate> = emptyList(),
-    val selectedRefillDetail: MedicationWithNextRefillDate = MedicationWithNextRefillDate(defaultMedication(), null)
+    val selectedRefillDetail: MedicationWithNextRefillDate = MedicationWithNextRefillDate(defaultMedication(), null),
+    val showRefillConfirmationDialog: Boolean = false,
+    val selectedRefilledMedication: MedicationWithNextRefillDate = MedicationWithNextRefillDate(defaultMedication(), null)
 )
 
 fun defaultMedication(): Medication{
@@ -26,8 +28,6 @@ fun defaultMedication(): Medication{
         note = "",
         address = "",
         addressLatLng = LatLng(0.0, 0.0),
-        postalCode = "",
-        postalCodeError = null,
         lastRefilledDate = Date(),
         owner = 0
     )

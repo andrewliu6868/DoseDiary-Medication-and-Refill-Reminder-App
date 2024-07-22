@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF успешно создан</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="ok">ОК</string>
+    <string name="select_language">Выбрать язык</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">История лекарств</string>
@@ -75,7 +77,7 @@
     <string name="app_main_icon">Главная иконка приложения</string>
 
     <!-- Profile Page -->
-    <string name="profile">Профиль:  %2$s</string>
+    <string name="profile">Профиль </string>
     <string name="manage_users">Управление пользователями</string>
     <string name="add_user">Добавить пользователя</string>
     <string name="add_users">Добавить пользователей</string>
@@ -83,8 +85,12 @@
     <string name="user_details">Детали пользователя</string>
     <string name="you_cannot_edit_sub_user">Вы не можете редактировать детали пользователя для подчиненного пользователя, перейдите к основному пользователю, чтобы изменить детали пользователя</string>
     <string name="change_user">Сменить пользователя</string>
-    <string name="user_initials">%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">Введите пароль здесь</string>
+    <string name="home">Домой</string>
+    <string name="medications">Лекарства</string>
+    <string name="refill">Пополнение</string>
+    <string name="history">История</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">Пополнение лекарств</string>
@@ -116,5 +122,23 @@
     <string name="medication_list">Список лекарств</string>
     <string name="view_all_medication_refills">Посмотреть все пополнения лекарств</string>
     <string name="edit_medication">Редактировать лекарство</string>
+    <string name="confirm_refill">Подтвердите пополнение</string>
+    <string name="confirm_refill_message">Вы уверены, что пополнили это лекарство?</string>
+    <string name="delete_user">Удалить пользователя</string>
+    <string name="confirm_user_delete">Подтвердите удаление пользователя</string>
+    <string name="confirm_user_delete_message">Вы уверены, что хотите удалить этого пользователя?</string>
+    <string name="logout">Log Out</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
 
 </resources>

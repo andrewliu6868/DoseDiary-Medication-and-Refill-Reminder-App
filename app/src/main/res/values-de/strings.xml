@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF erfolgreich generiert</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="ok">OK</string>
+    <string name="select_language">Sprache auswählen</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">Medikamentengeschichte</string>
@@ -76,7 +78,7 @@
     <string name="app_main_icon">Haupt-App-Symbol</string>
 
     <!-- Profile Page -->
-    <string name="profile">Profil:  %2$s</string>
+    <string name="profile">Profil </string>
     <string name="manage_users">Benutzer verwalten</string>
     <string name="add_user">Benutzer hinzufügen</string>
     <string name="add_users">Benutzer hinzufügen</string>
@@ -84,8 +86,12 @@
     <string name="user_details">Benutzerdetails</string>
     <string name="you_cannot_edit_sub_user">Sie können die Benutzerdetails eines Unterbenutzers nicht bearbeiten. Wechseln Sie zum Hauptbenutzer, um die Benutzerdetails zu bearbeiten</string>
     <string name="change_user">Benutzer wechseln</string>
-    <string name="user_initials">%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">Passwort hier eingeben</string>
+    <string name="home">Startseite</string>
+    <string name="medications">Medikamente</string>
+    <string name="refill">Nachfüllen</string>
+    <string name="history">Verlauf</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">Medikamentennachfüllung</string>
@@ -116,4 +122,23 @@
     <string name="pill_pics">Tablettenbilder</string>
     <string name="medication_list">Medikamentenliste</string>
     <string name="view_all_medication_refills">Alle Medikamenten-Nachfüllungen anzeigen</string>
+    <string name="confirm_refill">Nachfüllung bestätigen</string>
+    <string name="confirm_refill_message">Sind Sie sicher, dass Sie dieses Medikament nachgefüllt haben?</string>
+    <string name="delete_user">Benutzer löschen</string>
+    <string name="confirm_user_delete">Benutzerlöschung bestätigen</string>
+    <string name="confirm_user_delete_message">"Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? "</string>
+    <string name="logout">Log Out</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
+
 </resources>

@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF生成成功</string>
     <string name="yes">是</string>
     <string name="no">否</string>
+    <string name="ok">確定</string>
+    <string name="select_language">選擇語言</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">藥物歷史</string>
@@ -75,7 +77,7 @@
     <string name="app_main_icon">應用主圖標</string>
 
     <!-- Profile Page -->
-    <string name="profile">個人資料： %2$s</string>
+    <string name="profile">個人資料 </string>
     <string name="manage_users">管理用戶</string>
     <string name="add_user">添加用戶</string>
     <string name="add_users">添加用戶</string>
@@ -83,8 +85,12 @@
     <string name="user_details">用戶詳情</string>
     <string name="you_cannot_edit_sub_user">您不能編輯子用戶的用戶詳情，請切換到主用戶以編輯用戶詳情</string>
     <string name="change_user">更改用戶</string>
-    <string name="user_initials">%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">在此輸入密碼</string>
+    <string name="home">主頁</string>
+    <string name="medications">藥物</string>
+    <string name="refill">補充</string>
+    <string name="history">歷史</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">藥物補充</string>
@@ -116,4 +122,23 @@
     <string name="medication_list">藥物列表</string>
     <string name="view_all_medication_refills">查看所有藥品補充</string>
     <string name="edit_medication">編輯藥物</string>
+    <string name="confirm_refill">確認補充</string>
+    <string name="confirm_refill_message">你確定你補充了這種藥嗎？</string>
+    <string name="delete_user">刪除使用者</string>
+    <string name="confirm_user_delete">確認刪除使用者</string>
+    <string name="confirm_user_delete_message">你確定要刪除這個使用者嗎</string>
+    <string name="logout">Log Out</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
+
 </resources>

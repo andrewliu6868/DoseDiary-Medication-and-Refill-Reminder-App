@@ -21,15 +21,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.DatePicker
 import com.example.dosediary.components.TimePicker
+import com.example.dosediary.events.AddMedicationEvent
 import com.example.dosediary.state.AutocompleteResult
 import com.example.dosediary.events.UpsertMedicationEvent
 import com.example.dosediary.state.UpsertMedicationState
+import com.example.dosediary.viewmodel.ReminderViewModel
 import com.example.dosediary.ui.theme.Primary
 import java.text.SimpleDateFormat
 import java.util.*
@@ -67,12 +70,12 @@ fun UpsertMedicationPage(
             item { MedDurationSection(state.startDate, state.endDate) { onEvent(it) } }
             item { MedFrequencySection(state.frequency, state.times) { onEvent(it) } }
             item { RefillDaysSection(state.refillDays) { onEvent(it) } }
-            item { AddressSection(state.address, state.postalCode, state.locationAutofill, state.postalCodeError) { onEvent(it) } }
+            item { AddressSection(state.address, state.locationAutofill) { onEvent(it) } }
             item { NoteSection(state.note) { onEvent(it) } }
             if (mode == "edit") {
                 item { SaveDeleteRow(navController, state.medicationId) { onEvent(it) } }
             } else {
-                item { SaveRow(navController) { onEvent(it) } }
+                item { SaveRow(navController, onEvent, state.medicationName, state.times, state.startDate, state.endDate, state.refillDays) }
             }
         }
         if (state.showConfirmDialog) {
@@ -222,7 +225,7 @@ fun NoteSection(note: String, onEvent: (UpsertMedicationEvent) -> Unit) {
 }
 
 @Composable
-fun AddressSection(address: String, postalCode: String, locationAutofill:List<AutocompleteResult>, postalCodeError: String?, onEvent: (UpsertMedicationEvent) -> Unit) {
+fun AddressSection(address: String, locationAutofill:List<AutocompleteResult>, onEvent: (UpsertMedicationEvent) -> Unit) {
     Text(
         text = stringResource(R.string.pharmacy_location),
         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
@@ -266,23 +269,23 @@ fun AddressSection(address: String, postalCode: String, locationAutofill:List<Au
     Spacer(modifier = Modifier.height(10.dp))
 
     // Postal code
-    OutlinedTextField(
-        value = postalCode,
-        onValueChange = { onEvent(UpsertMedicationEvent.OnPostalCodeChanged(it)) },
-        label = { Text(stringResource(R.string.postal_code)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        modifier = Modifier.fillMaxWidth(),
-        isError = postalCodeError != null
-    )
-
-    if (postalCodeError != null) {
-        Text(
-            text = postalCodeError,
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-    }
+//    OutlinedTextField(
+//        value = postalCode,
+//        onValueChange = { onEvent(UpsertMedicationEvent.OnPostalCodeChanged(it)) },
+//        label = { Text(stringResource(R.string.postal_code)) },
+//        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//        modifier = Modifier.fillMaxWidth(),
+//        isError = postalCodeError != null
+//    )
+//
+//    if (postalCodeError != null) {
+//        Text(
+//            text = postalCodeError,
+//            color = MaterialTheme.colorScheme.error,
+//            style = MaterialTheme.typography.bodySmall,
+//            modifier = Modifier.padding(start = 16.dp)
+//        )
+//    }
 }
 
 @Composable
@@ -315,13 +318,17 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
 }
 
 @Composable
-fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -> Unit) {
+fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -> Unit, medName: String, times: List<Date>, startDate: Date, endDate: Date, refillDays: Int) {
+    val reminderViewModel = hiltViewModel<ReminderViewModel>()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(
-            onClick = { onEvent(UpsertMedicationEvent.SaveMedication) },
+            onClick = { onEvent(UpsertMedicationEvent.SaveMedication)
+                reminderViewModel.scheduleMedReminders(medName, times, startDate,endDate)
+                reminderViewModel.scheduleRefill(medName, refillDays)
+             },
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f),
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)

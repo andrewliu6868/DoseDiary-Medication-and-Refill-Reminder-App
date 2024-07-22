@@ -9,15 +9,23 @@ sealed interface ProfileEvent {
 
     data class OnChangeUser(val user: User) : ProfileEvent
 
-    data class OnMainUserFirstNameChanged(val firstName: String) : ProfileEvent
+    data class OnCurrentUserFirstNameChanged(val firstName: String) : ProfileEvent
 
-    data class OnMainUserLastNameChanged(val lastName: String) : ProfileEvent
+    data class OnCurrentUserLastNameChanged(val lastName: String) : ProfileEvent
 
-    data class OnMainUserEmailChanged(val email: String) : ProfileEvent
+    data class OnCurrentUserEmailChanged(val email: String) : ProfileEvent
 
-    data class OnMainUserPasswordChanged(val password: String) : ProfileEvent
+    data class OnCurrentUserPasswordChanged(val password: String) : ProfileEvent
 
-    object UpdateMainUser : ProfileEvent
+    object updateCurrentUser : ProfileEvent
 
-    object CancelUpdateMainUser : ProfileEvent
+    object cancelUpdateCurrentUser : ProfileEvent
+
+    object onDeleteCurrentUser : ProfileEvent
+
+    object confirmDeleteCurrentUser : ProfileEvent
+
+    object cancelDeleteCurrentUser : ProfileEvent
+
+    object onUserLogout: ProfileEvent
 }

@@ -46,7 +46,6 @@ class UpsertMedicationViewModel @Inject constructor(
                 refillDays = medication.refillDays,
                 note = medication.note,
                 address = medication.address,
-                postalCode = medication.postalCode
             )
         } else {
             _state.value = UpsertMedicationState() // Reset state for adding new medication
@@ -95,11 +94,6 @@ class UpsertMedicationViewModel @Inject constructor(
             is UpsertMedicationEvent.OnAddressChanged -> {
                 _state.value = _state.value.copy(address = event.address)
                 searchPlaces(event.address)
-            }
-            is UpsertMedicationEvent.OnPostalCodeChanged -> {
-                val postalCodeRegex = Regex("^[A-Za-z]\\d[A-Za-z][ -]?\\d[A-Za-z]\\d$")
-                val postalCodeError = if (postalCodeRegex.matches(event.postalCode)) null else "Invalid postal code format"
-                _state.value = _state.value.copy(postalCode = event.postalCode, postalCodeError = postalCodeError)
             }
             is UpsertMedicationEvent.OnClickWithRipple -> {
                 getCoordinates(event.autoCompleteResult)
@@ -186,8 +180,6 @@ class UpsertMedicationViewModel @Inject constructor(
             note = this.note,
             address = this.address,
             addressLatLng = this.addressLatLng,
-            postalCode = this.postalCode,
-            postalCodeError = this.postalCodeError,
             lastRefilledDate = this.startDate,
             owner = 3  // TODO: Change this after User Profile is Ready
         )
