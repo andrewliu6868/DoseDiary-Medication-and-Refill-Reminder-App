@@ -134,26 +134,26 @@ fun MedicationRefillDetail(medicationWithNextRefillDate: MedicationWithNextRefil
                         }
                     }
                 )
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append(stringResource(R.string.pharmacy_name))
-                        }
-                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
-                        }
-                    }
-                )
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append(stringResource(R.string.pharmacy_contact))
-                        }
-                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
-                        }
-                    }
-                )
+//                Text(
+//                    buildAnnotatedString {
+//                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+//                            append(stringResource(R.string.pharmacy_name))
+//                        }
+//                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+//                            append("") // fix later
+//                        }
+//                    }
+//                )
+//                Text(
+//                    buildAnnotatedString {
+//                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+//                            append(stringResource(R.string.pharmacy_contact))
+//                        }
+//                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+//                            append("") // fix later
+//                        }
+//                    }
+//                )
 
                 Text(
                     buildAnnotatedString {
