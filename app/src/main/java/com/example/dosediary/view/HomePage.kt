@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,21 +36,13 @@ fun HomePage(
     onEvent: (MedRefillEvent) -> Unit
 ) {
     Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate("Add Medication") },
-                containerColor = Color(0xFF7DCBFF)
-            ) {
-                Icon(Icons.Filled.Add, contentDescription = "Add Medication")
-            }
-        },
         topBar = {
             CustomTopAppBar(
                 header = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon"
+                imageDescription = stringResource(R.string.app_icon)
             )
         }
     ){ padding -> Column(
@@ -63,7 +56,7 @@ fun HomePage(
                 modifier = Modifier.fillMaxSize()
             ) {
                 item { MedicationReminder() }
-                item { DailyMedicationChecklist() }
+                item { DailyMedicationChecklist(navController) }
                 item { UpcomingMedicationRefills(navController, state, onEvent) }
             }
         }
@@ -72,7 +65,7 @@ fun HomePage(
 
 @Composable
 fun MedicationReminder() {
-    var isVisible = true
+    var isVisible = false
     if (isVisible){
         Card(
             shape = RoundedCornerShape(8.dp),
@@ -88,7 +81,7 @@ fun MedicationReminder() {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     BasicText(
-                        text = "Medication Reminder - 7:00pm",
+                        text = stringResource(R.string.medication_reminder_time, "7:00pm"),
                         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
                     )
                     BasicText(text = "Tylenol")
@@ -97,7 +90,7 @@ fun MedicationReminder() {
                     onClick = { /*TODO*/ },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
                 ) {
-                    Text("View")
+                    Text(stringResource(R.string.view))
                 }
             }
         }
@@ -105,7 +98,7 @@ fun MedicationReminder() {
 }
 
 @Composable
-fun DailyMedicationChecklist() {
+fun DailyMedicationChecklist(navController: NavController) {
     // Manage the state of each checkbox
     val checklistItems = remember {
         mutableStateListOf(
@@ -128,7 +121,7 @@ fun DailyMedicationChecklist() {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             BasicText(
-                text = "Daily Medication Checklist",
+                text = stringResource(R.string.daily_medication_checklist),
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -150,13 +143,6 @@ fun DailyMedicationChecklist() {
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { /*TODO*/ },
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                colors = ButtonDefaults.buttonColors(containerColor = Primary)
-            ) {
-                Text("View All Medication Details")
-            }
         }
     }
 }
@@ -167,14 +153,7 @@ fun UpcomingMedicationRefills(
     state: MedRefillState,
     onEvent: (MedRefillEvent) -> Unit
 ) {
-    Card(
-        shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
-    ) {
-        MedicationRefillTodayList(navController, state, onEvent, true)
-    }
+
+    MedicationRefillTodayList(navController, state, onEvent, true)
+
 }

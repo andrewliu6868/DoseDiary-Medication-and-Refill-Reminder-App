@@ -1,6 +1,7 @@
 package com.example.dosediary.view
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +34,8 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.state.MedRefillState
+import com.example.dosediary.state.MedicationWithNextRefillDate
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberMarkerState
 
 @Composable
@@ -43,11 +47,11 @@ fun MedicationRefillDetailPage(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             CustomTopAppBar(
-                header = "Medication Refill Detail",
+                header = stringResource(R.string.medication_refill_detail),
                 showNavigationIcon = true,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon"
+                imageDescription = stringResource(R.string.app_icon)
             )
         }
     ){padding ->
@@ -66,7 +70,7 @@ fun MedicationRefillDetailPage(
 }
 
 @Composable
-fun MedicationRefillDetail(medication: Medication) {
+fun MedicationRefillDetail(medicationWithNextRefillDate: MedicationWithNextRefillDate) {
     Card(
         shape = RoundedCornerShape(35.dp),
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
@@ -76,11 +80,11 @@ fun MedicationRefillDetail(medication: Medication) {
         Column(modifier = Modifier.padding(16.dp)) {
             Spacer(modifier = Modifier.height(8.dp))
             BasicText(
-                text = medication.medicationName + ": " + 0 + " pills left", // fix it later
+                text = "${medicationWithNextRefillDate.medication.medicationName}:", // fix it later
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            MedicationRefillGoogleMaps()
+            MedicationRefillGoogleMaps(medicationWithNextRefillDate.medication)
             Spacer(modifier = Modifier.height(8.dp))
             Row() {
                 Button(onClick = { /*TODO*/ },
@@ -90,10 +94,10 @@ fun MedicationRefillDetail(medication: Medication) {
                     Icon(
                         imageVector = Icons.Outlined.Directions,
                         tint = Color.White,
-                        contentDescription = "Direction"
+                        contentDescription = stringResource(R.string.direction)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Direction")
+                    Text(text = stringResource(R.string.direction))
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(onClick = { /*TODO*/ },
@@ -103,10 +107,10 @@ fun MedicationRefillDetail(medication: Medication) {
                     Icon(
                         imageVector = Icons.Outlined.Phone,
                         tint = Color.White,
-                        contentDescription = "Call"
+                        contentDescription = stringResource(R.string.call)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Call")
+                    Text(text = stringResource(R.string.call))
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -116,14 +120,24 @@ fun MedicationRefillDetail(medication: Medication) {
                     .padding(vertical = 8.dp)
             ) {
                 BasicText(
-                    text = "Refill Information:",
+                    text = stringResource(R.string.refill_information),
                     style = LocalTextStyle.current.copy(fontWeight = FontWeight.Medium, fontSize = 14.sp)
                 )
 
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Next Refill Date: ")
+                            append(stringResource(R.string.next_refill_date))
+                        }
+                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+                            append(medicationWithNextRefillDate.nextRefillDate.toString()) // fix later
+                        }
+                    }
+                )
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+                            append(stringResource(R.string.pharmacy_name))
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
                             append("") // fix later
@@ -133,17 +147,7 @@ fun MedicationRefillDetail(medication: Medication) {
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Pharmacy Name: ")
-                        }
-                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
-                        }
-                    }
-                )
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Pharmacy Contact: ")
+                            append(stringResource(R.string.pharmacy_contact))
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
                             append("") // fix later
@@ -154,10 +158,10 @@ fun MedicationRefillDetail(medication: Medication) {
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Pharmacy Address:")
+                            append(stringResource(R.string.pharmacy_address))
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
+                            append(medicationWithNextRefillDate.medication.address) // fix later
                         }
                     }
                 )
@@ -171,7 +175,7 @@ fun MedicationRefillDetail(medication: Medication) {
                     .padding(vertical = 8.dp)
             ) {
                 BasicText(
-                    text = "More information about the medication:",
+                    text = stringResource(R.string.more_information),
                     style = LocalTextStyle.current.copy(
                         fontWeight = FontWeight.Medium,
                         fontSize = 14.sp
@@ -192,10 +196,10 @@ fun MedicationRefillDetail(medication: Medication) {
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Quantity: ")
+                            append(stringResource(R.string.quantity))
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
+                            append(medicationWithNextRefillDate.medication.frequency) // fix later
                         }
                     }
                 )
@@ -203,10 +207,10 @@ fun MedicationRefillDetail(medication: Medication) {
                 Text(
                     buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append("Notes: ")
+                            append(stringResource(R.string.notes))
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
+                            append(medicationWithNextRefillDate.medication.note) // fix later
                         }
                     }
                 )
@@ -236,11 +240,12 @@ fun MedRefillGoogleMaps(location: LatLng) {
         )
     }
 }
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun MedicationRefillGoogleMaps() {
-    val singapore = LatLng(1.35, 103.87)
+fun MedicationRefillGoogleMaps(medication: Medication) {
+//    val singapore = LatLng(1.35, 103.87)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        position = CameraPosition.fromLatLngZoom(medication.addressLatLng, 10f)
     }
     GoogleMap(
         modifier = Modifier
@@ -249,10 +254,10 @@ fun MedicationRefillGoogleMaps() {
             .height(200.dp),
         cameraPositionState = cameraPositionState
     ) {
-        /*Marker(
-            state = MarkerState(position = singapore),
-            title = "Singapore",
-            snippet = "Marker in Singapore"
-        )*/
+        Marker(
+            state = MarkerState(position = medication.addressLatLng),
+            title = "Pharmacy Name",
+            snippet = "Pharmacy Address"
+        )
     }
 }

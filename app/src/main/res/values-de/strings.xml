@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">DosisTagebuch</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_add_medication">MedikamentHinzufügen</string>
+
+    <!-- General Strings -->
+    <string name="confirm_save">Speichern bestätigen</string>
+    <string name="error_generating_pdf">Fehler beim Generieren des PDFs</string>
+    <string name="pdf_generated_successfully">PDF erfolgreich generiert</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+
+    <!-- Medication History Page -->
+    <string name="medication_history">Medikamentengeschichte</string>
+    <string name="add_medication">Medikament hinzufügen</string>
+    <string name="view_medication_history">Medikamentengeschichte ansehen</string>
+    <string name="name">Name</string>
+    <string name="time">Zeit</string>
+    <string name="date">Datum</string>
+    <string name="effectiveness">Wirksamkeit</string>
+
+    <!-- Upsert Medication Page -->
+    <string name="add_medication_header">Medikament hinzufügen</string>
+    <string name="medication_name">Medikamentenname</string>
+    <string name="name_placeholder">Medikamentenname eingeben</string>
+    <string name="medication_period">Medikamentenperiode</string>
+    <string name="select_date">Datum auswählen</string>
+    <string name="select_time">Zeit auswählen</string>
+    <string name="intake_frequency">Einnahmehäufigkeit</string>
+    <string name="number_of_times_per_day">Anzahl der Einnahmen pro Tag:</string>
+    <string name="refill_days">Nachfülltage</string>
+    <string name="notes">Notizen</string>
+    <string name="add_note">Notiz hinzufügen</string>
+    <string name="pharmacy_location">Apothekenstandort</string>
+    <string name="address">Adresse</string>
+    <string name="postal_code">Postleitzahl</string>
+    <string name="additional_details">Zusätzliche Details</string>
+    <string name="save">Speichern</string>
+    <string name="discard">Verwerfen</string>
+    <string name="confirm_save_message">Sind die Informationen korrekt?</string>
+    <string name="save_changes">Änderungen speichern</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="delete">Löschen</string>
+    <string name="app_icon">App-Symbol</string>
+    <string name="confirm_delete">Löschen bestätigen</string>
+    <string name="confirm_delete_message">Möchten Sie dieses Medikament wirklich löschen?</string>
+    <string name="times_per_day">Anzahl der Einnahmen pro Tag:</string>
+    <string name="start_date">Anfangsdatum</string>
+    <string name="end_date">Enddatum</string>
+    <string name="edit_medication">Medikament bearbeiten</string>
+
+    <!-- Home Page -->
+    <string name="upcoming_medication_refills">Bevorstehende Medikamentennachfüllungen</string>
+    <string name="daily_medication_checklist">Tägliche Medikamenten-Checkliste</string>
+    <string name="no_medication_refills_today">Heute keine Medikamentennachfüllungen</string>
+    <string name="no_medication_refills_next_week">Keine Medikamentennachfüllungen in den nächsten 7 Tagen</string>
+    <string name="today">Heute</string>
+    <string name="next_7_days">Nächsten 7 Tage</string>
+    <string name="view_all_medication_details">Alle Medikamentendetails ansehen</string>
+    <string name="medication_reminder_time">Medikamentenerinnerung - </string>
+    <string name="view">Ansehen</string>
+
+    <!-- Login Page -->
+    <string name="login">Anmelden</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Passwort</string>
+    <string name="show_password">Passwort anzeigen</string>
+    <string name="hide_password">Passwort verbergen</string>
+    <string name="sign_up_here">Hier registrieren</string>
+    <string name="error">Fehler:</string>
+
+    <!-- Sign Up Page -->
+    <string name="register">Registrieren</string>
+    <string name="first_name">Vorname</string>
+    <string name="last_name">Nachname</string>
+    <string name="app_main_icon">Haupt-App-Symbol</string>
+
+    <!-- Profile Page -->
+    <string name="profile">Profil:  %2$s</string>
+    <string name="manage_users">Benutzer verwalten</string>
+    <string name="add_user">Benutzer hinzufügen</string>
+    <string name="add_users">Benutzer hinzufügen</string>
+    <string name="add">Hinzufügen</string>
+    <string name="user_details">Benutzerdetails</string>
+    <string name="you_cannot_edit_sub_user">Sie können die Benutzerdetails eines Unterbenutzers nicht bearbeiten. Wechseln Sie zum Hauptbenutzer, um die Benutzerdetails zu bearbeiten</string>
+    <string name="change_user">Benutzer wechseln</string>
+    <string name="user_initials">%2$s</string>
+    <string name="type_password_here">Passwort hier eingeben</string>
+
+    <!-- Medication Refill Page -->
+    <string name="medication_refill">Medikamentennachfüllung</string>
+    <string name="medication_refill_detail">Medikamentennachfüllungsdetails</string>
+    <string name="direction">Richtung</string>
+    <string name="call">Anrufen</string>
+    <string name="refill_information">Nachfüllinformationen:</string>
+    <string name="next_refill_date">Nächster Nachfülltermin: </string>
+    <string name="pharmacy_name">Apothekenname: </string>
+    <string name="pharmacy_contact">Apotheke Kontakt: </string>
+    <string name="pharmacy_address">Apothekenadresse: </string>
+    <string name="more_information">Weitere Informationen zum Medikament:</string>
+    <string name="quantity">Menge: </string>
+    <string name="notes_details">Notizen: </string>
+    <string name="pills_left">Tabletten übrig</string>
+
+    <!-- Edit Medication History Page -->
+    <string name="enter_additional_details">Zusätzliche Details eingeben</string>
+    <string name="select_effectiveness">Wirksamkeit auswählen</string>
+    <string name="enter_medication_name">Medikamentenname eingeben</string>
+    <string name="add_medication_history">Medikamentengeschichte hinzufügen</string>
+    <string name="effective">Effektiv</string>
+    <string name="moderate">Mäßig</string>
+    <string name="marginal">Geringfügig</string>
+    <string name="ineffective">Ineffektiv</string>
+
+    <!-- Medication List Page -->
+    <string name="pill_pics">Tablettenbilder</string>
+    <string name="medication_list">Medikamentenliste</string>
+    <string name="view_all_medication_refills">Alle Medikamenten-Nachfüllungen anzeigen</string>
+</resources>

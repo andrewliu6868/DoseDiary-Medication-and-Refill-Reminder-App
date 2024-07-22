@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dosediary.R
@@ -56,11 +57,11 @@ fun MedicationRefillPage(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = "Medication Refill",
+                header = stringResource(R.string.medication_refill),
                 showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon",
+                imageDescription = stringResource(R.string.app_icon),
             )
         }
     ){ innerPadding ->
@@ -72,7 +73,7 @@ fun MedicationRefillPage(
                 .padding(horizontal = 16.dp)
         ) {
             BasicText(
-                text = "Upcoming Medication Refills",
+                text = stringResource(R.string.upcoming_medication_refills),
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp)
             )
             LazyColumn {
@@ -101,39 +102,32 @@ fun MedicationRefillTodayList(
         Column(modifier = Modifier.padding(16.dp)) {
             if (isHomePage) {
                 BasicText(
-                    text = "Upcoming Medication Refills",
+                    text = stringResource(R.string.upcoming_medication_refills),
                     style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            BasicText(
-                text = "Today",
-                style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            // for medication in medication list render MedicationRefillDetailedItem(medication)
+
             if (state.medRefillsToday.isEmpty()) {
                 BasicText(
-                    text = "No Medication Refills Today",
+                    text = stringResource(R.string.no_medication_refills_today),
                     style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
                 )
             } else {
+                BasicText(
+                    text = stringResource(R.string.today),
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
                 LazyColumn(modifier = Modifier.height(min(state.medRefillsToday.size * 75.dp, 4 * 75.dp))) {
                     items(state.medRefillsToday) { medication ->
+                        onEvent(MedRefillEvent.SetSelectedRefillDetail(medication))
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
-                            navController.navigate("refillDetails/${medication.medication.id}")
+                            navController.navigate("refillDetails")
                         }, onEvent)
                     }
-                }
-            }
-
-            if (isHomePage) {
-                Button(onClick = { navController.navigate("refill") },
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    colors = ButtonDefaults.buttonColors(containerColor = Primary)
-                ) {
-                    Text("View All Medication Details")
                 }
             }
         }
@@ -155,14 +149,14 @@ fun MedicationRefillNextWeekList(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             BasicText(
-                text = "Next 7 Days",
+                text = stringResource(R.string.next_7_days),
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             if (state.medRefillsUpcoming.isEmpty()) {
                 BasicText(
-                    text = "No Medication Refills in the Next 7 Days",
+                    text = stringResource(R.string.no_medication_refills_next_week),
                     style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
                 )
             } else {
@@ -170,7 +164,9 @@ fun MedicationRefillNextWeekList(
                     items(state.medRefillsUpcoming) { medication ->
                         MedicationRefillDetailedItem(medication, onItemClick = {
                             // Navigate to MedicationRefillDetailScreen
-                            navController.navigate("refillDetails/${medication.medication.id}")
+//                            navController.navigate("refillDetails/${medication.medication.id}")
+                            onEvent(MedRefillEvent.SetSelectedRefillDetail(medication))
+                            navController.navigate("refillDetails")
                         }, onEvent)
                     }
                 }
@@ -212,7 +208,7 @@ fun MedicationRefillDetailedItem(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.icon),
-                contentDescription = "Pill Pics",
+                contentDescription = stringResource(R.string.pill_pics),
                 modifier = Modifier.width(40.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))

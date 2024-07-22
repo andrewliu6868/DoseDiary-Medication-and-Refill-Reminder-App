@@ -7,6 +7,7 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MedicalServices
+import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -22,15 +23,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.navigation.BottomNavigation
 import com.example.dosediary.ui.theme.Background
-
 
 val items = listOf(
     BottomNavigation(
         title = "Home",
         icon = Icons.Outlined.Home
+    ),
+
+    BottomNavigation(
+        title = "Medications",
+        icon = Icons.Outlined.Medication
     ),
 
     BottomNavigation(
@@ -52,6 +58,18 @@ val items = listOf(
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(0) }
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
+
+    // Update selectedItem based on currentRoute
+    selectedItem = when (currentRoute) {
+        "home" -> 0
+        "medication", "add_medication" -> 1
+        "refill" -> 2
+        "history", "editMedication" -> 3
+        "profile" -> 4
+        else -> 0
+    }
 
     NavigationBar {
         Row(
@@ -78,6 +96,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                         selectedItem = index
                         when (item.title) {
                             "Home" -> navController.navigate("home")
+                            "Medications" -> navController.navigate("medication")
                             "Refill" -> navController.navigate("refill")
                             "History" -> navController.navigate("history")
                             "Profile" -> navController.navigate("profile")
@@ -89,9 +108,9 @@ fun BottomNavigationBar(navController: NavHostController) {
     }
 }
 
-@Preview(showBackground =true, name = "Bottom Navigation Preview")
+@Preview(showBackground = true, name = "Bottom Navigation Preview")
 @Composable
-fun BottomNavigationBarPreview(){
+fun BottomNavigationBarPreview() {
     val navController = rememberNavController()
     BottomNavigationBar(navController)
 }

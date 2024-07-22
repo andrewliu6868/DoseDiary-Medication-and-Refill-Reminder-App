@@ -1,0 +1,120 @@
+<resources>
+    <string name="app_name">DoseDiary</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_add_medication">약 추가</string>
+
+    <!-- General Strings -->
+    <string name="confirm_save">저장 확인</string>
+    <string name="error_generating_pdf">PDF 생성 오류</string>
+    <string name="pdf_generated_successfully">PDF가 성공적으로 생성되었습니다</string>
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
+
+    <!-- Medication History Page -->
+    <string name="medication_history">약 기록</string>
+    <string name="add_medication">약 추가</string>
+    <string name="view_medication_history">약 기록 보기</string>
+    <string name="name">이름</string>
+    <string name="time">시간</string>
+    <string name="date">날짜</string>
+    <string name="effectiveness">효과</string>
+
+    <!-- Add Medication Page -->
+    <string name="add_medication_header">약 추가</string>
+    <string name="medication_name">약 이름</string>
+    <string name="name_placeholder">약 이름 입력</string>
+    <string name="medication_period">약 복용 기간</string>
+    <string name="select_date">날짜 선택</string>
+    <string name="select_time">시간 선택</string>
+    <string name="intake_frequency">복용 빈도</string>
+    <string name="number_of_times_per_day">하루 복용 횟수:</string>
+    <string name="refill_days">리필 날짜</string>
+    <string name="notes">노트</string>
+    <string name="add_note">노트 추가</string>
+    <string name="pharmacy_location">약국 위치</string>
+    <string name="address">주소</string>
+    <string name="postal_code">우편 번호</string>
+    <string name="additional_details">추가 세부 사항</string>
+    <string name="save">저장</string>
+    <string name="discard">취소</string>
+    <string name="confirm_save_message">정보가 정확합니까?</string>
+    <string name="save_changes">변경 사항 저장</string>
+    <string name="cancel">취소</string>
+    <string name="delete">삭제</string>
+    <string name="app_icon">앱 아이콘</string>
+    <string name="confirm_delete">삭제 확인</string>
+    <string name="confirm_delete_message">이 약을 삭제하시겠습니까?</string>
+    <string name="times_per_day">하루 복용 횟수:</string>
+    <string name="start_date">시작 날짜</string>
+    <string name="end_date">종료 날짜</string>
+
+    <!-- Home Page -->
+    <string name="upcoming_medication_refills">다가오는 약 리필</string>
+    <string name="daily_medication_checklist">일일 약 체크리스트</string>
+    <string name="no_medication_refills_today">오늘 약 리필 없음</string>
+    <string name="no_medication_refills_next_week">다음 7일 동안 약 리필 없음</string>
+    <string name="today">오늘</string>
+    <string name="next_7_days">다음 7일</string>
+    <string name="view_all_medication_details">모든 약 세부 사항 보기</string>
+    <string name="medication_reminder_time">약 리마인더 - </string>
+    <string name="view">보기</string>
+
+    <!-- Login Page -->
+    <string name="login">로그인</string>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="show_password">비밀번호 보기</string>
+    <string name="hide_password">비밀번호 숨기기</string>
+    <string name="sign_up_here">여기서 등록</string>
+    <string name="error">오류:</string>
+
+    <!-- Sign Up Page -->
+    <string name="register">등록</string>
+    <string name="first_name">이름</string>
+    <string name="last_name">성</string>
+    <string name="app_main_icon">앱 메인 아이콘</string>
+
+    <!-- Profile Page -->
+    <string name="profile">프로필:  %2$s</string>
+    <string name="manage_users">사용자 관리</string>
+    <string name="add_user">사용자 추가</string>
+    <string name="add_users">사용자 추가</string>
+    <string name="add">추가</string>
+    <string name="user_details">사용자 세부 사항</string>
+    <string name="you_cannot_edit_sub_user">하위 사용자의 사용자 세부 사항을 편집할 수 없습니다. 사용자 세부 사항을 편집하려면 주 사용자로 전환하십시오</string>
+    <string name="change_user">사용자 변경</string>
+    <string name="user_initials">%2$s</string>
+    <string name="type_password_here">여기에 비밀번호 입력</string>
+
+    <!-- Medication Refill Page -->
+    <string name="medication_refill">약 리필</string>
+    <string name="medication_refill_detail">약 리필 세부 사항</string>
+    <string name="direction">경로</string>
+    <string name="call">전화</string>
+    <string name="refill_information">리필 정보:</string>
+    <string name="next_refill_date">다음 리필 날짜: </string>
+    <string name="pharmacy_name">약국 이름: </string>
+    <string name="pharmacy_contact">약국 연락처: </string>
+    <string name="pharmacy_address">약국 주소: </string>
+    <string name="more_information">약에 대한 추가 정보:</string>
+    <string name="quantity">수량: </string>
+    <string name="notes_details">노트: </string>
+    <string name="pills_left">남은 알약</string>
+
+    <!-- Edit Medication History Page -->
+    <string name="enter_additional_details">추가 세부 사항 입력</string>
+    <string name="select_effectiveness">효과 선택</string>
+    <string name="enter_medication_name">약 이름 입력</string>
+    <string name="add_medication_history">약 기록 추가</string>
+    <string name="effective">효과적</string>
+    <string name="moderate">보통</string>
+    <string name="marginal">미미한</string>
+    <string name="ineffective">효과 없음</string>
+
+    <!-- Medication List Page -->
+    <string name="pill_pics">알약 사진</string>
+    <string name="medication_list">약 목록</string>
+    <string name="view_all_medication_refills">모든 약물 리필 보기</string>
+    <string name="edit_medication">약물 수정</string>
+
+</resources>

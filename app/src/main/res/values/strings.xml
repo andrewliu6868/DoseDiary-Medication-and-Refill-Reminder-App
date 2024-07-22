@@ -2,4 +2,119 @@
     <string name="app_name">DoseDiary</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="title_activity_add_medication">AddMedication</string>
+
+    <!-- General Strings -->
+    <string name="confirm_save">Confirm Save</string>
+    <string name="error_generating_pdf">Error generating PDF</string>
+    <string name="pdf_generated_successfully">PDF generated successfully</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- Medication History Page -->
+    <string name="medication_history">Medication History</string>
+    <string name="add_medication">Add Medication</string>
+    <string name="view_medication_history">View Medication History</string>
+    <string name="name">Name</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
+    <string name="effectiveness">Effectiveness</string>
+
+    <!-- Add Medication Page -->
+    <string name="add_medication_header">Add Medication</string>
+    <string name="medication_name">Medication Name</string>
+    <string name="name_placeholder">Enter Medication Name</string>
+    <string name="medication_period">Medication Period</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_time">Select Time</string>
+    <string name="intake_frequency">Intake Frequency</string>
+    <string name="number_of_times_per_day">Number of times per day:</string>
+    <string name="refill_days">Refill Days</string>
+    <string name="notes">Notes</string>
+    <string name="add_note">Add a note</string>
+    <string name="pharmacy_location">Pharmacy Location</string>
+    <string name="address">Address</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="additional_details">Additional Details</string>
+    <string name="save">Save</string>
+    <string name="discard">Discard</string>
+    <string name="confirm_save_message">Are you sure the information is correct?</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="app_icon">App Icon</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this medication?</string>
+    <string name="times_per_day">Number of times per day:</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+
+    <!-- Home Page -->
+    <string name="upcoming_medication_refills">Upcoming Medication Refills</string>
+    <string name="daily_medication_checklist">Daily Medication Checklist</string>
+    <string name="no_medication_refills_today">No Medication Refills Today</string>
+    <string name="no_medication_refills_next_week">No Medication Refills in the Next 7 Days</string>
+    <string name="today">Today</string>
+    <string name="next_7_days">Next 7 Days</string>
+    <string name="view_all_medication_details">View All Medication Details</string>
+    <string name="view_all_medication_refills">View All Medication Refills</string>
+    <string name="medication_reminder_time">Medication Reminder - %1$s</string>
+    <string name="view">View</string>
+
+    <!-- Login Page -->
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="show_password">Show Password</string>
+    <string name="hide_password">Hide Password</string>
+    <string name="sign_up_here">Sign Up Here</string>
+    <string name="error">Error:</string>
+
+    <!-- Sign Up Page -->
+    <string name="register">Register</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="app_main_icon">App Main Icon</string>
+
+    <!-- Profile Page -->
+    <string name="profile">Profile:  %2$s</string>
+    <string name="manage_users">Manage Users</string>
+    <string name="add_user">Add User</string>
+    <string name="add_users">Add Users</string>
+    <string name="add">Add</string>
+    <string name="user_details">User Details</string>
+    <string name="you_cannot_edit_sub_user">You can not edit user detail for a sub user, please switch to main user to edit user detail</string>
+    <string name="change_user">Change User</string>
+    <string name="user_initials">%2$s</string>
+    <string name="type_password_here">Type password here</string>
+
+    <!-- Medication Refill Page -->
+    <string name="medication_refill">Medication Refill</string>
+    <string name="medication_refill_detail">Medication Refill Detail</string>
+    <string name="direction">Direction</string>
+    <string name="call">Call</string>
+    <string name="refill_information">Refill Information:</string>
+    <string name="next_refill_date">Next Refill Date: </string>
+    <string name="pharmacy_name">Pharmacy Name: </string>
+    <string name="pharmacy_contact">Pharmacy Contact: </string>
+    <string name="pharmacy_address">Pharmacy Address: </string>
+    <string name="more_information">More information about the medication:</string>
+    <string name="quantity">Quantity: </string>
+    <string name="notes_details">Notes: </string>
+    <string name="pills_left">pills left</string>
+
+    <!-- Edit Medication History Page -->
+    <string name="enter_additional_details">Enter Additional Details</string>
+    <string name="select_effectiveness">Select Effectiveness</string>
+    <string name="enter_medication_name">Enter Medication Name</string>
+    <string name="add_medication_history">Add Medication History</string>
+    <string name="effective">Effective</string>
+    <string name="moderate">Moderate</string>
+    <string name="marginal">Marginal</string>
+    <string name="ineffective">Ineffective</string>
+
+    <!-- Medication List Page -->
+    <string name="pill_pics">Pill Pics</string>
+    <string name="medication_list">Medication List</string>
+    <string name="edit_medication">Edit Medication</string>
+
 </resources>

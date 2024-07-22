@@ -1,4 +1,3 @@
-
 package com.example.dosediary.view
 
 import android.content.Context
@@ -17,68 +16,67 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import com.example.dosediary.model.entity.MedicationHistory
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.dosediary.ui.theme.Background
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.events.MedicationHistoryEvent
+import com.example.dosediary.model.entity.MedicationHistory
+import com.example.dosediary.state.MedicationHistoryState
+import com.example.dosediary.ui.theme.Background
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.dosediary.events.MedicationHistoryEvent
-import com.example.dosediary.state.MedicationHistoryState
-import com.example.dosediary.viewmodel.MedicationHistoryViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun MedicationHistoryPage(
     navController: NavHostController,
     state: MedicationHistoryState,
-    onEvent: (MedicationHistoryEvent) -> Unit
+    onEvent: (MedicationHistoryEvent) -> Unit,
+    addTestEntries: () -> Unit
 ) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+//    LaunchedEffect(Unit) {
+//        addTestEntries()
+//    }
+
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = "Medication History",
-                showNavigationIcon = true,
+                header = stringResource(R.string.medication_history),
+                showNavigationIcon = false,
                 navController = navController,
-                imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = "App Icon"
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
+                imageResId = R.drawable.icon,
+                imageDescription = stringResource(R.string.app_icon),
+                onActionButtonClick = {
                     generatePDF(context, state.medicationHistories) { result ->
                         scope.launch {
                             if (result) {
@@ -88,10 +86,18 @@ fun MedicationHistoryPage(
                             }
                         }
                     }
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    //navigate to add medication page?
+                    navController.navigate("editMedication")
                 },
                 containerColor = Color(0xFF7DCBFF)
             ) {
-                Icon(Icons.Filled.BarChart, contentDescription = "Generate PDF")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_medication))
             }
         },
         snackbarHost = {
@@ -104,7 +110,7 @@ fun MedicationHistoryPage(
                 .background(Color.White)
                 .padding(innerPadding)
                 .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(state.medicationHistories) { medication ->
                 MedicationItem(medication, navController)
@@ -112,7 +118,6 @@ fun MedicationHistoryPage(
         }
     }
 }
-
 
 fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult: (Boolean) -> Unit) {
     val pdfDocument = PdfDocument()
@@ -131,7 +136,7 @@ fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult
         val page = pdfDocument.startPage(pageInfo)
         val canvas = page.canvas
 
-        var yPosition = 40f // Start drawing position
+        var yPosition = 40f
         val startItemIndex = pageIndex * itemsPerPage
         val endItemIndex = minOf(startItemIndex + itemsPerPage, medications.size)
 
@@ -169,8 +174,6 @@ fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult
     }
 }
 
-
-
 @Composable
 fun MedicationItem(medication: MedicationHistory, navController: NavHostController) {
     Card(
@@ -180,7 +183,7 @@ fun MedicationItem(medication: MedicationHistory, navController: NavHostControll
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate("editMedication")},
+            .clickable { navController.navigate("editMedication") },
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Row(
@@ -189,44 +192,51 @@ fun MedicationItem(medication: MedicationHistory, navController: NavHostControll
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row (
+            Row(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
-            ){
+            ) {
                 Column(
-                    modifier = Modifier.weight(1f)  // This makes the column take up all space except for the button
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = medication.name,
-                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
-                    Text(text = medication.timeTaken,
-                        style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
-                    Text(text = medication.dateTaken,
-                        style = LocalTextStyle.current.copy( fontSize = 10.sp, fontStyle = FontStyle.Italic))
+                    Text(
+                        text = medication.name,
+                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                    )
+                    Text(
+                        text = medication.timeTaken,
+                        style = LocalTextStyle.current.copy(fontSize = 10.sp, fontStyle = FontStyle.Italic)
+                    )
+                    Text(
+                        text = medication.dateTaken,
+                        style = LocalTextStyle.current.copy(fontSize = 10.sp, fontStyle = FontStyle.Italic)
+                    )
                 }
-                Column (
-                    modifier = Modifier
-                        .weight(1f),
+                Column(
+                    modifier = Modifier.weight(1f),
                     horizontalAlignment = Alignment.End
-                ){
-                    Text(text = medication.effectiveness,
-                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp))
-
+                ) {
+                    Text(
+                        text = medication.effectiveness,
+                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                    )
                 }
             }
         }
     }
 }
 
-@Preview(showBackground =true, name = "MedHistory Preview")
+@Preview(showBackground = true, name = "MedHistory Preview")
 @Composable
 fun MedHistoryPreview() {
     val navController = rememberNavController()
     val state = MedicationHistoryState()
     val onEvent: (MedicationHistoryEvent) -> Unit = {}
-    MedicationHistoryPage(navController = navController, state = state, onEvent = onEvent)
+    MedicationHistoryPage(
+        navController = navController,
+        state = state,
+        onEvent = onEvent,
+        addTestEntries = {}
+    )
 }
-
-
-
-

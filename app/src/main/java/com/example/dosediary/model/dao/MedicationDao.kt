@@ -31,4 +31,7 @@ interface MedicationDao {
     //update lastrefilldate
     @Query("UPDATE medication SET lastRefilledDate = :lastRefilledDate WHERE id = :medID")
     suspend fun updateLastRefillDate(medID: Int, lastRefilledDate: Date)
+
+    @Query("DELETE FROM Medication WHERE id = :medicationId")
+    suspend fun deleteMedicationById(medicationId: Int)
 }

@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">DoseDiary</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_add_medication">薬を追加</string>
+
+    <!-- General Strings -->
+    <string name="confirm_save">保存を確認</string>
+    <string name="error_generating_pdf">PDF生成エラー</string>
+    <string name="pdf_generated_successfully">PDFが正常に生成されました</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+
+    <!-- Medication History Page -->
+    <string name="medication_history">薬歴</string>
+    <string name="add_medication">薬を追加</string>
+    <string name="view_medication_history">薬歴を表示</string>
+    <string name="name">名前</string>
+    <string name="time">時間</string>
+    <string name="date">日付</string>
+    <string name="effectiveness">効果</string>
+
+    <!-- Add Medication Page -->
+    <string name="add_medication_header">薬を追加</string>
+    <string name="medication_name">薬の名前</string>
+    <string name="name_placeholder">薬の名前を入力</string>
+    <string name="medication_period">服用期間</string>
+    <string name="select_date">日付を選択</string>
+    <string name="select_time">時間を選択</string>
+    <string name="intake_frequency">服用頻度</string>
+    <string name="number_of_times_per_day">1日の服用回数:</string>
+    <string name="refill_days">再充填日</string>
+    <string name="notes">ノート</string>
+    <string name="add_note">ノートを追加</string>
+    <string name="pharmacy_location">薬局の場所</string>
+    <string name="address">住所</string>
+    <string name="postal_code">郵便番号</string>
+    <string name="additional_details">追加の詳細</string>
+    <string name="save">保存</string>
+    <string name="discard">破棄</string>
+    <string name="confirm_save_message">情報が正しいことを確認しますか？</string>
+    <string name="save_changes">変更を保存</string>
+    <string name="cancel">キャンセル</string>
+    <string name="delete">削除</string>
+    <string name="app_icon">アプリアイコン</string>
+    <string name="confirm_delete">削除を確認</string>
+    <string name="confirm_delete_message">この薬を削除してもよろしいですか？</string>
+    <string name="times_per_day">1日の服用回数:</string>
+    <string name="start_date">開始日</string>
+    <string name="end_date">終了日</string>
+
+    <!-- Home Page -->
+    <string name="upcoming_medication_refills">次の薬の補充</string>
+    <string name="daily_medication_checklist">日々の薬チェックリスト</string>
+    <string name="no_medication_refills_today">今日は薬の補充がありません</string>
+    <string name="no_medication_refills_next_week">次の7日間に薬の補充はありません</string>
+    <string name="today">今日</string>
+    <string name="next_7_days">次の7日間</string>
+    <string name="view_all_medication_details">すべての薬の詳細を見る</string>
+    <string name="medication_reminder_time">薬のリマインダー - </string>
+    <string name="view">表示</string>
+
+    <!-- Login Page -->
+    <string name="login">ログイン</string>
+    <string name="email">メール</string>
+    <string name="password">パスワード</string>
+    <string name="show_password">パスワードを表示</string>
+    <string name="hide_password">パスワードを非表示</string>
+    <string name="sign_up_here">ここでサインアップ</string>
+    <string name="error">エラー:</string>
+
+    <!-- Sign Up Page -->
+    <string name="register">登録</string>
+    <string name="first_name">名</string>
+    <string name="last_name">姓</string>
+    <string name="app_main_icon">アプリメインアイコン</string>
+
+    <!-- Profile Page -->
+    <string name="profile">プロファイル:  %2$s</string>
+    <string name="manage_users">ユーザーを管理</string>
+    <string name="add_user">ユーザーを追加</string>
+    <string name="add_users">ユーザーを追加</string>
+    <string name="add">追加</string>
+    <string name="user_details">ユーザー詳細</string>
+    <string name="you_cannot_edit_sub_user">サブユーザーのユーザー詳細を編集できません。ユーザー詳細を編集するにはメインユーザーに切り替えてください</string>
+    <string name="change_user">ユーザーを変更</string>
+    <string name="user_initials">%2$s</string>
+    <string name="type_password_here">ここにパスワードを入力</string>
+
+    <!-- Medication Refill Page -->
+    <string name="medication_refill">薬の補充</string>
+    <string name="medication_refill_detail">薬の補充詳細</string>
+    <string name="direction">道順</string>
+    <string name="call">電話</string>
+    <string name="refill_information">補充情報:</string>
+    <string name="next_refill_date">次の補充日: </string>
+    <string name="pharmacy_name">薬局の名前: </string>
+    <string name="pharmacy_contact">薬局の連絡先: </string>
+    <string name="pharmacy_address">薬局の住所: </string>
+    <string name="more_information">薬についての詳細情報:</string>
+    <string name="quantity">数量: </string>
+    <string name="notes_details">ノート: </string>
+    <string name="pills_left">錠剤残り</string>
+
+    <!-- Edit Medication History Page -->
+    <string name="enter_additional_details">追加の詳細を入力</string>
+    <string name="select_effectiveness">効果を選択</string>
+    <string name="enter_medication_name">薬の名前を入力</string>
+    <string name="add_medication_history">薬歴を追加</string>
+    <string name="effective">効果的</string>
+    <string name="moderate">適度</string>
+    <string name="marginal">わずか</string>
+    <string name="ineffective">効果がない</string>
+
+    <!-- Medication List Page -->
+    <string name="pill_pics">錠剤の写真</string>
+    <string name="medication_list">薬リスト</string>
+    <string name="view_all_medication_refills">すべての薬の補充を表示</string>
+    <string name="edit_medication">薬を編集</string>
+</resources>
