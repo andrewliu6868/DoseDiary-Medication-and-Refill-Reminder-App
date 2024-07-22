@@ -89,18 +89,28 @@ fun CustomTopAppBar(
             }
         },
         actions = {
-            if (onPdfButtonClick != null) {
-                IconButton(onClick = onPdfButtonClick) {
-                    Icon(imageVector = Icons.Filled.BarChart, contentDescription = "Generate PDF")
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (onPdfButtonClick != null) {
+                    IconButton(onClick = onPdfButtonClick) {
+                        Icon(
+                            imageVector = Icons.Filled.BarChart,
+                            contentDescription = "Generate PDF"
+                        )
+                    }
                 }
-            }
-            if (onLanguageButtonClick != null) {
-                IconButton(onClick = onLanguageButtonClick) {
-                    Icon(imageVector = Icons.Filled.Language, contentDescription = "Select Language")
+                if (onLanguageButtonClick != null) {
+                    IconButton(onClick = onLanguageButtonClick) {
+                        Icon(
+                            imageVector = Icons.Filled.Language,
+                            contentDescription = "Select Language"
+                        )
+                    }
                 }
-            }
-            if (showNavigationIcon && onPdfButtonClick == null && onLanguageButtonClick == null) {
-                Spacer(modifier = Modifier.width(50.dp)) // Adjust width to balance space
+                if (showNavigationIcon && onPdfButtonClick == null && onLanguageButtonClick == null) {
+                    Spacer(modifier = Modifier.width(50.dp)) // Adjust width to balance space
+                }
             }
         }
     )

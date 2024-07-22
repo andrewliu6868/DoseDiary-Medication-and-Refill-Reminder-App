@@ -36,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -75,10 +76,12 @@ fun ProfilePage(
 ) {
     var isAddingUser by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }
+    var languageChanged by remember { mutableStateOf(false) }
 
     // Initialize with a default value
     var selectedLanguage by remember { mutableStateOf("en") }
     val context = LocalContext.current
+
 
     Scaffold(
         topBar = {
@@ -210,10 +213,21 @@ fun ProfilePage(
                 onLanguageSelected = { languageCode ->
                     selectedLanguage = languageCode
                     changeLanguage(context, languageCode)
+                    languageChanged = true
                     showLanguageDialog = false
                 },
                 onDismissRequest = { showLanguageDialog = false }
             )
+        }
+
+        if (languageChanged) {
+            LaunchedEffect(Unit) {
+                navController.navigate("home") {
+                    popUpTo(navController.graph.startDestinationId) {
+                        inclusive = true
+                    }
+                }
+            }
         }
     }
 }
