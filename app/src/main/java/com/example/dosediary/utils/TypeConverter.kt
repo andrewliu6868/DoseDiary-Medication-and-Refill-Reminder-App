@@ -1,14 +1,17 @@
 package com.example.dosediary.utils
 
 import androidx.room.TypeConverter
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.google.android.gms.maps.model.LatLng
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class TypeConverter {
 
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+    private val gson: Gson = GsonBuilder().setDateFormat(dateFormat.toPattern()).create()
 
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
@@ -22,12 +25,19 @@ class TypeConverter {
 
     @TypeConverter
     fun fromDateList(dates: List<Date>): String {
-        return dates.joinToString(",") { dateFormat.format(it) }
+        return gson.toJson(dates)
     }
 
     @TypeConverter
     fun toDateList(datesString: String): List<Date> {
-        return datesString.split(",").map { dateFormat.parse(it) }
+        val type = object : TypeToken<List<Date>>() {}.type
+        return gson.fromJson(datesString, type)
+    }
+
+    @TypeConverter
+    fun fromMap(value: Map<Date, Boolean>?): String {
+        val mapString = value?.mapKeys { dateFormat.format(it.key) }
+        return gson.toJson(mapString)
     }
 
     @TypeConverter
@@ -39,5 +49,12 @@ class TypeConverter {
     @TypeConverter
     fun toLatLng(latLng: LatLng): String {
         return "${latLng.latitude},${latLng.longitude}"
+    }
+
+    @TypeConverter
+    fun toMap(value: String): Map<Date, Boolean>? {
+        val type = object : TypeToken<Map<String, Boolean>>() {}.type
+        val stringMap: Map<String, Boolean> = gson.fromJson(value, type)
+        return stringMap.mapKeys { dateFormat.parse(it.key) }
     }
 }

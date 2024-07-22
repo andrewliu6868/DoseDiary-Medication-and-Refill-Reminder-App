@@ -26,4 +26,6 @@ interface ProfileEvent {
     object confirmDeleteCurrentUser : ProfileEvent
 
     object cancelDeleteCurrentUser : ProfileEvent
+
+    object onUserLogout: ProfileEvent
 }

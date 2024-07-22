@@ -53,7 +53,7 @@ class MedicationHistoryViewModel @Inject constructor(
         }
     }
 
-    private fun addOrUpdateMedicationHistory(medicationHistory: MedicationHistory) {
+    fun addOrUpdateMedicationHistory(medicationHistory: MedicationHistory) {
         viewModelScope.launch {
             medicationHistoryDao.upsertMedicationHistory(medicationHistory)
             fetchMedicationHistories()

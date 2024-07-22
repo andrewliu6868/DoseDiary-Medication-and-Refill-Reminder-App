@@ -5,13 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.event.MedicationListEvent
 import com.example.dosediary.model.dao.MedicationDao
+import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.state.MedicationListState
 import com.example.dosediary.utils.DoseDiaryDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +38,16 @@ class MedicationListViewModel @Inject constructor(
             is MedicationListEvent.SelectMedication -> {
                 _state.value = _state.value.copy(selectedMedicationDetail = event.medication)
             }
+        }
+    }
+
+    fun updateTakenStatus(medicationId: Int, date: Date, taken: Boolean) {
+        viewModelScope.launch {
+            val medication = medicationDao.getMedicationByID(medicationId).first()
+            val updatedTakenTimes = medication.takenTimes.toMutableMap()
+            updatedTakenTimes[date] = taken
+            val updatedMedication = medication.copy(takenTimes = updatedTakenTimes)
+            medicationDao.upsertMedication(updatedMedication)
         }
     }
 }

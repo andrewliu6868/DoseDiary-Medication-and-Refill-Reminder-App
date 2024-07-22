@@ -89,7 +89,7 @@
     <string name="user_initials"></string>
     <string name="type_password_here">Type password here</string>
     <string name="home">Home</string>
-    <string name="medications">Medications</string>
+    <string name="medications">Medication</string>
     <string name="refill">Refill</string>
     <string name="history">History</string>
     <string name="confirm_user_delete">Confirm User Delete</string>
@@ -127,6 +127,7 @@
     <string name="medication_list">Medication List</string>
     <string name="edit_medication">Edit Medication</string>
     <string name="delete_user">Delete User</string>
+    <string name="logout">Log Out</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>

@@ -127,6 +127,7 @@
     <string name="delete_user">刪除使用者</string>
     <string name="confirm_user_delete">確認刪除使用者</string>
     <string name="confirm_user_delete_message">你確定要刪除這個使用者嗎</string>
+    <string name="logout">Log Out</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>

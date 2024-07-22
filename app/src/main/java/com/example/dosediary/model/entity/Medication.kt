@@ -3,11 +3,14 @@ package com.example.dosediary.model.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.dosediary.utils.TypeConverter
+import java.util.*
 import com.google.android.gms.maps.model.LatLng
 import java.util.Date
 
 @Entity(
-    foreignKeys = [                         //Mapping "owner" in Medication to "id" in User
+    foreignKeys = [
         ForeignKey(
             entity = User::class,
             parentColumns = ["id"],
@@ -16,8 +19,8 @@ import java.util.Date
         )
     ]
 )
+@TypeConverters(TypeConverter::class)
 data class Medication(
-    // From Input
     val medicationName: String,
     val startDate: Date,
     val endDate: Date,
@@ -27,7 +30,7 @@ data class Medication(
     val note: String,
     val address: String,
     val addressLatLng: LatLng,
-    //
+    var takenTimes: Map<Date, Boolean> = emptyMap(),
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val lastRefilledDate: Date,

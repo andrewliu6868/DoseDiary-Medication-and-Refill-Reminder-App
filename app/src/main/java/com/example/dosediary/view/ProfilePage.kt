@@ -36,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -75,10 +76,12 @@ fun ProfilePage(
 ) {
     var isAddingUser by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }
+    var languageChanged by remember { mutableStateOf(false) }
 
     // Initialize with a default value
     var selectedLanguage by remember { mutableStateOf("en") }
     val context = LocalContext.current
+
 
     Scaffold(
         topBar = {
@@ -144,14 +147,13 @@ fun ProfilePage(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            //add cancel button and add button
                             Row(
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Button(
                                     onClick = { isAddingUser = false },
-                                    colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
                                     modifier = Modifier.align(Alignment.CenterVertically)
                                 ) {
                                     Text(stringResource(R.string.cancel))
@@ -163,7 +165,8 @@ fun ProfilePage(
                                         isAddingUser = false
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                                    modifier = Modifier.align(Alignment.CenterVertically)
+                                    modifier = Modifier.align(Alignment.CenterVertically),
+                                    enabled = state.addUserFirstName.isNotBlank() && state.addUserLastName.isNotBlank()
                                 ) {
                                     Text(stringResource(R.string.add))
                                 }
@@ -192,10 +195,12 @@ fun ProfilePage(
                 }
                 item { UserDetail(state, onEvent) }
             }
+
             if (state.showDeleteConfirmationDialog) {
                 UserDeleteConfirmationDialog(
                     onConfirm = {
                         onEvent(ProfileEvent.confirmDeleteCurrentUser)
+                        navController.navigate("login")
                     },
                     onDismiss = {
                         onEvent(ProfileEvent.cancelDeleteCurrentUser)
@@ -210,10 +215,21 @@ fun ProfilePage(
                 onLanguageSelected = { languageCode ->
                     selectedLanguage = languageCode
                     changeLanguage(context, languageCode)
+                    languageChanged = true
                     showLanguageDialog = false
                 },
                 onDismissRequest = { showLanguageDialog = false }
             )
+        }
+
+        if (languageChanged) {
+            LaunchedEffect(Unit) {
+                navController.navigate("home") {
+                    popUpTo(navController.graph.startDestinationId) {
+                        inclusive = true
+                    }
+                }
+            }
         }
     }
 }
@@ -224,6 +240,21 @@ private fun changeLanguage(context: Context, languageCode: String) {
     val config = Configuration()
     config.setLocale(locale)
     context.resources.updateConfiguration(config, context.resources.displayMetrics)
+}
+
+
+@Composable
+fun LogOutButton(navController: NavController, onEvent: (ProfileEvent) -> Unit) {
+    Button(
+        onClick = {
+            onEvent(ProfileEvent.onUserLogout)
+            navController.navigate("login")
+        },
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(stringResource(R.string.logout))
+    }
 }
 
 @Composable
