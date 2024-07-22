@@ -91,8 +91,8 @@ class ReminderViewModel @Inject constructor(
             try {
                 val nextRefillDate = _calculateNextRefill(refillDays)
                 val intent = Intent(context, ReminderReceiver::class.java).apply {
-                        putExtra("Name", medName)
-                        putExtra("Message", "Refill Reminder")
+                    putExtra("Name", medName)
+                    putExtra("Message", "Refill Reminder")
                 }
                 val requestCode = _generateUniqueRequestCode()
                 val pendingIntent = PendingIntent.getBroadcast(
@@ -101,11 +101,11 @@ class ReminderViewModel @Inject constructor(
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
-                    _alarmManager.setExact(
-                        AlarmManager.RTC_WAKEUP,
-                        nextRefillDate,
-                        pendingIntent
-                    )
+                _alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP,
+                    nextRefillDate,
+                    pendingIntent
+                )
                 _reminderState.value = ReminderState.Success("Reminders set successfully")
             }catch(e:Exception){
                 _reminderState.value = ReminderState.Error(e.message ?: "Unknown Error")
