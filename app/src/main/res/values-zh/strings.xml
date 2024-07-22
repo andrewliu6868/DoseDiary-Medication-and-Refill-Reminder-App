@@ -118,4 +118,6 @@
     <!-- Medication List Page -->
     <string name="pill_pics">药片图片</string>
     <string name="medication_list">药物列表</string>
+    <string name="view_all_medication_refills">查看所有药品续杯</string>
+    <string name="edit_medication">编辑药物</string>
 </resources>

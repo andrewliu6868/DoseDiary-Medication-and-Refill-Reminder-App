@@ -118,4 +118,6 @@
     <!-- Medication List Page -->
     <string name="pill_pics">गोलियों की तस्वीरें</string>
     <string name="medication_list">दवाई सूची</string>
+    <string name="view_all_medication_refills">सभी दवा रिफिल देखें</string>
+    <string name="edit_medication">दवा संपादित करें</string>
 </resources>

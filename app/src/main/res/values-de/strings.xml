@@ -19,7 +19,7 @@
     <string name="date">Datum</string>
     <string name="effectiveness">Wirksamkeit</string>
 
-    <!-- Add Medication Page -->
+    <!-- Upsert Medication Page -->
     <string name="add_medication_header">Medikament hinzufügen</string>
     <string name="medication_name">Medikamentenname</string>
     <string name="name_placeholder">Medikamentenname eingeben</string>
@@ -47,6 +47,7 @@
     <string name="times_per_day">Anzahl der Einnahmen pro Tag:</string>
     <string name="start_date">Anfangsdatum</string>
     <string name="end_date">Enddatum</string>
+    <string name="edit_medication">Medikament bearbeiten</string>
 
     <!-- Home Page -->
     <string name="upcoming_medication_refills">Bevorstehende Medikamentennachfüllungen</string>
@@ -118,4 +119,5 @@
     <!-- Medication List Page -->
     <string name="pill_pics">Tablettenbilder</string>
     <string name="medication_list">Medikamentenliste</string>
+    <string name="view_all_medication_refills">Alle Medikamenten-Nachfüllungen anzeigen</string>
 </resources>

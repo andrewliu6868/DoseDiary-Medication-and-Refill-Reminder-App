@@ -3,8 +3,8 @@ package com.example.dosediary.viewmodel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dosediary.state.AddMedicationState
-import com.example.dosediary.events.AddMedicationEvent
+import com.example.dosediary.state.UpsertMedicationState
+import com.example.dosediary.events.UpsertMedicationEvent
 import com.example.dosediary.state.UserState
 import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.state.AutocompleteResult
@@ -23,12 +23,12 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class AddMedicationViewModel @Inject constructor(
+class UpsertMedicationViewModel @Inject constructor(
     application: Application,
     private val userState: UserState
 ) : ViewModel() {
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
-    private val _state = MutableStateFlow(AddMedicationState())
+    private val _state = MutableStateFlow(UpsertMedicationState())
     val state = _state.asStateFlow()
 
     lateinit var placesClient: PlacesClient
@@ -49,22 +49,24 @@ class AddMedicationViewModel @Inject constructor(
                 address = medication.address,
                 postalCode = medication.postalCode
             )
+        } else {
+            _state.value = UpsertMedicationState() // Reset state for adding new medication
         }
     }
 
 
-    fun onEvent(event: AddMedicationEvent) {
+    fun onEvent(event: UpsertMedicationEvent) {
         when (event) {
-            is AddMedicationEvent.OnMedicationNameChanged -> {
+            is UpsertMedicationEvent.OnMedicationNameChanged -> {
                 _state.value = _state.value.copy(medicationName = event.medicationName)
             }
-            is AddMedicationEvent.OnStartDateChanged -> {
+            is UpsertMedicationEvent.OnStartDateChanged -> {
                 _state.value = _state.value.copy(startDate = event.startDate)
             }
-            is AddMedicationEvent.OnEndDateChanged -> {
+            is UpsertMedicationEvent.OnEndDateChanged -> {
                 _state.value = _state.value.copy(endDate = event.endDate)
             }
-            is AddMedicationEvent.OnFrequencyChanged -> {
+            is UpsertMedicationEvent.OnFrequencyChanged -> {
                 val frequency = event.frequency
                 val intVal = frequency.toIntOrNull()
                 if (intVal != null && intVal > 0) {
@@ -80,62 +82,60 @@ class AddMedicationViewModel @Inject constructor(
                     _state.value = _state.value.copy(frequency = frequency)
                 }
             }
-            is AddMedicationEvent.OnTimeChanged -> {
+            is UpsertMedicationEvent.OnTimeChanged -> {
                 val times = _state.value.times.toMutableList()
                 times[event.index] = event.time
                 _state.value = _state.value.copy(times = times)
             }
-            is AddMedicationEvent.OnRefillDaysChanged -> {
+            is UpsertMedicationEvent.OnRefillDaysChanged -> {
                 _state.value = _state.value.copy(refillDays = event.refillDays)
             }
-            is AddMedicationEvent.OnNoteChanged -> {
+            is UpsertMedicationEvent.OnNoteChanged -> {
                 _state.value = _state.value.copy(note = event.note)
             }
-            is AddMedicationEvent.OnAddressChanged -> {
+            is UpsertMedicationEvent.OnAddressChanged -> {
                 _state.value = _state.value.copy(address = event.address)
                 searchPlaces(event.address)
             }
-            is AddMedicationEvent.OnPostalCodeChanged -> {
+            is UpsertMedicationEvent.OnPostalCodeChanged -> {
                 val postalCodeRegex = Regex("^[A-Za-z]\\d[A-Za-z][ -]?\\d[A-Za-z]\\d$")
                 val postalCodeError = if (postalCodeRegex.matches(event.postalCode)) null else "Invalid postal code format"
                 _state.value = _state.value.copy(postalCode = event.postalCode, postalCodeError = postalCodeError)
             }
-            is AddMedicationEvent.OnClickWithRipple -> {
+            is UpsertMedicationEvent.OnClickWithRipple -> {
                 getCoordinates(event.autoCompleteResult)
                 _state.value = _state.value.copy(
                     address = event.autoCompleteResult.address,
                     locationAutofill = emptyList()
                 )
             }
-            AddMedicationEvent.SaveMedication -> {
+            UpsertMedicationEvent.SaveMedication -> {
                 _state.value = _state.value.copy(showConfirmDialog = true)
             }
-            AddMedicationEvent.ConfirmSaveMedication -> {
+            UpsertMedicationEvent.ConfirmSaveMedication -> {
                 viewModelScope.launch {
                     val medication = _state.value.toMedication()
                     medicationDao.upsertMedication(medication)
-                    _state.value = AddMedicationState()
+                    _state.value = UpsertMedicationState()
                 }
             }
-            AddMedicationEvent.DismissSaveDialog -> {
+            UpsertMedicationEvent.DismissSaveDialog -> {
                 _state.value = _state.value.copy(showConfirmDialog = false)
             }
-            AddMedicationEvent.DeleteMedication -> {
+            UpsertMedicationEvent.DeleteMedication -> {
                 _state.value = _state.value.copy(showDeleteConfirmDialog = true)
             }
-            AddMedicationEvent.ConfirmDeleteMedication -> {
+            UpsertMedicationEvent.ConfirmDeleteMedication -> {
                 viewModelScope.launch {
                     medicationDao.deleteMedicationById(_state.value.medicationId)
-                    _state.value = AddMedicationState()
+                    _state.value = UpsertMedicationState()
                 }
             }
-            AddMedicationEvent.DismissDeleteDialog -> {
+            UpsertMedicationEvent.DismissDeleteDialog -> {
                 _state.value = _state.value.copy(showDeleteConfirmDialog = false)
             }
         }
     }
-
-
 
     fun searchPlaces(query: String) {
         job?.cancel()
@@ -175,7 +175,7 @@ class AddMedicationViewModel @Inject constructor(
         }
     }
 
-    private fun AddMedicationState.toMedication(): Medication {
+        private fun UpsertMedicationState.toMedication(): Medication {
         return Medication(
             id = this.medicationId,
             medicationName = this.medicationName,
@@ -193,5 +193,4 @@ class AddMedicationViewModel @Inject constructor(
             owner = 1  // TODO: Change this after User Profile is Ready
         )
     }
-
 }

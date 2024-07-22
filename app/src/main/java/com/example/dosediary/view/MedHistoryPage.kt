@@ -72,7 +72,7 @@ fun MedicationHistoryPage(
         topBar = {
             CustomTopAppBar(
                 header = stringResource(R.string.medication_history),
-                showNavigationIcon = true,
+                showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,
                 imageDescription = stringResource(R.string.app_icon),

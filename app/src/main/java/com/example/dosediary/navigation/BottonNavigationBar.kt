@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.ui.theme.Background
@@ -52,6 +53,18 @@ val items = listOf(
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     var selectedItem by remember { mutableIntStateOf(0) }
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
+
+    // Update selectedItem based on currentRoute
+    selectedItem = when (currentRoute) {
+        "home" -> 0
+        "medication", "add_medication" -> 1
+        "refill" -> 2
+        "history", "editMedication" -> 3
+        "profile" -> 4
+        else -> 0
+    }
 
     NavigationBar {
         Row(
