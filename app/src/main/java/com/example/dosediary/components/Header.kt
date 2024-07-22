@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,7 +15,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,7 +23,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Language
@@ -61,39 +62,61 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun MedicationReminder(reminder: Pair<String, String>, onDismiss: () -> Unit) {
-    val (medName, reminderMessage) = reminder
+fun MedicationReminder(reminder: Triple<String, String, String>, onDismiss: () -> Unit) {
+    val (medName, reminderMessage, note) = reminder
     val currTime = LocalDateTime.now()
     val format = DateTimeFormatter.ofPattern("hh:mm a")
     val formatTime = currTime.format(format)
+
+    var expanded by remember { mutableStateOf(false) }
 
     Card(
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFFF7676)),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp),
+            .padding(bottom = 8.dp)
+            .clickable { expanded = !expanded },
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier.padding(16.dp)
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                BasicText(
-                    text = "$reminderMessage - $formatTime",
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    BasicText(
+                        text = "$reminderMessage - $formatTime",
+                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
+                    )
+                    BasicText(text = medName)
+                }
+                Icon(
+                    painter = painterResource(R.drawable.ic_action_name),
+                    contentDescription = "dismiss",
+                    modifier = Modifier.clickable { onDismiss() }
                 )
-                BasicText(text = medName)
             }
 
-            Icon(painter = painterResource(R.drawable.ic_action_name),
-                contentDescription = "dismiss",
-                modifier = Modifier.clickable { onDismiss() })
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                Column(
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    Text(
+                        text = "Notes:",
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(text = note)
+                }
+            }
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -107,24 +130,20 @@ fun CustomTopAppBar(
     onLanguageButtonClick: (() -> Unit)? = null
 ) {
     // State to control the dialog visibility and message
-    var showDialog by remember { mutableStateOf(false) }
-    var dialogMessage by remember { mutableStateOf("") }
-    val reminders = remember { mutableStateListOf<Pair<String,String>>() }
-
+    val reminders = remember { mutableStateListOf<Triple<String, String, String>>() }
 
     // BroadcastReceiver to listen for local broadcasts
+    val context = LocalContext.current
     val reminderReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val medName = intent?.getStringExtra("Name") ?: "Unknown"
             val message = intent?.getStringExtra("Message") ?: "Time to take your medication!"
-            dialogMessage = "$medName: $message"
-            reminders.add(Pair(medName,message))
-            showDialog = true
+            val note = intent?.getStringExtra("Note") ?: "No Notes"
+            reminders.add(Triple(medName, message, note))
         }
     }
 
     // Register the BroadcastReceiver when the Composable is first composed
-    val context = LocalContext.current
     DisposableEffect(context) {
         val localBroadcastManager = LocalBroadcastManager.getInstance(context)
         localBroadcastManager.registerReceiver(reminderReceiver, IntentFilter("com.example.dosediary.REMINDER_ALERT"))
@@ -204,6 +223,7 @@ fun CustomTopAppBar(
             }
         }
     )
+
     // Display the reminders
     Column(
         modifier = Modifier
@@ -219,7 +239,7 @@ fun CustomTopAppBar(
     }
 }
 
-/*@Preview(showBackground = true, name = "TopAppBar Preview")
+@Preview(showBackground = true, name = "TopAppBar Preview")
 @Composable
 fun CustomTopAppBarPreview() {
     val navController = rememberNavController()
@@ -234,5 +254,3 @@ fun CustomTopAppBarPreview() {
         onLanguageButtonClick = { }
     )
 }
-
-}*/

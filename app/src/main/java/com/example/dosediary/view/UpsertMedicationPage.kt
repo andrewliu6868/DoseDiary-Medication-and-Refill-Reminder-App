@@ -95,7 +95,7 @@ fun UpsertMedicationPage(
             if (mode == "edit") {
                 item { SaveDeleteRow(navController, state.medicationId) { onEvent(it) } }
             } else {
-                item { SaveRow(navController, onEvent, state.medicationName, state.times, state.startDate, state.endDate, state.refillDays) }
+                item { SaveRow(navController, onEvent, state.medicationName, state.times, state.startDate, state.endDate, state.refillDays, state.note) }
             }
         }
         if (state.showConfirmDialog) {
@@ -338,7 +338,7 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
 }
 
 @Composable
-fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -> Unit, medName: String, times: List<Date>, startDate: Date, endDate: Date, refillDays: Int) {
+fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -> Unit, medName: String, times: List<Date>, startDate: Date, endDate: Date, refillDays: Int, note:String) {
     val reminderViewModel = hiltViewModel<ReminderViewModel>()
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -346,8 +346,8 @@ fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -
     ) {
         Button(
             onClick = { onEvent(UpsertMedicationEvent.SaveMedication)
-                reminderViewModel.scheduleMedReminders(medName, times, startDate,endDate)
-                reminderViewModel.scheduleRefill(medName, refillDays)
+                reminderViewModel.scheduleMedReminders(medName, times, startDate, endDate, note)
+                reminderViewModel.scheduleRefill(medName, refillDays, note)
              },
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f),
