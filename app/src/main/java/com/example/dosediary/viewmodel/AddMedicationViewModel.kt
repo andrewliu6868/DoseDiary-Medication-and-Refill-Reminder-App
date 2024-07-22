@@ -18,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AddMedicationViewModel @Inject constructor(
     application: Application,
-    private val userState: UserState
 ) : ViewModel() {
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
     private val _state = MutableStateFlow(AddMedicationState())

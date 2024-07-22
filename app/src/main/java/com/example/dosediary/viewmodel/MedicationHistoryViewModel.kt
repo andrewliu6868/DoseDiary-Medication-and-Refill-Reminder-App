@@ -21,6 +21,7 @@ class MedicationHistoryViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
+        addTestEntries()
         fetchMedicationHistories()
     }
 

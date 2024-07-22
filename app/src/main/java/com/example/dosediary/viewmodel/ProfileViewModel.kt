@@ -22,7 +22,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userState: UserState,
     application: Application
 ): ViewModel() {
 
@@ -80,7 +79,7 @@ class ProfileViewModel @Inject constructor(
 
     fun onEvent(event: ProfileEvent) {
         when(event) {
-            ProfileEvent.addUser -> {
+            ProfileEvent.AddUser -> {
                 val firstName = state.value.addUserFirstName
                 val lastName = state.value.addUserLastName
                 val newUser = User(firstName = firstName, lastname = lastName)
@@ -102,28 +101,28 @@ class ProfileViewModel @Inject constructor(
                 _addUserLastName.value = ""
 
             }
-            is ProfileEvent.onAddUserFirstNameChanged -> {
+            is ProfileEvent.OnAddUserFirstNameChanged -> {
                 _addUserFirstName.value = event.firstName
             }
-            is ProfileEvent.onAddUserLastNameChanged -> {
+            is ProfileEvent.OnAddUserLastNameChanged -> {
                 _addUserLastName.value = event.lastName
             }
-            is ProfileEvent.onChangeUser -> {
+            is ProfileEvent.OnChangeUser -> {
                 userState.setcurrentUser(event.user)
             }
-            is ProfileEvent.onMainUserFirstNameChanged -> {
+            is ProfileEvent.OnMainUserFirstNameChanged -> {
                 _editMainUserFirstName.value = event.firstName
             }
-            is ProfileEvent.onMainUserLastNameChanged -> {
+            is ProfileEvent.OnMainUserLastNameChanged -> {
                 _editMainUserLastName.value = event.lastName
             }
-            is ProfileEvent.onMainUserEmailChanged -> {
+            is ProfileEvent.OnMainUserEmailChanged -> {
                 _editMainUserEmail.value = event.email
             }
-            is ProfileEvent.onMainUserPasswordChanged -> {
+            is ProfileEvent.OnMainUserPasswordChanged -> {
                 _editMainUserPassword.value = event.password
             }
-            ProfileEvent.updateMainUser -> {
+            ProfileEvent.UpdateMainUser -> {
                 val firstName = state.value.editMainUserFirstName
                 val lastName = state.value.editMainUserLastName
                 val email = state.value.editMainUserEmail
@@ -142,7 +141,7 @@ class ProfileViewModel @Inject constructor(
                     userState.setcurrentUser(userDao.getUserById(state.value.mainUser!!.id).first())
                 }
             }
-            ProfileEvent.cancelUpdateMainUser -> {
+            ProfileEvent.CancelUpdateMainUser -> {
                 _editMainUserFirstName.value = state.value.mainUser?.firstName ?: ""
                 _editMainUserLastName.value = state.value.mainUser?.lastname ?: ""
                 _editMainUserEmail.value = state.value.mainUser?.email ?: ""
