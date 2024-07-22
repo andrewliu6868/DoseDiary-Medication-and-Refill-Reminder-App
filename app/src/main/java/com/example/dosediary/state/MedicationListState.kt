@@ -6,3 +6,4 @@ data class MedicationListState (
     val medicationList: List<Medication> = emptyList(),
     val selectedMedicationDetail: Medication? = null
 )
+

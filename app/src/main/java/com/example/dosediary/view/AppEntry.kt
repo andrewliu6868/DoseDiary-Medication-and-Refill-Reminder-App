@@ -22,6 +22,7 @@ import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedicationHistoryViewModel
 import com.example.dosediary.viewmodel.MedicationListViewModel
 import com.example.dosediary.viewmodel.ProfileViewModel
+import com.example.dosediary.viewmodel.UpsertMedHistoryViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.libraries.places.api.net.PlacesClient
 
@@ -57,6 +58,7 @@ fun MainAppNavigation (userState: UserState, navController: NavHostController, p
     val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
     val profileViewModel = hiltViewModel<ProfileViewModel>()
     val medicationListViewModel = hiltViewModel<MedicationListViewModel>()
+    val addMedHistoryViewModel = hiltViewModel<UpsertMedHistoryViewModel>()
 
     addMedicationViewModel.placesClient = placesClient
     addMedicationViewModel.fusedLocationClient = fusedLocationClient
@@ -67,9 +69,10 @@ fun MainAppNavigation (userState: UserState, navController: NavHostController, p
     val medRefillState = medRefillViewModel.state.collectAsState().value
     val profileState = profileViewModel.state.collectAsState().value
     val medicationListState = medicationListViewModel.state.collectAsState().value
+    val addMedHistoryState = addMedHistoryViewModel.state.collectAsState().value
 
     NavHost(navController = navController, startDestination = "home") {
-        composable("home") { HomePage(navController, medRefillState, medRefillViewModel::onEvent)} //Todo
+        composable("home") { HomePage(navController, medicationListState, medRefillState, medicationListViewModel, medRefillViewModel::onEvent, medicationHistoryViewModel)} //Todo
         composable("refill") { MedicationRefillPage(navController, medRefillState, medRefillViewModel::onEvent) }
         composable("history") { MedicationHistoryPage(navController, medicationHistoryState, medicationHistoryViewModel::onEvent, addTestEntries = medicationHistoryViewModel::addTestEntries)}
         composable("profile") {
@@ -103,7 +106,22 @@ fun MainAppNavigation (userState: UserState, navController: NavHostController, p
             UpsertMedicationPage(navController, addMedicationState, addMedicationViewModel::onEvent)
         }
         composable("refillDetails") { MedicationRefillDetailPage(navController, medRefillState) }
-        composable("editMedication") { UpsertMedicationPage(navController) }  //Todo
+        composable("UpsertMedHistoryPage?mode={mode}") { backStackEntry ->
+            val mode = backStackEntry.arguments?.getString("mode")
+            val selectedMedicationHistory = medicationHistoryState.selectedMedicationHistory
+
+            if (mode == "edit" && selectedMedicationHistory != null) {
+                LaunchedEffect(selectedMedicationHistory) {
+                    addMedHistoryViewModel.initialize(selectedMedicationHistory)
+                }
+            } else if (mode == "add") {
+                LaunchedEffect(Unit) {
+                    addMedHistoryViewModel.initialize(null)
+                }
+            }
+
+            UpsertMedicationHistoryPage(navController, addMedHistoryState, addMedHistoryViewModel::onEvent)
+        }
     }
 }
 

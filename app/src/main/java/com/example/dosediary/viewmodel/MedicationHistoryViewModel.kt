@@ -2,6 +2,7 @@ package com.example.dosediary.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dosediary.event.MedicationListEvent
 import com.example.dosediary.events.MedicationHistoryEvent
 import com.example.dosediary.model.dao.MedicationHistoryDao
 import com.example.dosediary.model.entity.MedicationHistory
@@ -38,6 +39,9 @@ class MedicationHistoryViewModel @Inject constructor(
             is MedicationHistoryEvent.AddOrUpdateMedicationHistory -> {
                 addOrUpdateMedicationHistory(event.medicationHistory)
             }
+            is MedicationHistoryEvent.SelectMedication -> {
+                _state.value = _state.value.copy(selectedMedicationHistory = event.medicationHistory)
+            }
         }
     }
 
@@ -50,7 +54,7 @@ class MedicationHistoryViewModel @Inject constructor(
         }
     }
 
-    private fun addOrUpdateMedicationHistory(medicationHistory: MedicationHistory) {
+    fun addOrUpdateMedicationHistory(medicationHistory: MedicationHistory) {
         viewModelScope.launch {
             medicationHistoryDao.upsertMedicationHistory(medicationHistory)
             fetchMedicationHistories()

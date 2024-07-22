@@ -86,7 +86,7 @@ fun SignUpContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(50.dp),
-        color = Color.White
+        color = Color(0xf7f9ff)
     ) {
         Column {
             SignUpIcon()

@@ -66,6 +66,7 @@ import com.example.dosediary.state.LoginState
 import com.example.dosediary.state.UserState
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
+import com.example.dosediary.ui.theme.PurpleGrey80
 import com.example.dosediary.viewmodel.LoginViewModel
 
 @Composable
@@ -111,7 +112,7 @@ fun LoginContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(50.dp),
-        color = Color.White
+        color = Color(0xf7f9ff)
     ) {
         Column {
             LoginIcon()
