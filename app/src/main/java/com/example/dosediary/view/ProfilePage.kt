@@ -147,14 +147,13 @@ fun ProfilePage(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            //add cancel button and add button
                             Row(
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Button(
                                     onClick = { isAddingUser = false },
-                                    colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
                                     modifier = Modifier.align(Alignment.CenterVertically)
                                 ) {
                                     Text(stringResource(R.string.cancel))
