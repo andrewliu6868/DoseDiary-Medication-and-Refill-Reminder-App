@@ -1,5 +1,7 @@
 package com.example.dosediary.view
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,12 +54,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
+import com.example.dosediary.components.LanguageDialog
 import com.example.dosediary.event.ProfileEvent
 import com.example.dosediary.model.entity.User
 import com.example.dosediary.state.ProfileState
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.OutlineTextField
 import com.example.dosediary.ui.theme.Primary
+import java.util.Locale
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,6 +72,11 @@ fun ProfilePage(
     onEvent: (ProfileEvent) -> Unit
 ) {
     var isAddingUser by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
+
+    // Initialize with a default value
+    var selectedLanguage by remember { mutableStateOf("en") }
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -74,7 +85,8 @@ fun ProfilePage(
                 showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
-                imageDescription = stringResource(R.string.app_icon)
+                imageDescription = stringResource(R.string.app_icon),
+                onLanguageButtonClick = { showLanguageDialog = true }
             )
         }
     ) { padding ->
@@ -118,7 +130,7 @@ fun ProfilePage(
 
                             OutlinedTextField(
                                 value = state.addUserLastName,
-                                onValueChange = {newText ->
+                                onValueChange = { newText ->
                                     onEvent(ProfileEvent.onAddUserLastNameChanged(newText))
                                 },
                                 label = { Text(stringResource(R.string.last_name)) },
@@ -130,7 +142,7 @@ fun ProfilePage(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            //add cancel buttom and add buttom
+                            //add cancel button and add button
                             Row(
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 modifier = Modifier.fillMaxWidth()
@@ -153,7 +165,6 @@ fun ProfilePage(
                                 ) {
                                     Text(stringResource(R.string.add))
                                 }
-
                             }
                         }
                     }
@@ -178,12 +189,29 @@ fun ProfilePage(
                     )
                 }
                 item { UserDetail(state, onEvent) }
-//                item { MedicationHistory(navController) }
-//                item { MedicationDetail(navController)}
             }
         }
 
+        if (showLanguageDialog) {
+            LanguageDialog(
+                selectedLanguage = selectedLanguage,
+                onLanguageSelected = { languageCode ->
+                    selectedLanguage = languageCode
+                    changeLanguage(context, languageCode)
+                    showLanguageDialog = false
+                },
+                onDismissRequest = { showLanguageDialog = false }
+            )
+        }
     }
+}
+
+private fun changeLanguage(context: Context, languageCode: String) {
+    val locale = Locale(languageCode)
+    Locale.setDefault(locale)
+    val config = Configuration()
+    config.setLocale(locale)
+    context.resources.updateConfiguration(config, context.resources.displayMetrics)
 }
 
 @Composable

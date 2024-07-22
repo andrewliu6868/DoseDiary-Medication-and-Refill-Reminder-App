@@ -76,7 +76,7 @@ fun MedicationHistoryPage(
                 navController = navController,
                 imageResId = R.drawable.icon,
                 imageDescription = stringResource(R.string.app_icon),
-                onActionButtonClick = {
+                onPdfButtonClick = {
                     generatePDF(context, state.medicationHistories) { result ->
                         scope.launch {
                             if (result) {

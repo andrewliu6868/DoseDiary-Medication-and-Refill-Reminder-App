@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF generato con successo</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="select_language">Seleziona lingua</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">Storico dei Farmaci</string>
@@ -120,4 +122,16 @@
     <string name="medication_list">Lista dei Farmaci</string>
     <string name="view_all_medication_refills">Visualizza tutti i ricarichi dei farmaci</string>
     <string name="edit_medication">Modifica medicinale</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
 </resources>

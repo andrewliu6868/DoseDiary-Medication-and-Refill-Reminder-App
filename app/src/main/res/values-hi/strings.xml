@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF सफलतापूर्वक जनरेट किया गया</string>
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
+    <string name="ok">ठीक है</string>
+    <string name="select_language">भाषा चुनें</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">दवाइयों का इतिहास</string>
@@ -120,4 +122,17 @@
     <string name="medication_list">दवाई सूची</string>
     <string name="view_all_medication_refills">सभी दवा रिफिल देखें</string>
     <string name="edit_medication">दवा संपादित करें</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
+
 </resources>

@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF generated successfully</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="select_language">Select Language</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">Medication History</string>
@@ -120,5 +122,17 @@
     <string name="pill_pics">Pill Pics</string>
     <string name="medication_list">Medication List</string>
     <string name="edit_medication">Edit Medication</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
 
 </resources>

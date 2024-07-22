@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF生成成功</string>
     <string name="yes">是</string>
     <string name="no">否</string>
+    <string name="ok">确定</string>
+    <string name="select_language">选择语言</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">药物历史</string>
@@ -120,4 +122,16 @@
     <string name="medication_list">药物列表</string>
     <string name="view_all_medication_refills">查看所有药品续杯</string>
     <string name="edit_medication">编辑药物</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
 </resources>

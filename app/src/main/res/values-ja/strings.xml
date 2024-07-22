@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDFが正常に生成されました</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
+    <string name="ok">OK</string>
+    <string name="select_language">言語を選択</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">薬歴</string>
@@ -120,4 +122,17 @@
     <string name="medication_list">薬リスト</string>
     <string name="view_all_medication_refills">すべての薬の補充を表示</string>
     <string name="edit_medication">薬を編集</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
+
 </resources>
