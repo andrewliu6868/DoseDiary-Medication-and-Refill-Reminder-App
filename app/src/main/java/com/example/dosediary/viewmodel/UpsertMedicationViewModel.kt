@@ -2,11 +2,13 @@ package com.example.dosediary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.state.UpsertMedicationState
 import com.example.dosediary.events.UpsertMedicationEvent
 import com.example.dosediary.state.UserState
 import com.example.dosediary.model.entity.Medication
+import com.example.dosediary.model.entity.User
 import com.example.dosediary.state.AutocompleteResult
 import com.example.dosediary.utils.DoseDiaryDatabase
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -18,16 +20,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class UpsertMedicationViewModel @Inject constructor(
-    application: Application,
-    private val userState: UserState
+    private val userState: UserState,
+    application: Application
 ) : ViewModel() {
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
+    private val userDao = DoseDiaryDatabase.getInstance(application).userDao
+    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
+
     private val _state = MutableStateFlow(UpsertMedicationState())
     val state = _state.asStateFlow()
 
@@ -182,7 +188,16 @@ class UpsertMedicationViewModel @Inject constructor(
             address = this.address,
             addressLatLng = this.addressLatLng,
             lastRefilledDate = this.startDate,
-            owner = 1  // TODO: Change this after User Profile is Ready
+            owner = userState.currentUser.value?.id ?: 1 // TODO: Change this after User Profile is Ready
         )
+    }
+}
+
+class UpsertMedicationViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory{
+    override fun <T: ViewModel> create(modelClass: Class<T>): T{
+        if(modelClass.isAssignableFrom(UpsertMedicationViewModel::class.java)){
+            return UpsertMedicationViewModel(userState, application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

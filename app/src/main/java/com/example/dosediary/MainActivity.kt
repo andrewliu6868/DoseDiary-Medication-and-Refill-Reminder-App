@@ -26,8 +26,21 @@ import com.example.dosediary.view.AppEntry
 import com.example.dosediary.view.LoginPage
 import com.example.dosediary.view.SignUpPage
 import com.example.dosediary.viewmodel.LoginViewModel
+import com.example.dosediary.viewmodel.LoginViewModelFactory
 import com.example.dosediary.viewmodel.MedRefillViewModel
+import com.example.dosediary.viewmodel.MedRefillViewModelFactory
+import com.example.dosediary.viewmodel.MedicationHistoryViewModel
+import com.example.dosediary.viewmodel.MedicationHistoryViewModelFactory
+import com.example.dosediary.viewmodel.MedicationListViewModel
+import com.example.dosediary.viewmodel.MedicationListViewModelFactory
+import com.example.dosediary.viewmodel.ProfileViewModel
+import com.example.dosediary.viewmodel.ProfileViewModelFactory
 import com.example.dosediary.viewmodel.SignUpViewModel
+import com.example.dosediary.viewmodel.SignUpViewModelFactory
+import com.example.dosediary.viewmodel.UpsertMedHistoryViewModel
+import com.example.dosediary.viewmodel.UpsertMedHistoryViewModelFactory
+import com.example.dosediary.viewmodel.UpsertMedicationViewModel
+import com.example.dosediary.viewmodel.UpsertMedicationViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
@@ -45,6 +58,40 @@ class MainActivity : ComponentActivity() {
 
     lateinit var placesClient: PlacesClient
     lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private val profileViewModel by viewModels<ProfileViewModel> {
+        ProfileViewModelFactory(application, userState)
+    }
+
+    private val medRefillViewModel by viewModels<MedRefillViewModel> {
+        MedRefillViewModelFactory(application, userState)
+    }
+
+    private val loginViewModel by viewModels<LoginViewModel> {
+        LoginViewModelFactory(application, userState)
+    }
+
+    private val signUpViewModel by viewModels<SignUpViewModel> {
+        SignUpViewModelFactory(application, userState)
+    }
+
+    private val medicationListViewModel by viewModels<MedicationListViewModel> {
+        MedicationListViewModelFactory(application, userState)
+    }
+
+    private val upsertMedicationViewModel by viewModels<UpsertMedicationViewModel> {
+        UpsertMedicationViewModelFactory(application, userState)
+    }
+
+    private val medicationHistoryViewModel by viewModels<MedicationHistoryViewModel> {
+        MedicationHistoryViewModelFactory(application, userState)
+    }
+
+    private val upsertMedHistoryViewModel by viewModels<UpsertMedHistoryViewModel> {
+        UpsertMedHistoryViewModelFactory(application, userState)
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,9 +112,22 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun LoginNavigation(navController: NavHostController) {
         NavHost(navController = navController, startDestination = "home") {
-            composable("login") { LoginPage(navController) }
-            composable("home") { AppEntry(placesClient, fusedLocationClient) }
-            composable("signup"){ SignUpPage(navController) }
+            composable("login") { LoginPage(loginViewModel, navController) }
+            composable("home") {
+                AppEntry(
+                    upsertMedHistoryViewModel,
+                    medicationHistoryViewModel,
+                    upsertMedicationViewModel,
+                    medicationListViewModel,
+                    signUpViewModel,
+                    loginViewModel,
+                    profileViewModel,
+                    medRefillViewModel,
+                    placesClient,
+                    fusedLocationClient
+                )
+            }
+            composable("signup"){ SignUpPage(signUpViewModel,navController) }
         }
     }
 }

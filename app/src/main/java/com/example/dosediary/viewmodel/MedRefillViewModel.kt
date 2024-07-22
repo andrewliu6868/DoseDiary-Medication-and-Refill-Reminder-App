@@ -2,6 +2,7 @@ package com.example.dosediary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.event.MedRefillEvent
 import com.example.dosediary.model.entity.Medication
@@ -26,9 +27,9 @@ class MedRefillViewModel  @Inject constructor(
     application: Application
 ): ViewModel() {
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
-//    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
-    private val userDao = DoseDiaryDatabase.getInstance(application).userDao
-    private val _currentUser: StateFlow<User?> = userDao.getUserById(1).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), User())
+    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
+//    private val userDao = DoseDiaryDatabase.getInstance(application).userDao
+//    private val _currentUser: StateFlow<User?> = userDao.getUserById(userState.currentUser.value.id).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), User())
 
     private val _state = MutableStateFlow(MedRefillState())
     val state: StateFlow<MedRefillState> = _state.asStateFlow()
@@ -147,4 +148,14 @@ fun needsRefillNextWeek(refillDate: String): Boolean {
         refill.time = it
     }
     return refill.after(today) && refill.before(nextWeek)
+}
+
+class MedRefillViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        if (modelClass.isAssignableFrom(MedRefillViewModel::class.java)) {
+            return MedRefillViewModel(userState, application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

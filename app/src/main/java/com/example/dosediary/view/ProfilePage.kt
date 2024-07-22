@@ -194,6 +194,10 @@ fun ProfilePage(
                     )
                 }
                 item { UserDetail(state, onEvent) }
+                if(state.currentUser == state.mainUser) {
+                    item { LogOutButton(navController, onEvent) }
+                }
+
             }
 
             if (state.showDeleteConfirmationDialog) {
@@ -207,6 +211,7 @@ fun ProfilePage(
                     }
                 )
             }
+
         }
 
         if (showLanguageDialog) {

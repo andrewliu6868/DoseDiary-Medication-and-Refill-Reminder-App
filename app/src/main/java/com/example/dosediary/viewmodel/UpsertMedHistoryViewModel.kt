@@ -2,6 +2,7 @@ package com.example.dosediary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.event.UpsertMedHistoryEvent
 import com.example.dosediary.model.dao.MedicationHistoryDao
@@ -9,6 +10,8 @@ import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.model.entity.MedicationHistory
 import com.example.dosediary.state.UpsertMedHistoryState
 import com.example.dosediary.state.UpsertMedicationState
+import com.example.dosediary.state.UserState
+import com.example.dosediary.utils.DoseDiaryDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,9 +20,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpsertMedHistoryViewModel @Inject constructor(
-    application: Application,
-    private val medicationHistoryDao: MedicationHistoryDao
+    private val userState: UserState,
+    application: Application
 ) : ViewModel() {
+    private val medicationHistoryDao: MedicationHistoryDao = DoseDiaryDatabase.getInstance(application).medicationHistoryDao
     private val _state = MutableStateFlow(UpsertMedHistoryState())
     val state = _state.asStateFlow()
 
@@ -82,7 +86,7 @@ class UpsertMedHistoryViewModel @Inject constructor(
     private fun saveMedicationHistory() {
         viewModelScope.launch {
             val medicationHistory = MedicationHistory(
-                id = _state.value.id,
+                id = state.value.id,
                 ownerId = _state.value.ownerId,
                 name = _state.value.name,
                 effectiveness = _state.value.effectiveness,
@@ -112,4 +116,14 @@ class UpsertMedHistoryViewModel @Inject constructor(
 //        )
 //    }
 
+}
+
+
+class UpsertMedHistoryViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory{
+    override fun <T: ViewModel> create(modelClass: Class<T>): T{
+        if(modelClass.isAssignableFrom(UpsertMedHistoryViewModel::class.java)){
+            return UpsertMedHistoryViewModel(userState, application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

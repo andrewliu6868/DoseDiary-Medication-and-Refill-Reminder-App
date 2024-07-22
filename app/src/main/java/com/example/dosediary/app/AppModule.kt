@@ -17,6 +17,7 @@ import javax.inject.Singleton
 object AppModule {
 
     @Provides
+    @Singleton
     fun provideUserState(): UserState {
         return UserState()
     }
