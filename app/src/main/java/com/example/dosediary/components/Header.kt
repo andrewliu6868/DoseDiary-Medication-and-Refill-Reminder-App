@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material3.Card
@@ -57,32 +58,6 @@ import com.example.dosediary.R
 import com.example.dosediary.ui.theme.Background
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-@Composable
-fun OldHeader(header: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.icon),
-            contentDescription = "Pill Pics",
-            modifier = Modifier.width(25.dp)
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(
-            text = header,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Serif,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
 
 @Composable
 fun MedicationReminder(reminder: Pair<String, String>, onDismiss: () -> Unit) {
@@ -258,3 +233,5 @@ fun CustomTopAppBarPreview() {
         onLanguageButtonClick = { }
     )
 }
+
+}*/
