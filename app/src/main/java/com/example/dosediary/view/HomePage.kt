@@ -51,7 +51,7 @@ fun HomePage(
     state: MedRefillState,
     onEvent: (MedRefillEvent) -> Unit
 ) {
-
+    /*
     // State to control the dialog visibility and message
     var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
@@ -79,7 +79,7 @@ fun HomePage(
         onDispose {
             localBroadcastManager.unregisterReceiver(reminderReceiver)
         }
-    }
+    }*/
 
     Scaffold(
         topBar = {
@@ -101,9 +101,9 @@ fun HomePage(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            items(reminders) { reminder ->
+            /*items(reminders) { reminder ->
                 MedicationReminder(reminder) { reminders.remove(reminder) }
-            }
+            }*/
             item { DailyMedicationChecklist(navController) }
             item { UpcomingMedicationRefills(navController, state, onEvent) }
         }
@@ -116,7 +116,7 @@ fun HomePage(
     }
     }
 }
-
+/*
 @Composable
 fun MedicationReminder(reminder: Pair<String, String>, onDismiss: () -> Unit) {
     val (medName, reminderMessage) = reminder
@@ -149,7 +149,7 @@ fun MedicationReminder(reminder: Pair<String, String>, onDismiss: () -> Unit) {
                 modifier = Modifier.clickable { onDismiss() })
         }
     }
-}
+}*/
 
 
 @Composable
