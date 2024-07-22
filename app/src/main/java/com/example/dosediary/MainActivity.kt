@@ -1,9 +1,14 @@
 package com.example.dosediary
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -52,5 +57,7 @@ fun LoginNavigation(navController: NavHostController) {
         composable("signup"){ SignUpPage(navController) }
     }
 }
+
+
 
 

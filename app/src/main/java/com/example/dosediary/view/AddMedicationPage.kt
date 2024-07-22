@@ -55,7 +55,11 @@ import com.example.dosediary.events.AddMedicationEvent
 import com.example.dosediary.state.AddMedicationState
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.viewmodel.AddMedicationViewModel
+import com.example.dosediary.viewmodel.LoginViewModel
+import com.example.dosediary.viewmodel.ReminderViewModel
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.Date
 import java.util.Locale
 
@@ -92,7 +96,8 @@ fun AddMedicationPage(
             item { RefillDaysSection(state.refillDays) { onEvent(it) } }
             item { AddressSection(state.address, state.postalCode, state.postalCodeError) { onEvent(it) } }
             item { NoteSection(state.note) { onEvent(it) } }
-            item { SaveDeleteRow(navController) { onEvent(it) } }
+            // item { SaveDeleteRow(navController, state.medicationName, state.refillDays, state.times) { onEvent(it) } }
+            item { SaveDeleteRow(navController, onEvent, state.medicationName, state.times, state.startDate, state.endDate, state.refillDays)}
         }
         if (state.showConfirmDialog) {
             ConfirmationDialog(
@@ -313,14 +318,25 @@ fun AddressSection(address: String, postalCode: String, postalCodeError: String?
 
 
 @Composable
-fun SaveDeleteRow(navController: NavHostController, onEvent: (AddMedicationEvent) -> Unit) {
+fun SaveDeleteRow(navController: NavHostController, onEvent: (AddMedicationEvent) -> Unit , medName: String, times: List<Date>, startDate: Date, endDate: Date, refillDays: Int ) {
+    val reminderViewModel = hiltViewModel<ReminderViewModel>()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         //TODO: Add Validation For Save (All fields besides Notes should be filled)
         Button(
-            onClick = { onEvent(AddMedicationEvent.SaveMedication) },
+            onClick = {
+                onEvent(AddMedicationEvent.SaveMedication)
+                reminderViewModel.scheduleMedReminders(medName, times, startDate,endDate)
+                reminderViewModel.scheduleRefill(medName, refillDays)
+            },
+            /*
+            onClick = {
+                onEvent(AddMedicationEvent.SaveMedication){
+                    reminderViewModel.scheduleMedReminders(medID)
+                }
+            },*/
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f),
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
