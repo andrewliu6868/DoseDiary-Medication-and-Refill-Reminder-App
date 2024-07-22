@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material3.Card
@@ -57,6 +58,68 @@ import com.example.dosediary.R
 import com.example.dosediary.ui.theme.Background
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
+
+@Composable
+fun OldHeader(header: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.icon),
+            contentDescription = "Pill Pics",
+            modifier = Modifier.width(25.dp)
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(
+            text = header,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Serif,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+
+@Composable
+fun MedicationReminder(reminder: Pair<String, String>, onDismiss: () -> Unit) {
+    val (medName, reminderMessage) = reminder
+    val currTime = LocalDateTime.now()
+    val format = DateTimeFormatter.ofPattern("hh:mm a")
+    val formatTime = currTime.format(format)
+
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFFF7676)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                BasicText(
+                    text = "$reminderMessage - $formatTime",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
+                )
+                BasicText(text = medName)
+            }
+
+            Icon(painter = painterResource(R.drawable.ic_action_name),
+                contentDescription = "dismiss",
+                modifier = Modifier.clickable { onDismiss() })
+        }
+    }
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -197,3 +260,5 @@ fun CustomTopAppBarPreview() {
         onLanguageButtonClick = { }
     )
 }
+
+}*/
