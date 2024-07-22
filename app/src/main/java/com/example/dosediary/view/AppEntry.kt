@@ -21,6 +21,7 @@ import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedicationHistoryViewModel
 import com.example.dosediary.viewmodel.MedicationListViewModel
 import com.example.dosediary.viewmodel.ProfileViewModel
+import com.example.dosediary.viewmodel.UpsertMedHistoryViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.libraries.places.api.net.PlacesClient
 
@@ -56,6 +57,7 @@ fun MainAppNavigation (navController: NavHostController, placesClient: PlacesCli
     val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
     val profileViewModel = hiltViewModel<ProfileViewModel>()
     val medicationListViewModel = hiltViewModel<MedicationListViewModel>()
+    val addMedHistoryViewModel = hiltViewModel<UpsertMedHistoryViewModel>()
 
     addMedicationViewModel.placesClient = placesClient
     addMedicationViewModel.fusedLocationClient = fusedLocationClient
@@ -66,6 +68,7 @@ fun MainAppNavigation (navController: NavHostController, placesClient: PlacesCli
     val medRefillState = medRefillViewModel.state.collectAsState().value
     val profileState = profileViewModel.state.collectAsState().value
     val medicationListState = medicationListViewModel.state.collectAsState().value
+    val addMedHistoryState = addMedHistoryViewModel.state.collectAsState().value
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") { LoginPage(navController)}
@@ -100,7 +103,22 @@ fun MainAppNavigation (navController: NavHostController, placesClient: PlacesCli
 //            MedicationRefillDetailPage(navController, medRefillDetailViewModel, medicationId)
 //        }
         composable("refillDetails") { MedicationRefillDetailPage(navController, medRefillState) }
-        composable("editMedication") { UpsertMedicationPage(navController) }  //Todo
+        composable("UpsertMedHistoryPage?mode={mode}") { backStackEntry ->
+            val mode = backStackEntry.arguments?.getString("mode")
+            val selectedMedicationHistory = medicationHistoryState.selectedMedicationHistory
+
+            if (mode == "edit" && selectedMedicationHistory != null) {
+                LaunchedEffect(selectedMedicationHistory) {
+                    addMedHistoryViewModel.initialize(selectedMedicationHistory)
+                }
+            } else if (mode == "add") {
+                LaunchedEffect(Unit) {
+                    addMedHistoryViewModel.initialize(null)
+                }
+            }
+
+            UpsertMedicationHistoryPage(navController, addMedHistoryState, addMedHistoryViewModel::onEvent)
+        }
     }
 }
 

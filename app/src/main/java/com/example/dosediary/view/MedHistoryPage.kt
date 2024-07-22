@@ -93,7 +93,8 @@ fun MedicationHistoryPage(
             FloatingActionButton(
                 onClick = {
                     //navigate to add medication page?
-                    navController.navigate("editMedication")
+                    onEvent(MedicationHistoryEvent.SelectMedication(null))
+                    navController.navigate("UpsertMedHistoryPage?mode=add")
                 },
                 containerColor = Color(0xFF7DCBFF)
             ) {
@@ -113,7 +114,10 @@ fun MedicationHistoryPage(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(state.medicationHistories) { medication ->
-                MedicationItem(medication, navController)
+                MedicationHistoryItem(medication, onItemClick ={
+                    onEvent(MedicationHistoryEvent.SelectMedication(medication))
+                    navController.navigate("UpsertMedHistoryPage?mode=edit")
+                })
             }
         }
     }
@@ -175,7 +179,7 @@ fun generatePDF(context: Context, medications: List<MedicationHistory>, onResult
 }
 
 @Composable
-fun MedicationItem(medication: MedicationHistory, navController: NavHostController) {
+fun MedicationHistoryItem(medication: MedicationHistory, onItemClick: () -> Unit,) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Background,
@@ -183,7 +187,7 @@ fun MedicationItem(medication: MedicationHistory, navController: NavHostControll
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate("editMedication") },
+            .clickable { onItemClick()},
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Row(

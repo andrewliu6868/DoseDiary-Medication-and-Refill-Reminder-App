@@ -9,16 +9,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import java.text.SimpleDateFormat
-import java.util.*
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
@@ -26,57 +22,27 @@ import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.DatePicker
 import com.example.dosediary.components.TimePicker
 import com.example.dosediary.event.UpsertMedHistoryEvent
-import com.example.dosediary.model.entity.MedicationHistory
+import com.example.dosediary.state.UpsertMedHistoryState
 import com.example.dosediary.ui.theme.Primary
-import com.example.dosediary.viewmodel.UpsertMedHistoryViewModel
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpsertMedicationPage(navController: NavHostController, viewModel: UpsertMedHistoryViewModel = hiltViewModel()) {
-    val state by viewModel.state.collectAsState()
-    val medicationName = remember { mutableStateOf("") }
-    val effectivenessOptions = listOf(
-        stringResource(id = R.string.effective),
-        stringResource(id = R.string.moderate),
-        stringResource(id = R.string.marginal),
-        stringResource(id = R.string.ineffective)
-    )
-    val selectedEffectiveness = remember { mutableStateOf(state.effectiveness) }
-    val calendar = Calendar.getInstance()
-    val date = remember { mutableStateOf(calendar.time) }
-    val time = remember { mutableStateOf(calendar.time) }
-    val additionalDetails = remember { mutableStateOf(TextFieldValue(state.additionalDetails)) }
-    val showConfirmDialog = remember { mutableStateOf(false) }
+fun UpsertMedicationHistoryPage(
+    navController: NavHostController,
+    state: UpsertMedHistoryState,
+    onEvent: (UpsertMedHistoryEvent) -> Unit
+) {
+    val mode = navController.currentBackStackEntry?.arguments?.getString("mode") ?: "edit"
 
-    // Formats (Talk to group if this needs to be changed)
-    val dateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
-    val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
-
-    val formattedDate = dateFormat.format(date.value)
-    val formattedTime = timeFormat.format(time.value)
-
-    if (showConfirmDialog.value) {
+    if (state.showConfirmDialog) {
         EditMedicationConfirmationDialog(
-            onDismiss = { showConfirmDialog.value = false },
+            onDismiss = { onEvent(UpsertMedHistoryEvent.OnConfirmDialogDismissed) },
             onConfirm = {
-                val ownerId = 1
-                val medicationHistory = MedicationHistory(
-                    name = medicationName.value,
-                    timeTaken = formattedTime,
-                    dateTaken = formattedDate,
-                    effectiveness = selectedEffectiveness.value,
-                    ownerId = ownerId,
-                    additionalDetails = additionalDetails.value.text
-                )
-                viewModel.onEvent(UpsertMedHistoryEvent.AddMedicationHistory(medicationHistory))
-                showConfirmDialog.value = false
+                onEvent(UpsertMedHistoryEvent.OnConfirmClicked)
                 navController.navigate("history")
-
-                medicationName.value = ""
-                selectedEffectiveness.value = ""
-                date.value = calendar.time
-                time.value = calendar.time
-                additionalDetails.value = TextFieldValue("")
             }
         )
     }
@@ -84,14 +50,14 @@ fun UpsertMedicationPage(navController: NavHostController, viewModel: UpsertMedH
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = stringResource(id = R.string.add_medication_history),
+                header = if (mode == "add") stringResource(R.string.add_medication) else stringResource(R.string.edit_medication),
                 showNavigationIcon = true,
                 navController = navController,
                 imageResId = R.drawable.icon,
                 imageDescription = stringResource(id = R.string.app_icon)
             )
         }
-    ) {innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -99,44 +65,55 @@ fun UpsertMedicationPage(navController: NavHostController, viewModel: UpsertMedH
                 .padding(innerPadding)
                 .padding(16.dp)
         ) {
-            MedicationNameField(medicationName)
-            Spacer(modifier = Modifier.height(16.dp))
-            EffectivenessDropdown(
-                selectedEffectiveness = selectedEffectiveness,
-                effectivenessOptions = effectivenessOptions
+            MedicationNameField(
+                value = state.name,
+                onValueChange = { onEvent(UpsertMedHistoryEvent.OnMedicationNameChanged(it)) }
             )
             Spacer(modifier = Modifier.height(16.dp))
-
-            DatePicker(date.value, stringResource(id = R.string.select_date)) { selectedDate ->
-                date.value = selectedDate
-            }
+            EffectivenessDropdown(
+                selectedEffectiveness = state.effectiveness,
+                effectivenessOptions = listOf(
+                    stringResource(id = R.string.effective),
+                    stringResource(id = R.string.moderate),
+                    stringResource(id = R.string.marginal),
+                    stringResource(id = R.string.ineffective)
+                ),
+                onEffectivenessChange = { onEvent(UpsertMedHistoryEvent.OnEffectivenessChanged(it)) }
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            TimePicker(time.value, stringResource(id = R.string.select_time)) { selectedTime ->
-                time.value = selectedTime
-            }
+            DatePicker(
+                date = parseDate(state.dateTaken),
+                placeholder = stringResource(id = R.string.select_date),
+                onDateSelected = { onEvent(UpsertMedHistoryEvent.OnDateChanged(it.toString())) }
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            AdditionalDetailsField(additionalDetails) { details ->
-                viewModel.onEvent(UpsertMedHistoryEvent.OnAdditionalDetailsChanged(details))
-            }
+            TimePicker(
+                time = parseTime(state.timeTaken),
+                placeholder = stringResource(id = R.string.select_time),
+                onTimeSelected = { onEvent(UpsertMedHistoryEvent.OnTimeChanged(it.toString())) }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            AdditionalDetailsField(
+                value = TextFieldValue(state.additionalDetails),
+                onValueChange = { onEvent(UpsertMedHistoryEvent.OnAdditionalDetailsChanged(it.text)) }
+            )
             Spacer(modifier = Modifier.height(16.dp))
             ButtonRow(
-                onSave = {
-                    showConfirmDialog.value = true
-                },
-                onDiscard = {
-                    navController.navigate("history")
-                }
+                onSave = { onEvent(UpsertMedHistoryEvent.OnSaveClicked) },
+                onDiscard = { navController.navigate("history") }
             )
         }
     }
 }
 
-
 @Composable
-fun MedicationNameField(medicationName: MutableState<String>) {
+fun MedicationNameField(
+    value: String,
+    onValueChange: (String) -> Unit
+) {
     OutlinedTextField(
-        value = medicationName.value,
-        onValueChange = { medicationName.value = it },
+        value = value,
+        onValueChange = onValueChange,
         label = { Text(stringResource(id = R.string.medication_name)) },
         placeholder = { Text(stringResource(id = R.string.enter_medication_name)) },
         modifier = Modifier.fillMaxWidth()
@@ -146,8 +123,9 @@ fun MedicationNameField(medicationName: MutableState<String>) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EffectivenessDropdown(
-    selectedEffectiveness: MutableState<String>,
-    effectivenessOptions: List<String>
+    selectedEffectiveness: String,
+    effectivenessOptions: List<String>,
+    onEffectivenessChange: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -156,7 +134,7 @@ fun EffectivenessDropdown(
         onExpandedChange = { expanded = !expanded }
     ) {
         OutlinedTextField(
-            value = selectedEffectiveness.value,
+            value = selectedEffectiveness,
             onValueChange = { },
             readOnly = true,
             label = { Text(stringResource(id = R.string.effectiveness)) },
@@ -177,7 +155,7 @@ fun EffectivenessDropdown(
                 DropdownMenuItem(
                     text = { Text(effectiveness) },
                     onClick = {
-                        selectedEffectiveness.value = effectiveness
+                        onEffectivenessChange(effectiveness)
                         expanded = false
                     }
                 )
@@ -188,15 +166,12 @@ fun EffectivenessDropdown(
 
 @Composable
 fun AdditionalDetailsField(
-    additionalDetails: MutableState<TextFieldValue>,
-    onAdditionalDetailsChanged: (String) -> Unit
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit
 ) {
     OutlinedTextField(
-        value = additionalDetails.value,
-        onValueChange = {
-            additionalDetails.value = it
-            onAdditionalDetailsChanged(it.text)
-        },
+        value = value,
+        onValueChange = onValueChange,
         label = { Text(stringResource(id = R.string.additional_details)) },
         placeholder = { Text(stringResource(id = R.string.enter_additional_details)) },
         modifier = Modifier.fillMaxWidth(),
@@ -249,9 +224,35 @@ fun EditMedicationConfirmationDialog(onDismiss: () -> Unit, onConfirm: () -> Uni
     )
 }
 
-@Preview(showBackground =true, name = "EditMedication Preview")
+fun parseDate(dateString: String): Date {
+    return if (dateString.isNotEmpty()) {
+        try {
+            SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).parse(dateString) ?: Date()
+        } catch (e: ParseException) {
+            Date()
+        }
+    } else {
+        Date()
+    }
+}
+
+fun parseTime(timeString: String): Date {
+    return if (timeString.isNotEmpty()) {
+        try {
+            SimpleDateFormat("hh:mm a", Locale.getDefault()).parse(timeString) ?: Date()
+        } catch (e: ParseException) {
+            Date()
+        }
+    } else {
+        Date()
+    }
+}
+
+@Preview(showBackground = true, name = "EditMedication Preview")
 @Composable
-fun EditMedPreview(){
+fun EditMedPreview() {
     val navController = rememberNavController()
-    UpsertMedicationPage(navController = navController);
+    val state = UpsertMedHistoryState()
+    val onEvent: (UpsertMedHistoryEvent) -> Unit = {}
+    UpsertMedicationHistoryPage(navController = navController, state = state, onEvent = onEvent)
 }
