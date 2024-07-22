@@ -90,6 +90,8 @@
     <string name="medications">Medications</string>
     <string name="refill">Refill</string>
     <string name="history">History</string>
+    <string name="confirm_user_delete">Confirm User Delete</string>
+    <string name="confirm_user_delete_message">Are you sure you want to delete this user?</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">Medication Refill</string>
@@ -122,5 +124,6 @@
     <string name="pill_pics">Pill Pics</string>
     <string name="medication_list">Medication List</string>
     <string name="edit_medication">Edit Medication</string>
+    <string name="delete_user">Delete User</string>
 
 </resources>

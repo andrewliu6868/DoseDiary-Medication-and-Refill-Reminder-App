@@ -122,4 +122,7 @@
     <string name="edit_medication">Modifier le médicament</string>
     <string name="confirm_refill">Confirmer le remplissage</string>
     <string name="confirm_refill_message">Êtes-vous sûr d\'avoir rempli ce médicament ?</string>
+    <string name="delete_user">Supprimer l\'utilisateur</string>
+    <string name="confirm_user_delete">Confirmer la suppression de l\'utilisateur</string>
+    <string name="confirm_user_delete_message">Êtes-vous sûr de vouloir supprimer cet utilisateur ?</string>
 </resources>

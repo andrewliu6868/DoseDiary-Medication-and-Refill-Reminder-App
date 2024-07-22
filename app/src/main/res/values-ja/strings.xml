@@ -122,4 +122,7 @@
     <string name="edit_medication">薬を編集</string>
     <string name="confirm_refill">補充を確認する</string>
     <string name="confirm_refill_message">この薬を補充したことを確認しますか？</string>
+    <string name="delete_user">ユーザーを削除する</string>
+    <string name="confirm_user_delete">ユーザーの削除を確認</string>
+    <string name="confirm_user_delete_message">このユーザーを削除してもよろしいですか？</string>
 </resources>

@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -30,6 +31,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -181,6 +183,16 @@ fun ProfilePage(
 //                item { MedicationHistory(navController) }
 //                item { MedicationDetail(navController)}
             }
+            if (state.showDeleteConfirmationDialog) {
+                UserDeleteConfirmationDialog(
+                    onConfirm = {
+                        onEvent(ProfileEvent.confirmDeleteCurrentUser)
+                    },
+                    onDismiss = {
+                        onEvent(ProfileEvent.cancelDeleteCurrentUser)
+                    }
+                )
+            }
         }
 
     }
@@ -320,46 +332,46 @@ fun UserDetail(
             )
             Spacer(modifier = Modifier.height(8.dp))
 
+
+            OutlinedTextField(
+                value = state.editCurrentUserFirstName,
+                onValueChange = {
+                    onEvent(ProfileEvent.onCurrentUserFirstNameChanged(it))
+                },
+                label = { Text(stringResource(R.string.first_name)) },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = OutlineTextField, // Custom focused border color
+                    unfocusedBorderColor = OutlineTextField // Custom unfocused border color
+                ),
+                modifier = Modifier
+                        .fillMaxWidth(),
+                shape = RoundedCornerShape(percent = 20),
+
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = state.editCurrentUserLastName,
+                onValueChange = {
+                    onEvent(ProfileEvent.onCurrentUserLastNameChanged(it))
+                },
+                label = { Text(stringResource(R.string.last_name)) },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = OutlineTextField, // Custom focused border color
+                    unfocusedBorderColor = OutlineTextField // Custom unfocused border color
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(percent = 20),
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             if ((state.currentUser?.id ?: 0) == (state.mainUser?.id ?: 0)) {
                 OutlinedTextField(
-                    value = state.editMainUserFirstName,
+                    value = state.editCurrentUserEmail,
                     onValueChange = {
-                        onEvent(ProfileEvent.onMainUserFirstNameChanged(it))
-                    },
-                    label = { Text(stringResource(R.string.first_name)) },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        unfocusedTextColor = Color.Black,
-                        focusedBorderColor = OutlineTextField, // Custom focused border color
-                        unfocusedBorderColor = OutlineTextField // Custom unfocused border color
-                    ),
-                    modifier = Modifier
-                            .fillMaxWidth(),
-                    shape = RoundedCornerShape(percent = 20),
-
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    value = state.editMainUserLastName,
-                    onValueChange = {
-                        onEvent(ProfileEvent.onMainUserLastNameChanged(it))
-                    },
-                    label = { Text(stringResource(R.string.last_name)) },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        unfocusedTextColor = Color.Black,
-                        focusedBorderColor = OutlineTextField, // Custom focused border color
-                        unfocusedBorderColor = OutlineTextField // Custom unfocused border color
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(percent = 20),
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    value = state.editMainUserEmail,
-                    onValueChange = {
-                        onEvent(ProfileEvent.onMainUserEmailChanged(it))
+                        onEvent(ProfileEvent.onCurrentUserEmailChanged(it))
                     },
                     label = { Text(stringResource(R.string.email)) },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -381,9 +393,9 @@ fun UserDetail(
                     ),
                     modifier = Modifier
                         .fillMaxWidth(),
-                    value = state.editMainUserPassword,
+                    value = state.editCurrentUserPassword,
                     onValueChange = {
-                        onEvent(ProfileEvent.onMainUserPasswordChanged(it))
+                        onEvent(ProfileEvent.onCurrentUserPasswordChanged(it))
                     },
                     label = {
                         Text(text = stringResource(R.string.password))
@@ -421,49 +433,73 @@ fun UserDetail(
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
+            }
+            if (state.editCurrentUserFirstName != state.currentUser?.firstName ||
+                state.editCurrentUserLastName != state.currentUser?.lastname ||
+                state.editCurrentUserEmail != state.currentUser?.email ||
+                state.editCurrentUserPassword != state.currentUser?.password
+            ) {
 
-                if (state.editMainUserFirstName != state.mainUser?.firstName ||
-                    state.editMainUserLastName != state.mainUser?.lastname ||
-                    state.editMainUserEmail != state.mainUser?.email ||
-                    state.editMainUserPassword != state.mainUser?.password) {
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = {
+                            onEvent(ProfileEvent.cancelUpdateCurrentUser)
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
+                        modifier = Modifier.align(Alignment.CenterVertically)
                     ) {
-                        Button(
-                            onClick = {
-                                onEvent(ProfileEvent.cancelUpdateMainUser)
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        ) {
-                            Text(stringResource(R.string.cancel))
-                        }
+                        Text(stringResource(R.string.cancel))
+                    }
 
-                        Button(
-                            onClick = {
-                                onEvent(ProfileEvent.updateMainUser)
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        ) {
-                            Text(stringResource(R.string.save_changes))
-                        }
+                    Button(
+                        onClick = {
+                            onEvent(ProfileEvent.updateCurrentUser)
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    ) {
+                        Text(stringResource(R.string.save_changes))
                     }
                 }
-            } else {
-                //sub text saying you can not edit user detail for a sub user
-                BasicText(
-                    text = stringResource(R.string.you_cannot_edit_sub_user),
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 10.sp)
-                )
             }
+
+            if (state.currentUser != state.mainUser) {
+                Button(
+                    onClick = {
+                        onEvent(ProfileEvent.onDeleteCurrentUser)
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) {
+                    Text(stringResource(R.string.delete_user))
+                }
+            }
+
         }
     }
 
 }
-
+@Composable
+fun UserDeleteConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = stringResource(R.string.confirm_user_delete)) },
+        text = { Text(text = stringResource(R.string.confirm_user_delete_message)) },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(stringResource(R.string.yes))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.no))
+            }
+        }
+    )
+}
 
 //@Composable
 //fun MedicationHistory(navController: NavController) {

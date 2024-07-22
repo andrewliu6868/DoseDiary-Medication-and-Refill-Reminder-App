@@ -122,4 +122,7 @@
     <string name="edit_medication">编辑药物</string>
     <string name="confirm_refill">确认补充</string>
     <string name="confirm_refill_message">你确定你补充了这种药吗？</string>
+    <string name="delete_user">删除用户</string>
+    <string name="confirm_user_delete">确认删除用户</string>
+    <string name="confirm_user_delete_message">你确定要删除这个用户吗？</string>
 </resources>

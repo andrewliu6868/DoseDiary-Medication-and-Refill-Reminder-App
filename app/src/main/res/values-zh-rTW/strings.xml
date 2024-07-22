@@ -122,4 +122,7 @@
     <string name="edit_medication">編輯藥物</string>
     <string name="confirm_refill">確認補充</string>
     <string name="confirm_refill_message">你確定你補充了這種藥嗎？</string>
+    <string name="delete_user">刪除使用者</string>
+    <string name="confirm_user_delete">確認刪除使用者</string>
+    <string name="confirm_user_delete_message">你確定要刪除這個使用者嗎</string>
 </resources>

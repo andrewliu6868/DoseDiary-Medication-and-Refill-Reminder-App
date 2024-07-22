@@ -122,5 +122,8 @@
     <string name="edit_medication">약물 수정</string>
     <string name="confirm_refill">리필 확인</string>
     <string name="confirm_refill_message">이 약을 다시 채웠습니까?</string>
+    <string name="delete_user">사용자 삭제</string>
+    <string name="confirm_user_delete">사용자 삭제 확인</string>
+    <string name="confirm_user_delete_message">이 사용자를 삭제하시겠습니까?</string>
 
 </resources>
