@@ -35,6 +35,8 @@ import java.util.Locale
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
@@ -125,7 +127,8 @@ fun DailyMedicationChecklist(viewModel: MedicationListViewModel, historyMode: Me
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(8.dp)
+            .verticalScroll(rememberScrollState())  // Add vertical scroll here
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -134,63 +137,59 @@ fun DailyMedicationChecklist(viewModel: MedicationListViewModel, historyMode: Me
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            Box(modifier = Modifier.fillMaxWidth()) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(max = 400.dp)
-                ) {
-                    items(
-                        medicationList.medicationList.filter { it.endDate.after(Date()) }
-                            .flatMap { medication ->
-                                medication.times.map { time ->
-                                    medication to time
-                                }
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth() // Adjust height as needed
+            ) {
+                items(
+                    medicationList.medicationList.filter { it.endDate.after(Date()) }
+                        .flatMap { medication ->
+                            medication.times.map { time ->
+                                medication to time
                             }
-                            .sortedBy { it.second }
-                    ) { (medication, time) ->
-                        val checked = medication.takenTimes[time] ?: false
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "${medication.medicationName} - ${dateFormat.format(time)}"
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
-
-                            Checkbox(
-                                checked = checked,
-                                onCheckedChange = {
-
-                                    // Convert Date to LocalDateTime
-                                    val localDateTime = time.toInstant()
-                                        .atZone(ZoneId.systemDefault())
-                                        .toLocalDateTime()
-
-                                    // Format the day as MM-DD-YYYY
-                                    val dayFormatted = localDateTime.format(DateTimeFormatter.ofPattern("MM-dd-yyyy"))
-
-                                    val timeFormatted = localDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
-
-
-                                    showDialog = medication to time
-
-                                    var historyItem = MedicationHistory(
-                                        medication.id,
-                                        medication.medicationName,
-                                        dayFormatted,
-                                        timeFormatted,
-                                        "Effective",
-                                        medication.owner,
-                                        "")
-                                    historyMode.addOrUpdateMedicationHistory(historyItem)
-                                },
-                                colors = CheckboxDefaults.colors(checkedColor = Primary)
-                            )
                         }
+                        .sortedBy { it.second }
+                ) { (medication, time) ->
+                    val checked = medication.takenTimes[time] ?: false
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "${medication.medicationName} - ${dateFormat.format(time)}"
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Checkbox(
+                            checked = checked,
+                            onCheckedChange = {
+
+                                // Convert Date to LocalDateTime
+                                val localDateTime = time.toInstant()
+                                    .atZone(ZoneId.systemDefault())
+                                    .toLocalDateTime()
+
+                                // Format the day as MM-DD-YYYY
+                                val dayFormatted = localDateTime.format(DateTimeFormatter.ofPattern("MM-dd-yyyy"))
+
+                                val timeFormatted = localDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
+
+
+                                showDialog = medication to time
+
+                                var historyItem = MedicationHistory(
+                                    medication.id,
+                                    medication.medicationName,
+                                    dayFormatted,
+                                    timeFormatted,
+                                    "Effective",
+                                    medication.owner,
+                                    "")
+                                historyMode.addOrUpdateMedicationHistory(historyItem)
+                            },
+                            colors = CheckboxDefaults.colors(checkedColor = Primary)
+                        )
                     }
                 }
             }
@@ -230,6 +229,7 @@ fun DailyMedicationChecklist(viewModel: MedicationListViewModel, historyMode: Me
         )
     }
 }
+
 
 
 @Composable
