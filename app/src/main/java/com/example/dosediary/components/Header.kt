@@ -59,33 +59,6 @@ import com.example.dosediary.ui.theme.Background
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
-@Composable
-fun OldHeader(header: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.icon),
-            contentDescription = "Pill Pics",
-            modifier = Modifier.width(25.dp)
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(
-            text = header,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Serif,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-
 @Composable
 fun MedicationReminder(reminder: Pair<String, String>, onDismiss: () -> Unit) {
     val (medName, reminderMessage) = reminder

@@ -51,35 +51,6 @@ fun HomePage(
     state: MedRefillState,
     onEvent: (MedRefillEvent) -> Unit
 ) {
-    /*
-    // State to control the dialog visibility and message
-    var showDialog by remember { mutableStateOf(false) }
-    var dialogMessage by remember { mutableStateOf("") }
-    val reminders = remember { mutableStateListOf<Pair<String,String>>() }
-
-
-    // BroadcastReceiver to listen for local broadcasts
-    val reminderReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val medName = intent?.getStringExtra("Name") ?: "Unknown"
-            val message = intent?.getStringExtra("Message") ?: "Time to take your medication!"
-            dialogMessage = "$medName: $message"
-            reminders.add(Pair(medName,message))
-            showDialog = true
-        }
-    }
-
-    // Register the BroadcastReceiver when the Composable is first composed
-    val context = LocalContext.current
-    DisposableEffect(context) {
-        val localBroadcastManager = LocalBroadcastManager.getInstance(context)
-        localBroadcastManager.registerReceiver(reminderReceiver, IntentFilter("com.example.dosediary.REMINDER_ALERT"))
-
-        // Cleanup when the Composable leaves the composition
-        onDispose {
-            localBroadcastManager.unregisterReceiver(reminderReceiver)
-        }
-    }*/
 
     Scaffold(
         topBar = {
@@ -101,9 +72,6 @@ fun HomePage(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            /*items(reminders) { reminder ->
-                MedicationReminder(reminder) { reminders.remove(reminder) }
-            }*/
             item { DailyMedicationChecklist(navController) }
             item { UpcomingMedicationRefills(navController, state, onEvent) }
         }
@@ -116,40 +84,6 @@ fun HomePage(
     }
     }
 }
-/*
-@Composable
-fun MedicationReminder(reminder: Pair<String, String>, onDismiss: () -> Unit) {
-    val (medName, reminderMessage) = reminder
-    val currTime = LocalDateTime.now()
-    val format = DateTimeFormatter.ofPattern("hh:mm a")
-    val formatTime = currTime.format(format)
-
-    Card(
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFF7676)),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                BasicText(
-                    text = "$reminderMessage - $formatTime",
-                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
-                )
-                BasicText(text = medName)
-            }
-
-            Icon(painter = painterResource(R.drawable.ic_action_name),
-                contentDescription = "dismiss",
-                modifier = Modifier.clickable { onDismiss() })
-        }
-    }
-}*/
 
 
 @Composable
