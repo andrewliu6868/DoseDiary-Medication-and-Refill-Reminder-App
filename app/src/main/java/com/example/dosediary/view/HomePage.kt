@@ -104,7 +104,7 @@ fun HomePage(
                 items(reminders) { reminder ->
                     MedicationReminder(reminder) { reminders.remove(reminder) }
                 }
-                item { DailyMedicationChecklist() }
+                item { DailyMedicationChecklist(navController) }
                 item { UpcomingMedicationRefills(navController, state, onEvent) }
             }
             if (state.showRefillConfirmationDialog) {

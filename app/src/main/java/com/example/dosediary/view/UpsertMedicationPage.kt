@@ -21,15 +21,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.DatePicker
 import com.example.dosediary.components.TimePicker
+import com.example.dosediary.events.AddMedicationEvent
 import com.example.dosediary.state.AutocompleteResult
 import com.example.dosediary.events.UpsertMedicationEvent
 import com.example.dosediary.state.UpsertMedicationState
+import com.example.dosediary.viewmodel.ReminderViewModel
 import com.example.dosediary.ui.theme.Primary
 import java.text.SimpleDateFormat
 import java.util.*
@@ -72,7 +75,7 @@ fun UpsertMedicationPage(
             if (mode == "edit") {
                 item { SaveDeleteRow(navController, state.medicationId) { onEvent(it) } }
             } else {
-                item { SaveRow(navController) { onEvent(it) } }
+                item { SaveRow(navController, onEvent, state.medicationName, state.times, state.startDate, state.endDate, state.refillDays) }
             }
         }
         if (state.showConfirmDialog) {
@@ -315,13 +318,17 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
 }
 
 @Composable
-fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -> Unit) {
+fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -> Unit, medName: String, times: List<Date>, startDate: Date, endDate: Date, refillDays: Int) {
+    val reminderViewModel = hiltViewModel<ReminderViewModel>()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(
-            onClick = { onEvent(UpsertMedicationEvent.SaveMedication) },
+            onClick = { onEvent(UpsertMedicationEvent.SaveMedication)
+                reminderViewModel.scheduleMedReminders(medName, times, startDate,endDate)
+                reminderViewModel.scheduleRefill(medName, refillDays)
+             },
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f),
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)
