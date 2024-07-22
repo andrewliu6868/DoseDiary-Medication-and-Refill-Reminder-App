@@ -92,28 +92,28 @@ fun HomePage(
             )
         }
     ){ padding -> Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(padding)
-                .padding(horizontal = 16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(padding)
+            .padding(horizontal = 16.dp)
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(reminders) { reminder ->
-                    MedicationReminder(reminder) { reminders.remove(reminder) }
-                }
-                item { DailyMedicationChecklist(navController) }
-                item { UpcomingMedicationRefills(navController, state, onEvent) }
+            items(reminders) { reminder ->
+                MedicationReminder(reminder) { reminders.remove(reminder) }
             }
-            if (state.showRefillConfirmationDialog) {
-                RefillConfirmationDialog(
-                    onConfirm = { onEvent(MedRefillEvent.ConfirmRefillMedication) },
-                    onDismiss = { onEvent(MedRefillEvent.DismissRefillDialog) }
-                )
-            }
+            item { DailyMedicationChecklist(navController) }
+            item { UpcomingMedicationRefills(navController, state, onEvent) }
         }
+        if (state.showRefillConfirmationDialog) {
+            RefillConfirmationDialog(
+                onConfirm = { onEvent(MedRefillEvent.ConfirmRefillMedication) },
+                onDismiss = { onEvent(MedRefillEvent.DismissRefillDialog) }
+            )
+        }
+    }
     }
 }
 
