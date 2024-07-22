@@ -120,4 +120,6 @@
     <string name="medication_list">दवाई सूची</string>
     <string name="view_all_medication_refills">सभी दवा रिफिल देखें</string>
     <string name="edit_medication">दवा संपादित करें</string>
+    <string name="confirm_refill">पुनः भरने की पुष्टि करें</string>
+    <string name="confirm_refill_message">क्या आप सुनिश्चित हैं कि आपने इस दवा को फिर से भरा है?</string>
 </resources>

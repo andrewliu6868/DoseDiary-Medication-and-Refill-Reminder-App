@@ -120,4 +120,6 @@
     <string name="medication_list">藥物列表</string>
     <string name="view_all_medication_refills">查看所有藥品補充</string>
     <string name="edit_medication">編輯藥物</string>
+    <string name="confirm_refill">確認補充</string>
+    <string name="confirm_refill_message">你確定你補充了這種藥嗎？</string>
 </resources>

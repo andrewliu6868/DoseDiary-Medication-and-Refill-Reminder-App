@@ -120,5 +120,7 @@
     <string name="medication_list">Список лекарств</string>
     <string name="view_all_medication_refills">Посмотреть все пополнения лекарств</string>
     <string name="edit_medication">Редактировать лекарство</string>
+    <string name="confirm_refill">Подтвердите пополнение</string>
+    <string name="confirm_refill_message">Вы уверены, что пополнили это лекарство?</string>
 
 </resources>

@@ -120,5 +120,7 @@
     <string name="medication_list">약 목록</string>
     <string name="view_all_medication_refills">모든 약물 리필 보기</string>
     <string name="edit_medication">약물 수정</string>
+    <string name="confirm_refill">리필 확인</string>
+    <string name="confirm_refill_message">이 약을 다시 채웠습니까?</string>
 
 </resources>

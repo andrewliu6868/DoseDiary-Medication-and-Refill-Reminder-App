@@ -120,4 +120,6 @@
     <string name="pill_pics">Fotos de Pastillas</string>
     <string name="view_all_medication_refills">Ver todas las recargas de medicamentos</string>
     <string name="edit_medication">Editar medicamento</string>
+    <string name="confirm_refill">Confirmar recarga</string>
+    <string name="confirm_refill_message">¿Está seguro de que recargó este medicamento?</string>
 </resources>

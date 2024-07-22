@@ -120,4 +120,6 @@
     <string name="pill_pics">Tablettenbilder</string>
     <string name="medication_list">Medikamentenliste</string>
     <string name="view_all_medication_refills">Alle Medikamenten-Nachfüllungen anzeigen</string>
+    <string name="confirm_refill">Nachfüllung bestätigen</string>
+    <string name="confirm_refill_message">Sind Sie sicher, dass Sie dieses Medikament nachgefüllt haben?</string>
 </resources>

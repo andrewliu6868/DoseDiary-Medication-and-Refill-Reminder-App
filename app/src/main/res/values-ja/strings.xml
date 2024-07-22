@@ -120,4 +120,6 @@
     <string name="medication_list">薬リスト</string>
     <string name="view_all_medication_refills">すべての薬の補充を表示</string>
     <string name="edit_medication">薬を編集</string>
+    <string name="confirm_refill">補充を確認する</string>
+    <string name="confirm_refill_message">この薬を補充したことを確認しますか？</string>
 </resources>
