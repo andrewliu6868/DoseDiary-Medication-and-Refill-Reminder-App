@@ -67,7 +67,7 @@ fun UpsertMedicationPage(
             item { MedDurationSection(state.startDate, state.endDate) { onEvent(it) } }
             item { MedFrequencySection(state.frequency, state.times) { onEvent(it) } }
             item { RefillDaysSection(state.refillDays) { onEvent(it) } }
-            item { AddressSection(state.address, state.postalCode, state.locationAutofill, state.postalCodeError) { onEvent(it) } }
+            item { AddressSection(state.address, state.locationAutofill) { onEvent(it) } }
             item { NoteSection(state.note) { onEvent(it) } }
             if (mode == "edit") {
                 item { SaveDeleteRow(navController, state.medicationId) { onEvent(it) } }
@@ -222,7 +222,7 @@ fun NoteSection(note: String, onEvent: (UpsertMedicationEvent) -> Unit) {
 }
 
 @Composable
-fun AddressSection(address: String, postalCode: String, locationAutofill:List<AutocompleteResult>, postalCodeError: String?, onEvent: (UpsertMedicationEvent) -> Unit) {
+fun AddressSection(address: String, locationAutofill:List<AutocompleteResult>, onEvent: (UpsertMedicationEvent) -> Unit) {
     Text(
         text = stringResource(R.string.pharmacy_location),
         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
@@ -266,23 +266,23 @@ fun AddressSection(address: String, postalCode: String, locationAutofill:List<Au
     Spacer(modifier = Modifier.height(10.dp))
 
     // Postal code
-    OutlinedTextField(
-        value = postalCode,
-        onValueChange = { onEvent(UpsertMedicationEvent.OnPostalCodeChanged(it)) },
-        label = { Text(stringResource(R.string.postal_code)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        modifier = Modifier.fillMaxWidth(),
-        isError = postalCodeError != null
-    )
-
-    if (postalCodeError != null) {
-        Text(
-            text = postalCodeError,
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-    }
+//    OutlinedTextField(
+//        value = postalCode,
+//        onValueChange = { onEvent(UpsertMedicationEvent.OnPostalCodeChanged(it)) },
+//        label = { Text(stringResource(R.string.postal_code)) },
+//        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//        modifier = Modifier.fillMaxWidth(),
+//        isError = postalCodeError != null
+//    )
+//
+//    if (postalCodeError != null) {
+//        Text(
+//            text = postalCodeError,
+//            color = MaterialTheme.colorScheme.error,
+//            style = MaterialTheme.typography.bodySmall,
+//            modifier = Modifier.padding(start = 16.dp)
+//        )
+//    }
 }
 
 @Composable

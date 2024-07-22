@@ -59,6 +59,12 @@ fun HomePage(
                 item { DailyMedicationChecklist(navController) }
                 item { UpcomingMedicationRefills(navController, state, onEvent) }
             }
+            if (state.showRefillConfirmationDialog) {
+                RefillConfirmationDialog(
+                    onConfirm = { onEvent(MedRefillEvent.ConfirmRefillMedication) },
+                    onDismiss = { onEvent(MedRefillEvent.DismissRefillDialog) }
+                )
+            }
         }
     }
 }

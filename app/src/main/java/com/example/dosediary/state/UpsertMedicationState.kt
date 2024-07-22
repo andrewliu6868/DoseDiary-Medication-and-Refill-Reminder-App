@@ -18,8 +18,6 @@ data class UpsertMedicationState(
     val refillDays: Int = 50,
     val note: String = "",
     val address: String = "",
-    val postalCode: String = "",
-    val postalCodeError: String? = null,
     val showDeleteConfirmDialog: Boolean = false,
     val showConfirmDialog: Boolean = false,
     val addressLatLng: LatLng = LatLng(0.0, 0.0),

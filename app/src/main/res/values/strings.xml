@@ -105,6 +105,8 @@
     <string name="quantity">Quantity: </string>
     <string name="notes_details">Notes: </string>
     <string name="pills_left">pills left</string>
+    <string name="confirm_refill">Confirm Refill</string>
+    <string name="confirm_refill_message">Are you sure you refilled this medication?</string>
 
     <!-- Edit Medication History Page -->
     <string name="enter_additional_details">Enter Additional Details</string>
