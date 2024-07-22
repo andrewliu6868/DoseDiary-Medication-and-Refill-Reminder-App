@@ -89,7 +89,7 @@
     <string name="user_initials"></string>
     <string name="type_password_here">Type password here</string>
     <string name="home">Home</string>
-    <string name="medications">Medications</string>
+    <string name="medications">Medication</string>
     <string name="refill">Refill</string>
     <string name="history">History</string>
     <string name="confirm_user_delete">Confirm User Delete</string>
