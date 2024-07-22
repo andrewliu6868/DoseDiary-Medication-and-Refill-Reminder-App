@@ -56,7 +56,8 @@
     <string name="today">Today</string>
     <string name="next_7_days">Next 7 Days</string>
     <string name="view_all_medication_details">View All Medication Details</string>
-    <string name="medication_reminder_time">Medication Reminder - </string>
+    <string name="view_all_medication_refills">View All Medication Refills</string>
+    <string name="medication_reminder_time">Medication Reminder - %1$s</string>
     <string name="view">View</string>
 
     <!-- Login Page -->
@@ -114,5 +115,6 @@
     <!-- Medication List Page -->
     <string name="pill_pics">Pill Pics</string>
     <string name="medication_list">Medication List</string>
+    <string name="edit_medication">Edit Medication</string>
 
 </resources>

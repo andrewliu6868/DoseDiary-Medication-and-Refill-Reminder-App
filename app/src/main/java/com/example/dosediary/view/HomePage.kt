@@ -56,7 +56,7 @@ fun HomePage(
                 modifier = Modifier.fillMaxSize()
             ) {
                 item { MedicationReminder() }
-                item { DailyMedicationChecklist() }
+                item { DailyMedicationChecklist(navController) }
                 item { UpcomingMedicationRefills(navController, state, onEvent) }
             }
         }
@@ -65,7 +65,7 @@ fun HomePage(
 
 @Composable
 fun MedicationReminder() {
-    var isVisible = true
+    var isVisible = false
     if (isVisible){
         Card(
             shape = RoundedCornerShape(8.dp),
@@ -98,7 +98,7 @@ fun MedicationReminder() {
 }
 
 @Composable
-fun DailyMedicationChecklist() {
+fun DailyMedicationChecklist(navController: NavController) {
     // Manage the state of each checkbox
     val checklistItems = remember {
         mutableStateListOf(
@@ -143,13 +143,6 @@ fun DailyMedicationChecklist() {
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { /*TODO*/ },
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                colors = ButtonDefaults.buttonColors(containerColor = Primary)
-            ) {
-                Text(stringResource(R.string.view_all_medication_details))
-            }
         }
     }
 }
@@ -160,14 +153,7 @@ fun UpcomingMedicationRefills(
     state: MedRefillState,
     onEvent: (MedRefillEvent) -> Unit
 ) {
-    Card(
-        shape = RoundedCornerShape(35.dp),
-        colors = CardDefaults.cardColors(containerColor = ContainerBackground),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
-    ) {
-        MedicationRefillTodayList(navController, state, onEvent, true)
-    }
+
+    MedicationRefillTodayList(navController, state, onEvent, true)
+
 }

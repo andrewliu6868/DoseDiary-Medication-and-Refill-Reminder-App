@@ -114,4 +114,6 @@
     <!-- Medication List Page -->
     <string name="pill_pics">Immagini delle Compresse</string>
     <string name="medication_list">Lista dei Farmaci</string>
+    <string name="view_all_medication_refills">Visualizza tutti i ricarichi dei farmaci</string>
+    <string name="edit_medication">Modifica medicinale</string>
 </resources>

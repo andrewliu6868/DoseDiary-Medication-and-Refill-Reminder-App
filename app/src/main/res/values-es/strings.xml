@@ -114,4 +114,6 @@
     <!-- Medication List Page -->
     <string name="medication_list">Lista de Medicamentos</string>
     <string name="pill_pics">Fotos de Pastillas</string>
+    <string name="view_all_medication_refills">Ver todas las recargas de medicamentos</string>
+    <string name="edit_medication">Editar medicamento</string>
 </resources>
