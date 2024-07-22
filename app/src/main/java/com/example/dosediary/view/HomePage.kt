@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.event.MedRefillEvent
+import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.state.MedRefillState
@@ -31,6 +32,14 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import java.util.*
 
 @Composable
 fun HomePage(
@@ -103,17 +112,16 @@ fun MedicationReminder() {
 
 @Composable
 fun DailyMedicationChecklist(viewModel: MedicationListViewModel) {
-    val state by viewModel.state.collectAsState()
+    val medicationList by viewModel.state.collectAsState()
     val dateFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
-
-    Log.d("DailyMedicationChecklist", "Medications to display: ${state.medicationList}")
+    var showDialog by remember { mutableStateOf<Pair<Medication, Date>?>(null) }
 
     Card(
         shape = RoundedCornerShape(35.dp),
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(16.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -126,10 +134,10 @@ fun DailyMedicationChecklist(viewModel: MedicationListViewModel) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 400.dp) // Set a max height to avoid infinite constraints
+                        .heightIn(max = 400.dp)
                 ) {
                     items(
-                        state.medicationList.filter { it.endDate.after(Date()) || it.endDate.equals(Date()) }
+                        medicationList.medicationList.filter { it.endDate.after(Date()) }
                             .flatMap { medication ->
                                 medication.times.map { time ->
                                     medication to time
@@ -151,7 +159,7 @@ fun DailyMedicationChecklist(viewModel: MedicationListViewModel) {
                             Checkbox(
                                 checked = checked,
                                 onCheckedChange = {
-                                    viewModel.updateTakenStatus(medication.id, time, it)
+                                    showDialog = medication to time
                                 },
                                 colors = CheckboxDefaults.colors(checkedColor = Primary)
                             )
@@ -161,7 +169,41 @@ fun DailyMedicationChecklist(viewModel: MedicationListViewModel) {
             }
         }
     }
+
+    showDialog?.let { (medication, time) ->
+        AlertDialog(
+            onDismissRequest = { showDialog = null },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.updateTakenStatus(medication.id, time, true)
+                        showDialog = null
+                    }
+                ) {
+                    Text("Yes", color = Primary)
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showDialog = null }
+                ) {
+                    Text("No", color = Primary)
+                }
+            },
+            title = {
+                Text(
+                    text = "Confirm Taken",
+                    style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                )
+            },
+            text = {
+                Text("Are you sure the medication was taken?")
+            },
+            modifier = Modifier.background(ContainerBackground, shape = RoundedCornerShape(16.dp))
+        )
+    }
 }
+
 
 @Composable
 fun UpcomingMedicationRefills(

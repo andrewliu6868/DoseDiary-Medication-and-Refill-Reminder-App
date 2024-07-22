@@ -2,10 +2,15 @@ package com.example.dosediary.utils
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import java.util.Date
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TypeConverter {
+
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+    private val gson: Gson = GsonBuilder().setDateFormat(dateFormat.toPattern()).create()
 
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
@@ -19,33 +24,25 @@ class TypeConverter {
 
     @TypeConverter
     fun fromDateList(dates: List<Date>): String {
-        val gson = Gson()
-        val type = object : TypeToken<List<Long>>() {}.type
-        val longDates = dates.map { it.time }
-        return gson.toJson(longDates, type)
+        return gson.toJson(dates)
     }
 
     @TypeConverter
     fun toDateList(datesString: String): List<Date> {
-        val gson = Gson()
-        val type = object : TypeToken<List<Long>>() {}.type
-        val longDates: List<Long> = gson.fromJson(datesString, type)
-        return longDates.map { Date(it) }
+        val type = object : TypeToken<List<Date>>() {}.type
+        return gson.fromJson(datesString, type)
     }
 
     @TypeConverter
     fun fromMap(value: Map<Date, Boolean>?): String {
-        val gson = Gson()
-        val type = object : TypeToken<Map<Long, Boolean>>() {}.type
-        val longMap = value?.mapKeys { it.key.time }
-        return gson.toJson(longMap, type)
+        val mapString = value?.mapKeys { dateFormat.format(it.key) }
+        return gson.toJson(mapString)
     }
 
     @TypeConverter
     fun toMap(value: String): Map<Date, Boolean>? {
-        val gson = Gson()
-        val type = object : TypeToken<Map<Long, Boolean>>() {}.type
-        val longMap: Map<Long, Boolean> = gson.fromJson(value, type)
-        return longMap.mapKeys { Date(it.key) }
+        val type = object : TypeToken<Map<String, Boolean>>() {}.type
+        val stringMap: Map<String, Boolean> = gson.fromJson(value, type)
+        return stringMap.mapKeys { dateFormat.parse(it.key) }
     }
 }

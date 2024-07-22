@@ -40,6 +40,6 @@ interface MedicationDao {
     @Query("SELECT * FROM medication WHERE id = :medID AND endDate > :today ORDER BY medicationName ASC LIMIT 1")
     fun getActiveMedicationByID(medID: Int, today: Long): Flow<Medication>
 
-    @Query("UPDATE medication SET takenTimes = :takenTimesJson WHERE id = :medID")
-    suspend fun updateTakenState(medID: Int, takenTimesJson: String)
+    @Query("UPDATE medication SET takenTimes = :takenTimes WHERE id = :medID")
+    suspend fun updateTakenState(medID: Int, takenTimes: Map<Date, Boolean>)
 }
