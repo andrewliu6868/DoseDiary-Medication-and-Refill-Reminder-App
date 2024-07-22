@@ -83,7 +83,7 @@ class MainActivity : ComponentActivity() {
     fun LoginNavigation(navController: NavHostController) {
         NavHost(navController = navController, startDestination = "home") {
             composable("login") { LoginPage(loginViewModel, navController) }
-            composable("home") { AppEntry(profileViewModel, medRefillViewModel, placesClient, fusedLocationClient) }
+            composable("home") { AppEntry(loginViewModel, profileViewModel, medRefillViewModel, placesClient, fusedLocationClient) }
             composable("signup"){ SignUpPage(navController) }
         }
     }

@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.navigation.BottomNavigationBar
+import com.example.dosediary.viewmodel.LoginViewModel
 import com.example.dosediary.viewmodel.UpsertMedicationViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedicationHistoryViewModel
@@ -26,7 +27,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.libraries.places.api.net.PlacesClient
 
 @Composable
-fun AppEntry(profileViewModel: ProfileViewModel , medRefillViewModel: MedRefillViewModel, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient) {
+fun AppEntry(loginViewModel: LoginViewModel, profileViewModel: ProfileViewModel , medRefillViewModel: MedRefillViewModel, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
@@ -43,14 +44,14 @@ fun AppEntry(profileViewModel: ProfileViewModel , medRefillViewModel: MedRefillV
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            MainAppNavigation(profileViewModel, medRefillViewModel, navController, placesClient, fusedLocationClient)
+            MainAppNavigation(loginViewModel, profileViewModel, medRefillViewModel, navController, placesClient, fusedLocationClient)
         }
     }
 }
 
 
 @Composable
-fun MainAppNavigation (profileViewModel: ProfileViewModel , medRefillViewModel: MedRefillViewModel, navController: NavHostController, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient){
+fun MainAppNavigation (loginViewModel: LoginViewModel,profileViewModel: ProfileViewModel , medRefillViewModel: MedRefillViewModel, navController: NavHostController, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient){
     //View Model
     val addMedicationViewModel = hiltViewModel<UpsertMedicationViewModel>()
     val medicationHistoryViewModel = hiltViewModel<MedicationHistoryViewModel>()
@@ -71,7 +72,7 @@ fun MainAppNavigation (profileViewModel: ProfileViewModel , medRefillViewModel: 
     val addMedHistoryState = addMedHistoryViewModel.state.collectAsState().value
 
     NavHost(navController = navController, startDestination = "login") {
-        composable("login") { LoginPage(navController)}
+        composable("login") { LoginPage(loginViewModel, navController)}
         composable("signup") { SignUpPage(navController)}
         composable("home") { HomePage(navController, medicationListState, medRefillState, medicationListViewModel, medRefillViewModel::onEvent, medicationHistoryViewModel)} //Todo
         composable("refill") { MedicationRefillPage(navController, medRefillState, medRefillViewModel::onEvent) }
