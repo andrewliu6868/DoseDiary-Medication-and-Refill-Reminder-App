@@ -127,6 +127,7 @@
     <string name="delete_user">Elimina utente</string>
     <string name="confirm_user_delete">Conferma eliminazione utente</string>
     <string name="confirm_user_delete_message">Sei sicuro di voler eliminare questo utente?</string>
+    <string name="logout">Log Out</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>

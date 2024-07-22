@@ -127,6 +127,7 @@
     <string name="delete_user">사용자 삭제</string>
     <string name="confirm_user_delete">사용자 삭제 확인</string>
     <string name="confirm_user_delete_message">이 사용자를 삭제하시겠습니까?</string>
+    <string name="logout">Log Out</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>

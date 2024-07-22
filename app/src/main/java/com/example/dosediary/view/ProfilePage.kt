@@ -195,10 +195,12 @@ fun ProfilePage(
                 }
                 item { UserDetail(state, onEvent) }
             }
+
             if (state.showDeleteConfirmationDialog) {
                 UserDeleteConfirmationDialog(
                     onConfirm = {
                         onEvent(ProfileEvent.confirmDeleteCurrentUser)
+                        navController.navigate("login")
                     },
                     onDismiss = {
                         onEvent(ProfileEvent.cancelDeleteCurrentUser)
@@ -238,6 +240,21 @@ private fun changeLanguage(context: Context, languageCode: String) {
     val config = Configuration()
     config.setLocale(locale)
     context.resources.updateConfiguration(config, context.resources.displayMetrics)
+}
+
+
+@Composable
+fun LogOutButton(navController: NavController, onEvent: (ProfileEvent) -> Unit) {
+    Button(
+        onClick = {
+            onEvent(ProfileEvent.onUserLogout)
+            navController.navigate("login")
+        },
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7676)),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(stringResource(R.string.logout))
+    }
 }
 
 @Composable
