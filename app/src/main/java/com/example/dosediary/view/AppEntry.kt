@@ -1,6 +1,5 @@
 package com.example.dosediary.view
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -66,7 +65,7 @@ fun MainAppNavigation (navController: NavHostController){
     NavHost(navController = navController, startDestination = "login") {
         composable("login") { LoginPage(navController)}
         composable("signup") { SignUpPage(navController)}
-        composable("home") { HomePage(navController, medRefillState, medRefillViewModel::onEvent)} //Todo
+        composable("home") { HomePage(navController, medicationListState, medRefillState, medicationListViewModel, medRefillViewModel::onEvent)} //Todo
         composable("refill") { MedicationRefillPage(navController, medRefillState, medRefillViewModel::onEvent) }
         composable("history") { MedicationHistoryPage(navController, medicationHistoryState, medicationHistoryViewModel::onEvent, addTestEntries = medicationHistoryViewModel::addTestEntries)}
         composable("profile") { ProfilePage(navController, profileState, profileViewModel::onEvent) }

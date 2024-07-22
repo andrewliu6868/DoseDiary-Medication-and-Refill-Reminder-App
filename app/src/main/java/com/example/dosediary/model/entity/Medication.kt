@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(
-    foreignKeys = [                         //Mapping "owner" in Medication to "id" in User
+    foreignKeys = [
         ForeignKey(
             entity = User::class,
             parentColumns = ["id"],
@@ -16,18 +16,17 @@ import java.util.Date
     ]
 )
 data class Medication(
-    // From Input
     val medicationName: String,
     val startDate: Date,
     val endDate: Date,
     val frequency: String,
-    val times: List<Date>,
+    var times: List<Date>,
     val refillDays: Int,
     val note: String,
     val address: String,
     val postalCode: String,
     val postalCodeError: String?,
-    //
+    var takenTimes: Map<Date, Boolean> = emptyMap(),
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val lastRefilledDate: Date,

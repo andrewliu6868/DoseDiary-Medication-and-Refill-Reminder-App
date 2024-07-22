@@ -22,16 +22,24 @@ interface MedicationDao {
     @Query("SELECT * FROM medication WHERE owner = :owner ORDER BY medicationName ASC")
     fun getMedicationsByOwner(owner: Int): Flow<List<Medication>>
 
-//    @Query("SELECT * FROM medication ORDER BY refillDays ASC")
-//    fun getMedicationByRefill(): Flow<List<Medication>>
-  
     @Query("SELECT * FROM medication WHERE id = :medID ORDER BY medicationName ASC LIMIT 1")
     fun getMedicationByID(medID: Int): Flow<Medication>
 
-    //update lastrefilldate
     @Query("UPDATE medication SET lastRefilledDate = :lastRefilledDate WHERE id = :medID")
     suspend fun updateLastRefillDate(medID: Int, lastRefilledDate: Date)
 
-    @Query("DELETE FROM Medication WHERE id = :medicationId")
+    @Query("DELETE FROM medication WHERE id = :medicationId")
     suspend fun deleteMedicationById(medicationId: Int)
+
+    @Query("SELECT * FROM medication WHERE endDate > :today ORDER BY medicationName ASC")
+    fun getActiveMedicationsOrderedByName(today: Long): Flow<List<Medication>>
+
+    @Query("SELECT * FROM medication WHERE owner = :owner AND endDate > :today ORDER BY medicationName ASC")
+    fun getActiveMedicationsByOwner(owner: Int, today: Long): Flow<List<Medication>>
+
+    @Query("SELECT * FROM medication WHERE id = :medID AND endDate > :today ORDER BY medicationName ASC LIMIT 1")
+    fun getActiveMedicationByID(medID: Int, today: Long): Flow<Medication>
+
+    @Query("UPDATE medication SET takenTimes = :takenTimesJson WHERE id = :medID")
+    suspend fun updateTakenState(medID: Int, takenTimesJson: String)
 }

@@ -1,12 +1,12 @@
 package com.example.dosediary.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,16 +24,21 @@ import com.example.dosediary.event.MedRefillEvent
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.state.MedRefillState
-
-import com.example.dosediary.viewmodel.MedRefillViewModel
+import com.example.dosediary.state.MedicationListState
+import com.example.dosediary.viewmodel.MedicationListViewModel
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun HomePage(
     navController: NavController,
-    state: MedRefillState,
-    onEvent: (MedRefillEvent) -> Unit
+    Liststate: MedicationListState,
+    Refillstate: MedRefillState,
+    ListonEvent: MedicationListViewModel,
+    RefillonEvent: (MedRefillEvent) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -56,8 +61,8 @@ fun HomePage(
                 modifier = Modifier.fillMaxSize()
             ) {
                 item { MedicationReminder() }
-                item { DailyMedicationChecklist(navController) }
-                item { UpcomingMedicationRefills(navController, state, onEvent) }
+                item{DailyMedicationChecklist(ListonEvent)}
+                item { UpcomingMedicationRefills(navController, Refillstate, RefillonEvent) }
             }
         }
     }
@@ -82,7 +87,6 @@ fun MedicationReminder() {
                 Column(modifier = Modifier.weight(1f)) {
                     BasicText(
                         text = stringResource(R.string.medication_reminder_time, "7:00pm"),
-                        style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold)
                     )
                     BasicText(text = "Tylenol")
                 }
@@ -98,49 +102,61 @@ fun MedicationReminder() {
 }
 
 @Composable
-fun DailyMedicationChecklist(navController: NavController) {
-    // Manage the state of each checkbox
-    val checklistItems = remember {
-        mutableStateListOf(
-            "Tylenol - 1:00 pm" to true,
-            "Tylenol - 2:00 pm" to true,
-            "Tylenol - 3:00 pm" to true,
-            "Tylenol - 4:00 pm" to true,
-            "Tylenol - 5:00 pm" to true,
-            "Tylenol - 6:00 pm" to true
-        )
-    }
+fun DailyMedicationChecklist(viewModel: MedicationListViewModel) {
+    val state by viewModel.state.collectAsState()
+    val dateFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+
+    Log.d("DailyMedicationChecklist", "Medications to display: ${state.medicationList}")
 
     Card(
         shape = RoundedCornerShape(35.dp),
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+            .padding(8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            BasicText(
-                text = stringResource(R.string.daily_medication_checklist),
+            Text(
+                text = "Daily Medication Checklist",
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            checklistItems.forEachIndexed { index, item ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+
+            Box(modifier = Modifier.fillMaxWidth()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 400.dp) // Set a max height to avoid infinite constraints
                 ) {
-                    BasicText(
-                        text = item.first,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Checkbox(
-                        checked = item.second,
-                        colors = CheckboxDefaults.colors(Primary),
-                        onCheckedChange = { checked ->
-                            checklistItems[index] = item.first to checked
+                    items(
+                        state.medicationList.filter { it.endDate.after(Date()) || it.endDate.equals(Date()) }
+                            .flatMap { medication ->
+                                medication.times.map { time ->
+                                    medication to time
+                                }
+                            }
+                            .sortedBy { it.second }
+                    ) { (medication, time) ->
+                        val checked = medication.takenTimes[time] ?: false
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "${medication.medicationName} - ${dateFormat.format(time)}"
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            Checkbox(
+                                checked = checked,
+                                onCheckedChange = {
+                                    viewModel.updateTakenStatus(medication.id, time, it)
+                                },
+                                colors = CheckboxDefaults.colors(checkedColor = Primary)
+                            )
                         }
-                    )
+                    }
                 }
             }
         }
