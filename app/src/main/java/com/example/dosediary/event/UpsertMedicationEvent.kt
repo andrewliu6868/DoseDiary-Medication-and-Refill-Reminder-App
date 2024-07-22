@@ -1,5 +1,6 @@
 package com.example.dosediary.events
 
+import com.example.dosediary.state.AutocompleteResult
 import java.util.Date
 
 sealed interface UpsertMedicationEvent {
@@ -18,4 +19,6 @@ sealed interface UpsertMedicationEvent {
     object DeleteMedication : UpsertMedicationEvent
     object ConfirmDeleteMedication : UpsertMedicationEvent
     object DismissDeleteDialog : UpsertMedicationEvent
+
+    data class OnClickWithRipple(val autoCompleteResult: AutocompleteResult) : UpsertMedicationEvent
 }
