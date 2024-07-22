@@ -122,6 +122,11 @@
     <string name="pill_pics">Tablettenbilder</string>
     <string name="medication_list">Medikamentenliste</string>
     <string name="view_all_medication_refills">Alle Medikamenten-Nachfüllungen anzeigen</string>
+    <string name="confirm_refill">Nachfüllung bestätigen</string>
+    <string name="confirm_refill_message">Sind Sie sicher, dass Sie dieses Medikament nachgefüllt haben?</string>
+    <string name="delete_user">Benutzer löschen</string>
+    <string name="confirm_user_delete">Benutzerlöschung bestätigen</string>
+    <string name="confirm_user_delete_message">"Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? "</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>

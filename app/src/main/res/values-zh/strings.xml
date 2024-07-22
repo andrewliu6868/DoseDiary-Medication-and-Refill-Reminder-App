@@ -122,6 +122,11 @@
     <string name="medication_list">药物列表</string>
     <string name="view_all_medication_refills">查看所有药品续杯</string>
     <string name="edit_medication">编辑药物</string>
+    <string name="confirm_refill">确认补充</string>
+    <string name="confirm_refill_message">你确定你补充了这种药吗？</string>
+    <string name="delete_user">删除用户</string>
+    <string name="confirm_user_delete">确认删除用户</string>
+    <string name="confirm_user_delete_message">你确定要删除这个用户吗？</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>

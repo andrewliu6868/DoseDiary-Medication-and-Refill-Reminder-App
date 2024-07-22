@@ -27,8 +27,6 @@ data class Medication(
     val note: String,
     val address: String,
     val addressLatLng: LatLng,
-    val postalCode: String,
-    val postalCodeError: String?,
     //
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,

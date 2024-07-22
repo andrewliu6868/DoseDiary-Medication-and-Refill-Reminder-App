@@ -122,6 +122,11 @@
     <string name="medication_list">Список лекарств</string>
     <string name="view_all_medication_refills">Посмотреть все пополнения лекарств</string>
     <string name="edit_medication">Редактировать лекарство</string>
+    <string name="confirm_refill">Подтвердите пополнение</string>
+    <string name="confirm_refill_message">Вы уверены, что пополнили это лекарство?</string>
+    <string name="delete_user">Удалить пользователя</string>
+    <string name="confirm_user_delete">Подтвердите удаление пользователя</string>
+    <string name="confirm_user_delete_message">Вы уверены, что хотите удалить этого пользователя?</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>

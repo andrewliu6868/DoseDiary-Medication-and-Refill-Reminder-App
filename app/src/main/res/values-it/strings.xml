@@ -122,6 +122,11 @@
     <string name="medication_list">Lista dei Farmaci</string>
     <string name="view_all_medication_refills">Visualizza tutti i ricarichi dei farmaci</string>
     <string name="edit_medication">Modifica medicinale</string>
+    <string name="confirm_refill">Conferma il rifornimento</string>
+    <string name="confirm_refill_message">Sei sicuro di aver ricaricato questo farmaco?</string>
+    <string name="delete_user">Elimina utente</string>
+    <string name="confirm_user_delete">Conferma eliminazione utente</string>
+    <string name="confirm_user_delete_message">Sei sicuro di voler eliminare questo utente?</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>
