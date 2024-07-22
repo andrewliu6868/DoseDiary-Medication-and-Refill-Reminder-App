@@ -46,7 +46,7 @@ class ReminderViewModel @Inject constructor(
 
     val reminderState: StateFlow<ReminderState> get() = _reminderState
 
-    fun scheduleMedReminders(medName: String, times: List<Date>, startDate: Date, endDate: Date){
+    fun scheduleMedReminders(medName: String, times: List<Date>, startDate: Date, endDate: Date, note:String){
         viewModelScope.launch{
             //val medication = _medDao.getMedicationByID(medID).firstOrNull()
             try {
@@ -56,6 +56,7 @@ class ReminderViewModel @Inject constructor(
                         val intent = Intent(context, ReminderReceiver::class.java).apply {
                             putExtra("Name", medName)
                             putExtra("Message", "Medication Reminder")
+                            putExtra("Note", note)
                         }
                         // must use a unique ID for the intent
                         val requestCode = _generateUniqueRequestCode()
@@ -85,7 +86,7 @@ class ReminderViewModel @Inject constructor(
     }
 
     @SuppressLint("SuspiciousIndentation")
-    fun scheduleRefill(medName: String, refillDays: Int){
+    fun scheduleRefill(medName: String, refillDays: Int, note:String){
         viewModelScope.launch{
             //val medication = _medDao.getMedicationByID(medID).firstOrNull()
             try {
@@ -93,6 +94,7 @@ class ReminderViewModel @Inject constructor(
                 val intent = Intent(context, ReminderReceiver::class.java).apply {
                     putExtra("Name", medName)
                     putExtra("Message", "Refill Reminder")
+                    putExtra("Note", note)
                 }
                 val requestCode = _generateUniqueRequestCode()
                 val pendingIntent = PendingIntent.getBroadcast(
