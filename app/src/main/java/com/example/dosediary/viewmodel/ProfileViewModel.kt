@@ -95,8 +95,7 @@ class ProfileViewModel @Inject constructor(
             editCurrentUserLastName = list[6] as String,
             editCurrentUserEmail = list[7] as String,
             editCurrentUserPassword = list[8] as String,
-            showDeleteConfirmationDialog = list[9] as Boolean
-        )
+            showDeleteConfirmationDialog = list[9] as Boolean)
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
