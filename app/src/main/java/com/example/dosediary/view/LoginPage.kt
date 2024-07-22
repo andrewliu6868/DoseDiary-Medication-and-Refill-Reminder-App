@@ -57,8 +57,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.dosediary.R
 import com.example.dosediary.state.LoginState
+import com.example.dosediary.ui.theme.Background
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
+import com.example.dosediary.ui.theme.PurpleGrey80
 import com.example.dosediary.viewmodel.LoginViewModel
 
 @Composable
@@ -108,7 +110,7 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
         modifier = Modifier
             .fillMaxSize()
             .padding(50.dp),
-        color = Color.White
+        color = Color(0xf7f9ff)
     ) {
         Column {
             LoginIcon()
