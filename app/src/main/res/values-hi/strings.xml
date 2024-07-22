@@ -127,6 +127,7 @@
     <string name="delete_user">उपयोगकर्ता हटाएं</string>
     <string name="confirm_user_delete">"उपयोगकर्ता हटाने की पुष्टि करें "</string>
     <string name="confirm_user_delete_message">क्या आप वाकई इस उपयोगकर्ता को हटाना चाहते हैं?</string>
+    <string name="logout">Log Out</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>

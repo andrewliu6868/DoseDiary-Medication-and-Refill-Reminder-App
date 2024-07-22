@@ -127,6 +127,7 @@
     <string name="delete_user">ユーザーを削除する</string>
     <string name="confirm_user_delete">ユーザーの削除を確認</string>
     <string name="confirm_user_delete_message">このユーザーを削除してもよろしいですか？</string>
+    <string name="logout">Log Out</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>

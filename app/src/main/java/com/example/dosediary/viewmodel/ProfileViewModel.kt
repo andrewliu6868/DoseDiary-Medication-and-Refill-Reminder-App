@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -188,6 +187,11 @@ class ProfileViewModel @Inject constructor(
             }
             ProfileEvent.cancelDeleteCurrentUser -> {
                 _showDeleteConfirmationDialog.value = false
+            }
+            ProfileEvent.onUserLogout -> {
+                userState.setMainUser(null)
+                userState.setcurrentUser(null)
+                userState.setMangedUsers(emptyList())
             }
         }
     }

@@ -127,6 +127,7 @@
     <string name="medication_list">Medication List</string>
     <string name="edit_medication">Edit Medication</string>
     <string name="delete_user">Delete User</string>
+    <string name="logout">Log Out</string>
 
     <!-- Language Strings -->
     <string name="language_english">English</string>
