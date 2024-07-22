@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF가 성공적으로 생성되었습니다</string>
     <string name="yes">예</string>
     <string name="no">아니오</string>
+    <string name="ok">확인</string>
+    <string name="select_language">언어 선택</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">약 기록</string>
@@ -56,7 +58,7 @@
     <string name="today">오늘</string>
     <string name="next_7_days">다음 7일</string>
     <string name="view_all_medication_details">모든 약 세부 사항 보기</string>
-    <string name="medication_reminder_time">약 리마인더 - %1$s</string>
+    <string name="medication_reminder_time">약 리마인더 - </string>
     <string name="view">보기</string>
 
     <!-- Login Page -->
@@ -75,7 +77,7 @@
     <string name="app_main_icon">앱 메인 아이콘</string>
 
     <!-- Profile Page -->
-    <string name="profile">프로필: %1$s %2$s</string>
+    <string name="profile">프로필 </string>
     <string name="manage_users">사용자 관리</string>
     <string name="add_user">사용자 추가</string>
     <string name="add_users">사용자 추가</string>
@@ -83,8 +85,12 @@
     <string name="user_details">사용자 세부 사항</string>
     <string name="you_cannot_edit_sub_user">하위 사용자의 사용자 세부 사항을 편집할 수 없습니다. 사용자 세부 사항을 편집하려면 주 사용자로 전환하십시오</string>
     <string name="change_user">사용자 변경</string>
-    <string name="user_initials">%1$s%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">여기에 비밀번호 입력</string>
+    <string name="home">홈</string>
+    <string name="medications">약물</string>
+    <string name="refill">보충</string>
+    <string name="history">역사</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">약 리필</string>
@@ -92,13 +98,13 @@
     <string name="direction">경로</string>
     <string name="call">전화</string>
     <string name="refill_information">리필 정보:</string>
-    <string name="next_refill_date">다음 리필 날짜: %1$s</string>
-    <string name="pharmacy_name">약국 이름: %1$s</string>
-    <string name="pharmacy_contact">약국 연락처: %1$s</string>
-    <string name="pharmacy_address">약국 주소: %1$s</string>
+    <string name="next_refill_date">다음 리필 날짜: </string>
+    <string name="pharmacy_name">약국 이름: </string>
+    <string name="pharmacy_contact">약국 연락처: </string>
+    <string name="pharmacy_address">약국 주소: </string>
     <string name="more_information">약에 대한 추가 정보:</string>
-    <string name="quantity">수량: %1$s</string>
-    <string name="notes_details">노트: %1$s</string>
+    <string name="quantity">수량: </string>
+    <string name="notes_details">노트: </string>
     <string name="pills_left">남은 알약</string>
 
     <!-- Edit Medication History Page -->
@@ -116,5 +122,23 @@
     <string name="medication_list">약 목록</string>
     <string name="view_all_medication_refills">모든 약물 리필 보기</string>
     <string name="edit_medication">약물 수정</string>
+    <string name="confirm_refill">리필 확인</string>
+    <string name="confirm_refill_message">이 약을 다시 채웠습니까?</string>
+    <string name="delete_user">사용자 삭제</string>
+    <string name="confirm_user_delete">사용자 삭제 확인</string>
+    <string name="confirm_user_delete_message">이 사용자를 삭제하시겠습니까?</string>
+    <string name="logout">Log Out</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
 
 </resources>

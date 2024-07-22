@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF生成成功</string>
     <string name="yes">是</string>
     <string name="no">否</string>
+    <string name="ok">确定</string>
+    <string name="select_language">选择语言</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">药物历史</string>
@@ -56,7 +58,7 @@
     <string name="today">今天</string>
     <string name="next_7_days">未来7天</string>
     <string name="view_all_medication_details">查看所有药物详情</string>
-    <string name="medication_reminder_time">药物提醒 - %1$s</string>
+    <string name="medication_reminder_time">药物提醒 - </string>
     <string name="view">查看</string>
 
     <!-- Login Page -->
@@ -75,7 +77,7 @@
     <string name="app_main_icon">应用主图标</string>
 
     <!-- Profile Page -->
-    <string name="profile">个人资料：%1$s %2$s</string>
+    <string name="profile">个人资料 </string>
     <string name="manage_users">管理用户</string>
     <string name="add_user">添加用户</string>
     <string name="add_users">添加用户</string>
@@ -83,8 +85,12 @@
     <string name="user_details">用户详情</string>
     <string name="you_cannot_edit_sub_user">您不能编辑子用户的用户详情，请切换到主用户以编辑用户详情</string>
     <string name="change_user">更改用户</string>
-    <string name="user_initials">%1$s%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">在此输入密码</string>
+    <string name="home">主页</string>
+    <string name="medications">药物</string>
+    <string name="refill">补充</string>
+    <string name="history">历史</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">药物补充</string>
@@ -92,13 +98,13 @@
     <string name="direction">方向</string>
     <string name="call">呼叫</string>
     <string name="refill_information">补充信息：</string>
-    <string name="next_refill_date">下次补充日期：%1$s</string>
-    <string name="pharmacy_name">药店名称：%1$s</string>
-    <string name="pharmacy_contact">药店联系方式：%1$s</string>
-    <string name="pharmacy_address">药店地址：%1$s</string>
+    <string name="next_refill_date">下次补充日期：</string>
+    <string name="pharmacy_name">药店名称：</string>
+    <string name="pharmacy_contact">药店联系方式：</string>
+    <string name="pharmacy_address">药店地址：</string>
     <string name="more_information">关于药物的更多信息：</string>
-    <string name="quantity">数量：%1$s</string>
-    <string name="notes_details">备注：%1$s</string>
+    <string name="quantity">数量：</string>
+    <string name="notes_details">备注：</string>
     <string name="pills_left">剩余药片</string>
 
     <!-- Edit Medication History Page -->
@@ -116,4 +122,22 @@
     <string name="medication_list">药物列表</string>
     <string name="view_all_medication_refills">查看所有药品续杯</string>
     <string name="edit_medication">编辑药物</string>
+    <string name="confirm_refill">确认补充</string>
+    <string name="confirm_refill_message">你确定你补充了这种药吗？</string>
+    <string name="delete_user">删除用户</string>
+    <string name="confirm_user_delete">确认删除用户</string>
+    <string name="confirm_user_delete_message">你确定要删除这个用户吗？</string>
+    <string name="logout">Log Out</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
 </resources>

@@ -9,15 +9,23 @@ interface ProfileEvent {
 
     data class onChangeUser(val user: User) : ProfileEvent
 
-    data class onMainUserFirstNameChanged(val firstName: String) : ProfileEvent
+    data class onCurrentUserFirstNameChanged(val firstName: String) : ProfileEvent
 
-    data class onMainUserLastNameChanged(val lastName: String) : ProfileEvent
+    data class onCurrentUserLastNameChanged(val lastName: String) : ProfileEvent
 
-    data class onMainUserEmailChanged(val email: String) : ProfileEvent
+    data class onCurrentUserEmailChanged(val email: String) : ProfileEvent
 
-    data class onMainUserPasswordChanged(val password: String) : ProfileEvent
+    data class onCurrentUserPasswordChanged(val password: String) : ProfileEvent
 
-    object updateMainUser : ProfileEvent
+    object updateCurrentUser : ProfileEvent
 
-    object cancelUpdateMainUser : ProfileEvent
+    object cancelUpdateCurrentUser : ProfileEvent
+
+    object onDeleteCurrentUser : ProfileEvent
+
+    object confirmDeleteCurrentUser : ProfileEvent
+
+    object cancelDeleteCurrentUser : ProfileEvent
+
+    object onUserLogout: ProfileEvent
 }

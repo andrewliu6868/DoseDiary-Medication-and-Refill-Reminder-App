@@ -25,14 +25,14 @@ import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.DatePicker
 import com.example.dosediary.components.TimePicker
-import com.example.dosediary.event.EditMedHistoryEvent
+import com.example.dosediary.event.UpsertMedHistoryEvent
 import com.example.dosediary.model.entity.MedicationHistory
 import com.example.dosediary.ui.theme.Primary
-import com.example.dosediary.viewmodel.EditMedHistoryViewModel
+import com.example.dosediary.viewmodel.UpsertMedHistoryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHistoryViewModel = hiltViewModel()) {
+fun UpsertMedicationPage(navController: NavHostController, viewModel: UpsertMedHistoryViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsState()
     val medicationName = remember { mutableStateOf("") }
     val effectivenessOptions = listOf(
@@ -68,7 +68,7 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
                     ownerId = ownerId,
                     additionalDetails = additionalDetails.value.text
                 )
-                viewModel.onEvent(EditMedHistoryEvent.AddMedicationHistory(medicationHistory))
+                viewModel.onEvent(UpsertMedHistoryEvent.AddMedicationHistory(medicationHistory))
                 showConfirmDialog.value = false
                 navController.navigate("history")
 
@@ -116,7 +116,7 @@ fun EditMedicationPage(navController: NavHostController, viewModel: EditMedHisto
             }
             Spacer(modifier = Modifier.height(16.dp))
             AdditionalDetailsField(additionalDetails) { details ->
-                viewModel.onEvent(EditMedHistoryEvent.OnAdditionalDetailsChanged(details))
+                viewModel.onEvent(UpsertMedHistoryEvent.OnAdditionalDetailsChanged(details))
             }
             Spacer(modifier = Modifier.height(16.dp))
             ButtonRow(
@@ -253,5 +253,5 @@ fun EditMedicationConfirmationDialog(onDismiss: () -> Unit, onConfirm: () -> Uni
 @Composable
 fun EditMedPreview(){
     val navController = rememberNavController()
-    EditMedicationPage(navController = navController);
+    UpsertMedicationPage(navController = navController);
 }

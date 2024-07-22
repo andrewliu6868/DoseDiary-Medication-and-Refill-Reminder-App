@@ -1,10 +1,10 @@
 package com.example.dosediary.utils
 
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import android.content.Context
+import androidx.room.Room
+import androidx.room.TypeConverters
 import com.example.dosediary.model.dao.MedicationDao
 import com.example.dosediary.model.dao.MedicationHistoryDao
 import com.example.dosediary.model.dao.UserDao
@@ -15,6 +15,7 @@ import com.example.dosediary.model.entity.User
 import com.example.dosediary.model.entity.UserRelationship
 
 @Database(
+//    entities = [User::class, Medication::class, MedicationHistory::class, UserRelationship::class],
     entities = [User::class, Medication::class, MedicationHistory::class, UserRelationship::class],
     version = 11 // Update version if schema changes
 )

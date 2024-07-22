@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.dosediary.utils.TypeConverter
 import java.util.*
+import com.google.android.gms.maps.model.LatLng
+import java.util.Date
 
 @Entity(
     foreignKeys = [
@@ -27,8 +29,7 @@ data class Medication(
     val refillDays: Int,
     val note: String,
     val address: String,
-    val postalCode: String,
-    val postalCodeError: String?,
+    val addressLatLng: LatLng,
     var takenTimes: Map<Date, Boolean> = emptyMap(),
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,

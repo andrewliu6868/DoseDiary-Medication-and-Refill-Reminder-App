@@ -9,6 +9,8 @@
     <string name="pdf_generated_successfully">PDF generado con éxito</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
+    <string name="ok">Aceptar</string>
+    <string name="select_language">Seleccionar idioma</string>
 
     <!-- Medication History Page -->
     <string name="medication_history">Historial de Medicamentos</string>
@@ -56,7 +58,7 @@
     <string name="today">Hoy</string>
     <string name="next_7_days">Próximos 7 Días</string>
     <string name="view_all_medication_details">Ver Todos los Detalles del Medicamento</string>
-    <string name="medication_reminder_time">Recordatorio de Medicación - %1$s</string>
+    <string name="medication_reminder_time">Recordatorio de Medicación - </string>
     <string name="view">Ver</string>
 
     <!-- Login Page -->
@@ -75,7 +77,7 @@
     <string name="app_main_icon">Icono Principal de la Aplicación</string>
 
     <!-- Profile Page -->
-    <string name="profile">Perfil: %1$s %2$s</string>
+    <string name="profile">Perfil </string>
     <string name="manage_users">Gestionar Usuarios</string>
     <string name="add_user">Agregar Usuario</string>
     <string name="add_users">Agregar Usuarios</string>
@@ -83,8 +85,12 @@
     <string name="user_details">Detalles del Usuario</string>
     <string name="you_cannot_edit_sub_user">No puedes editar los detalles del usuario para un usuario secundario, por favor cambia al usuario principal para editar los detalles del usuario</string>
     <string name="change_user">Cambiar Usuario</string>
-    <string name="user_initials">%1$s%2$s</string>
+    <string name="user_initials"></string>
     <string name="type_password_here">Escriba la contraseña aquí</string>
+    <string name="home">Inicio</string>
+    <string name="medications">Medicamentos</string>
+    <string name="refill">Recargar</string>
+    <string name="history">Historial</string>
 
     <!-- Medication Refill Page -->
     <string name="medication_refill">Recarga de Medicamentos</string>
@@ -92,13 +98,13 @@
     <string name="direction">Dirección</string>
     <string name="call">Llamar</string>
     <string name="refill_information">Información de Recarga:</string>
-    <string name="next_refill_date">Próxima Fecha de Recarga: %1$s</string>
-    <string name="pharmacy_name">Nombre de la Farmacia: %1$s</string>
-    <string name="pharmacy_contact">Contacto de la Farmacia: %1$s</string>
-    <string name="pharmacy_address">Dirección de la Farmacia: %1$s</string>
+    <string name="next_refill_date">Próxima Fecha de Recarga: </string>
+    <string name="pharmacy_name">Nombre de la Farmacia: </string>
+    <string name="pharmacy_contact">Contacto de la Farmacia: </string>
+    <string name="pharmacy_address">Dirección de la Farmacia: </string>
     <string name="more_information">Más información sobre el medicamento:</string>
-    <string name="quantity">Cantidad: %1$s</string>
-    <string name="notes_details">Notas: %1$s</string>
+    <string name="quantity">Cantidad: </string>
+    <string name="notes_details">Notas: </string>
     <string name="pills_left">pastillas restantes</string>
 
     <!-- Edit Medication History Page -->
@@ -116,4 +122,23 @@
     <string name="pill_pics">Fotos de Pastillas</string>
     <string name="view_all_medication_refills">Ver todas las recargas de medicamentos</string>
     <string name="edit_medication">Editar medicamento</string>
+    <string name="confirm_refill">Confirmar recarga</string>
+    <string name="confirm_refill_message">¿Está seguro de que recargó este medicamento?</string>
+    <string name="delete_user">Eliminar usuario</string>
+    <string name="confirm_user_delete">Confirmar eliminación de usuario</string>
+    <string name="confirm_user_delete_message">¿Está seguro de que desea eliminar a este usuario?</string>
+    <string name="logout">Log Out</string>
+
+    <!-- Language Strings -->
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_italian">Italiano</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_russian">Русский</string>
+
 </resources>

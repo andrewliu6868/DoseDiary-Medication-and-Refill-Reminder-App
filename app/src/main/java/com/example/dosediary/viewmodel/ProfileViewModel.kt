@@ -29,23 +29,44 @@ class ProfileViewModel @Inject constructor(
     private val userDao = DoseDiaryDatabase.getInstance(application).userDao
     private val userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
 
+//    private val _mainUser: MutableStateFlow<User?> = userState.mainUser
+//    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
+//    private val _managedUsers: MutableStateFlow<List<User>> = userState.managedUsers
+
+
     private val _mainUser: MutableStateFlow<User?> = userState.mainUser
     private val _currentUser: MutableStateFlow<User?> = userState.currentUser
     private val _managedUsers: MutableStateFlow<List<User>> = userState.managedUsers
+
+
+
     private val _addUserFirstName: MutableStateFlow<String> = MutableStateFlow("")
     private val _addUserLastName: MutableStateFlow<String> = MutableStateFlow("")
-    private val _editMainUserFirstName: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.firstName ?: "")
-    private val _editMainUserLastName: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.lastname ?: "")
-    private val _editMainUserEmail: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.email ?: "")
-    private val _editMainUserPassword: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.password ?: "")
+    private val _editCurrentUserFirstName: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.firstName ?: "")
+    private val _editCurrentUserLastName: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.lastname ?: "")
+    private val _editCurrentUserEmail: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.email ?: "")
+    private val _editCurrentUserPassword: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.password ?: "")
+    private val _showDeleteConfirmationDialog: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     init {
         viewModelScope.launch {
-            _mainUser.collect { mainUser ->
-                _editMainUserFirstName.value = mainUser?.firstName ?: ""
-                _editMainUserLastName.value = mainUser?.lastname ?: ""
-                _editMainUserEmail.value = mainUser?.email ?: ""
-                _editMainUserPassword.value = mainUser?.password ?: ""
+
+            val user1 = userDao.getUserById(1).firstOrNull() ?: User()
+            _mainUser.value = user1
+            _currentUser.value = user1
+
+            val newRelationShips = userRelationshipDao.getUserRelationshipsByMainUserId(1).first()
+            val managedUsers = (listOf(_mainUser.value) + newRelationShips.map { userRelationship ->
+                userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
+            }).filterIsInstance<User>()
+
+            _managedUsers.value = managedUsers
+
+            _currentUser.collect { currentUser ->
+                _editCurrentUserFirstName.value = currentUser?.firstName ?: ""
+                _editCurrentUserLastName.value = currentUser?.lastname ?: ""
+                _editCurrentUserEmail.value = currentUser?.email ?: ""
+                _editCurrentUserPassword.value = currentUser?.password ?: ""
             }
         }
     }
@@ -56,10 +77,11 @@ class ProfileViewModel @Inject constructor(
         _managedUsers,
         _addUserFirstName,
         _addUserLastName,
-        _editMainUserFirstName,
-        _editMainUserLastName,
-        _editMainUserEmail,
-        _editMainUserPassword)
+        _editCurrentUserFirstName,
+        _editCurrentUserLastName,
+        _editCurrentUserEmail,
+        _editCurrentUserPassword,
+        _showDeleteConfirmationDialog)
     ) { list ->
         ProfileState(
             mainUser = list[0] as User?,
@@ -67,10 +89,11 @@ class ProfileViewModel @Inject constructor(
             managedUsers = list[2] as List<User>,
             addUserFirstName = list[3] as String,
             addUserLastName = list[4] as String,
-            editMainUserFirstName = list[5] as String,
-            editMainUserLastName = list[6] as String,
-            editMainUserEmail = list[7] as String,
-            editMainUserPassword = list[8] as String
+            editCurrentUserFirstName = list[5] as String,
+            editCurrentUserLastName = list[6] as String,
+            editCurrentUserEmail = list[7] as String,
+            editCurrentUserPassword = list[8] as String,
+            showDeleteConfirmationDialog = list[9] as Boolean
         )
     }.stateIn(
         viewModelScope,
@@ -111,42 +134,64 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.onChangeUser -> {
                 userState.setcurrentUser(event.user)
             }
-            is ProfileEvent.onMainUserFirstNameChanged -> {
-                _editMainUserFirstName.value = event.firstName
+            is ProfileEvent.onCurrentUserFirstNameChanged -> {
+                _editCurrentUserFirstName.value = event.firstName
             }
-            is ProfileEvent.onMainUserLastNameChanged -> {
-                _editMainUserLastName.value = event.lastName
+            is ProfileEvent.onCurrentUserLastNameChanged -> {
+                _editCurrentUserLastName.value = event.lastName
             }
-            is ProfileEvent.onMainUserEmailChanged -> {
-                _editMainUserEmail.value = event.email
+            is ProfileEvent.onCurrentUserEmailChanged -> {
+                _editCurrentUserEmail.value = event.email
             }
-            is ProfileEvent.onMainUserPasswordChanged -> {
-                _editMainUserPassword.value = event.password
+            is ProfileEvent.onCurrentUserPasswordChanged -> {
+                _editCurrentUserPassword.value = event.password
             }
-            ProfileEvent.updateMainUser -> {
-                val firstName = state.value.editMainUserFirstName
-                val lastName = state.value.editMainUserLastName
-                val email = state.value.editMainUserEmail
-                val password = state.value.editMainUserPassword
+            ProfileEvent.updateCurrentUser -> {
+                val firstName = state.value.editCurrentUserFirstName
+                val lastName = state.value.editCurrentUserLastName
+                val email = state.value.editCurrentUserEmail
+                val password = state.value.editCurrentUserPassword
 
                 viewModelScope.launch {
-                    userDao.updateUser(state.value.mainUser!!.id, firstName, lastName, email, password)
-                    userState.setMainUser(userDao.getUserById(state.value.mainUser!!.id).first())
+                    userDao.updateUser(state.value.currentUser!!.id, firstName, lastName, email, password)
+                    userState.setcurrentUser(userDao.getUserById(state.value.currentUser!!.id).first())
 
                     val newRelationShips = userRelationshipDao.getUserRelationshipsByMainUserId(state.value.mainUser!!.id).firstOrNull() ?: emptyList()
-
                     userState.setMangedUsers(listOf(state.value.mainUser ?: User()) + newRelationShips.map { userRelationship ->
                         userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
                     })
 
-                    userState.setcurrentUser(userDao.getUserById(state.value.mainUser!!.id).first())
+//                    userState.setcurrentUser(userDao.getUserById(state.value.mainUser!!.id).first())
                 }
             }
-            ProfileEvent.cancelUpdateMainUser -> {
-                _editMainUserFirstName.value = state.value.mainUser?.firstName ?: ""
-                _editMainUserLastName.value = state.value.mainUser?.lastname ?: ""
-                _editMainUserEmail.value = state.value.mainUser?.email ?: ""
-                _editMainUserPassword.value = state.value.mainUser?.password ?: ""
+            ProfileEvent.cancelUpdateCurrentUser -> {
+                _editCurrentUserFirstName.value = state.value.currentUser?.firstName ?: ""
+                _editCurrentUserLastName.value = state.value.currentUser?.lastname ?: ""
+                _editCurrentUserEmail.value = state.value.currentUser?.email ?: ""
+                _editCurrentUserPassword.value = state.value.currentUser?.password ?: ""
+            }
+            ProfileEvent.onDeleteCurrentUser -> {
+                _showDeleteConfirmationDialog.value = true
+            }
+            ProfileEvent.confirmDeleteCurrentUser -> {
+                viewModelScope.launch {
+                    userDao.deleteUserById(state.value.currentUser!!.id)
+                    userState.setcurrentUser(userDao.getUserById(state.value.mainUser!!.id).first())
+
+                    val newRelationShips = userRelationshipDao.getUserRelationshipsByMainUserId(state.value.mainUser!!.id).firstOrNull() ?: emptyList()
+                    userState.setMangedUsers(listOf(state.value.mainUser ?: User()) + newRelationShips.map { userRelationship ->
+                        userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
+                    })
+                }
+                _showDeleteConfirmationDialog.value = false
+            }
+            ProfileEvent.cancelDeleteCurrentUser -> {
+                _showDeleteConfirmationDialog.value = false
+            }
+            ProfileEvent.onUserLogout -> {
+                userState.setMainUser(null)
+                userState.setcurrentUser(null)
+                userState.setMangedUsers(emptyList())
             }
         }
     }

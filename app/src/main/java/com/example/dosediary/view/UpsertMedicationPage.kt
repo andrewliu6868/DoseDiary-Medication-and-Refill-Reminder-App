@@ -1,11 +1,36 @@
 package com.example.dosediary.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
@@ -18,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dosediary.R
@@ -25,10 +51,11 @@ import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.components.DatePicker
 import com.example.dosediary.components.TimePicker
 import com.example.dosediary.events.UpsertMedicationEvent
+import com.example.dosediary.state.AutocompleteResult
 import com.example.dosediary.state.UpsertMedicationState
 import com.example.dosediary.ui.theme.Primary
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.dosediary.viewmodel.ReminderViewModel
+import java.util.Date
 
 @Composable
 fun UpsertMedicationPage(
@@ -63,12 +90,12 @@ fun UpsertMedicationPage(
             item { MedDurationSection(state.startDate, state.endDate) { onEvent(it) } }
             item { MedFrequencySection(state.frequency, state.times) { onEvent(it) } }
             item { RefillDaysSection(state.refillDays) { onEvent(it) } }
-            item { AddressSection(state.address, state.postalCode, state.postalCodeError) { onEvent(it) } }
+            item { AddressSection(state.address, state.locationAutofill) { onEvent(it) } }
             item { NoteSection(state.note) { onEvent(it) } }
             if (mode == "edit") {
                 item { SaveDeleteRow(navController, state.medicationId) { onEvent(it) } }
             } else {
-                item { SaveRow(navController) { onEvent(it) } }
+                item { SaveRow(navController, onEvent, state.medicationName, state.times, state.startDate, state.endDate, state.refillDays) }
             }
         }
         if (state.showConfirmDialog) {
@@ -218,13 +245,39 @@ fun NoteSection(note: String, onEvent: (UpsertMedicationEvent) -> Unit) {
 }
 
 @Composable
-fun AddressSection(address: String, postalCode: String, postalCodeError: String?, onEvent: (UpsertMedicationEvent) -> Unit) {
+fun AddressSection(address: String, locationAutofill:List<AutocompleteResult>, onEvent: (UpsertMedicationEvent) -> Unit) {
     Text(
         text = stringResource(R.string.pharmacy_location),
         style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 17.sp)
     )
     Spacer(modifier = Modifier.height(10.dp))
 
+    AnimatedVisibility(
+        locationAutofill.isNotEmpty(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .height(150.dp)
+        ) {
+            items(locationAutofill) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clickable {
+                        onEvent(UpsertMedicationEvent.OnClickWithRipple(it))
+                    }
+
+                ) {
+                    Text(it.address)
+                }
+            }
+        }
+        Spacer(Modifier.height(16.dp))
+    }
     // Address
     OutlinedTextField(
         value = address,
@@ -236,23 +289,23 @@ fun AddressSection(address: String, postalCode: String, postalCodeError: String?
     Spacer(modifier = Modifier.height(10.dp))
 
     // Postal code
-    OutlinedTextField(
-        value = postalCode,
-        onValueChange = { onEvent(UpsertMedicationEvent.OnPostalCodeChanged(it)) },
-        label = { Text(stringResource(R.string.postal_code)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        modifier = Modifier.fillMaxWidth(),
-        isError = postalCodeError != null
-    )
-
-    if (postalCodeError != null) {
-        Text(
-            text = postalCodeError,
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-    }
+//    OutlinedTextField(
+//        value = postalCode,
+//        onValueChange = { onEvent(UpsertMedicationEvent.OnPostalCodeChanged(it)) },
+//        label = { Text(stringResource(R.string.postal_code)) },
+//        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//        modifier = Modifier.fillMaxWidth(),
+//        isError = postalCodeError != null
+//    )
+//
+//    if (postalCodeError != null) {
+//        Text(
+//            text = postalCodeError,
+//            color = MaterialTheme.colorScheme.error,
+//            style = MaterialTheme.typography.bodySmall,
+//            modifier = Modifier.padding(start = 16.dp)
+//        )
+//    }
 }
 
 @Composable
@@ -285,13 +338,17 @@ fun SaveDeleteRow(navController: NavHostController, medicationId: Int, onEvent: 
 }
 
 @Composable
-fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -> Unit) {
+fun SaveRow(navController: NavHostController, onEvent: (UpsertMedicationEvent) -> Unit, medName: String, times: List<Date>, startDate: Date, endDate: Date, refillDays: Int) {
+    val reminderViewModel = hiltViewModel<ReminderViewModel>()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(
-            onClick = { onEvent(UpsertMedicationEvent.SaveMedication) },
+            onClick = { onEvent(UpsertMedicationEvent.SaveMedication)
+                reminderViewModel.scheduleMedReminders(medName, times, startDate,endDate)
+                reminderViewModel.scheduleRefill(medName, refillDays)
+             },
             colors = ButtonDefaults.buttonColors(containerColor = Primary),
             modifier = Modifier.weight(1f),
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 5.dp)

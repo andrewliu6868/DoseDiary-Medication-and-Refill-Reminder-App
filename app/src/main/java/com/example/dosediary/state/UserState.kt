@@ -1,13 +1,7 @@
 package com.example.dosediary.state
 
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.Flow
 import com.example.dosediary.model.entity.User
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.launch
 
 class UserState {
 
@@ -20,10 +14,10 @@ class UserState {
     val managedUsers: MutableStateFlow<List<User>> get() = _managedUsers
 
 
-    fun setMainUser(user: User) {
+    fun setMainUser(user: User?) {
         _mainUser.value = user
     }
-    fun setcurrentUser(user: User) {
+    fun setcurrentUser(user: User?) {
         _currentUser.value = user
     }
 

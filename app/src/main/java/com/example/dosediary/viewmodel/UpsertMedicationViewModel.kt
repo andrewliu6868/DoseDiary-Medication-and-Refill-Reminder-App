@@ -7,8 +7,15 @@ import com.example.dosediary.state.UpsertMedicationState
 import com.example.dosediary.events.UpsertMedicationEvent
 import com.example.dosediary.state.UserState
 import com.example.dosediary.model.entity.Medication
+import com.example.dosediary.state.AutocompleteResult
 import com.example.dosediary.utils.DoseDiaryDatabase
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -24,6 +31,10 @@ class UpsertMedicationViewModel @Inject constructor(
     private val _state = MutableStateFlow(UpsertMedicationState())
     val state = _state.asStateFlow()
 
+    lateinit var placesClient: PlacesClient
+    lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var job: Job? = null
+
     fun initialize(medication: Medication?) {
         if (medication != null) {
             _state.value = _state.value.copy(
@@ -36,12 +47,12 @@ class UpsertMedicationViewModel @Inject constructor(
                 refillDays = medication.refillDays,
                 note = medication.note,
                 address = medication.address,
-                postalCode = medication.postalCode
             )
         } else {
             _state.value = UpsertMedicationState() // Reset state for adding new medication
         }
     }
+
 
     fun onEvent(event: UpsertMedicationEvent) {
         when (event) {
@@ -83,11 +94,14 @@ class UpsertMedicationViewModel @Inject constructor(
             }
             is UpsertMedicationEvent.OnAddressChanged -> {
                 _state.value = _state.value.copy(address = event.address)
+                searchPlaces(event.address)
             }
-            is UpsertMedicationEvent.OnPostalCodeChanged -> {
-                val postalCodeRegex = Regex("^[A-Za-z]\\d[A-Za-z][ -]?\\d[A-Za-z]\\d$")
-                val postalCodeError = if (postalCodeRegex.matches(event.postalCode)) null else "Invalid postal code format"
-                _state.value = _state.value.copy(postalCode = event.postalCode, postalCodeError = postalCodeError)
+            is UpsertMedicationEvent.OnClickWithRipple -> {
+                getCoordinates(event.autoCompleteResult)
+                _state.value = _state.value.copy(
+                    address = event.autoCompleteResult.address,
+                    locationAutofill = emptyList()
+                )
             }
             UpsertMedicationEvent.SaveMedication -> {
                 _state.value = _state.value.copy(showConfirmDialog = true)
@@ -117,7 +131,45 @@ class UpsertMedicationViewModel @Inject constructor(
         }
     }
 
-    private fun UpsertMedicationState.toMedication(): Medication {
+    fun searchPlaces(query: String) {
+        job?.cancel()
+        _state.value = _state.value.copy (locationAutofill = emptyList())
+        job = viewModelScope.launch {
+            val request = FindAutocompletePredictionsRequest.builder().setQuery(query).build()
+            placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
+                _state.value = _state.value.copy(locationAutofill = _state.value.locationAutofill + response.autocompletePredictions.map {
+                    AutocompleteResult(
+                        it.getFullText(null).toString(), it.placeId
+                    )
+                })
+//                locationAutofill += response.autocompletePredictions.map {
+//                    AutocompleteResult(
+//                        it.getFullText(null).toString(), it.placeId
+//                    )
+//                }
+            }.addOnFailureListener {
+                it.printStackTrace()
+                println(it.cause)
+                println(it.message)
+            }
+        }
+    }
+
+    fun getCoordinates(result: AutocompleteResult) {
+        val placeFields = listOf(Place.Field.LAT_LNG)
+        val request = FetchPlaceRequest.newInstance(result.placeId, placeFields)
+        placesClient.fetchPlace(request).addOnSuccessListener {
+            if (it != null) {
+                _state.value = _state.value.copy(
+                    addressLatLng = it.place.latLng!!
+                )
+            }
+        }.addOnFailureListener {
+            it.printStackTrace()
+        }
+    }
+
+        private fun UpsertMedicationState.toMedication(): Medication {
         return Medication(
             id = this.medicationId,
             medicationName = this.medicationName,
@@ -128,8 +180,7 @@ class UpsertMedicationViewModel @Inject constructor(
             refillDays = this.refillDays,
             note = this.note,
             address = this.address,
-            postalCode = this.postalCode,
-            postalCodeError = this.postalCodeError,
+            addressLatLng = this.addressLatLng,
             lastRefilledDate = this.startDate,
             owner = 1  // TODO: Change this after User Profile is Ready
         )

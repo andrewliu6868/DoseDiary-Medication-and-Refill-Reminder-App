@@ -1,6 +1,7 @@
 package com.example.dosediary.view
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,6 +34,8 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.state.MedRefillState
+import com.example.dosediary.state.MedicationWithNextRefillDate
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberMarkerState
 
 @Composable
@@ -67,7 +70,7 @@ fun MedicationRefillDetailPage(
 }
 
 @Composable
-fun MedicationRefillDetail(medication: Medication) {
+fun MedicationRefillDetail(medicationWithNextRefillDate: MedicationWithNextRefillDate) {
     Card(
         shape = RoundedCornerShape(35.dp),
         colors = CardDefaults.cardColors(containerColor = ContainerBackground),
@@ -77,11 +80,11 @@ fun MedicationRefillDetail(medication: Medication) {
         Column(modifier = Modifier.padding(16.dp)) {
             Spacer(modifier = Modifier.height(8.dp))
             BasicText(
-                text = "${medication.medicationName}: 0 ${stringResource(R.string.pills_left)}", // fix it later
+                text = "${medicationWithNextRefillDate.medication.medicationName}:", // fix it later
                 style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            MedicationRefillGoogleMaps()
+            MedicationRefillGoogleMaps(medicationWithNextRefillDate.medication)
             Spacer(modifier = Modifier.height(8.dp))
             Row() {
                 Button(onClick = { /*TODO*/ },
@@ -127,30 +130,30 @@ fun MedicationRefillDetail(medication: Medication) {
                             append(stringResource(R.string.next_refill_date))
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
+                            append(medicationWithNextRefillDate.nextRefillDate.toString()) // fix later
                         }
                     }
                 )
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append(stringResource(R.string.pharmacy_name))
-                        }
-                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
-                        }
-                    }
-                )
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
-                            append(stringResource(R.string.pharmacy_contact))
-                        }
-                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
-                        }
-                    }
-                )
+//                Text(
+//                    buildAnnotatedString {
+//                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+//                            append(stringResource(R.string.pharmacy_name))
+//                        }
+//                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+//                            append("") // fix later
+//                        }
+//                    }
+//                )
+//                Text(
+//                    buildAnnotatedString {
+//                        withStyle(style = SpanStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp)) {
+//                            append(stringResource(R.string.pharmacy_contact))
+//                        }
+//                        withStyle(style = SpanStyle(fontSize = 12.sp)) {
+//                            append("") // fix later
+//                        }
+//                    }
+//                )
 
                 Text(
                     buildAnnotatedString {
@@ -158,7 +161,7 @@ fun MedicationRefillDetail(medication: Medication) {
                             append(stringResource(R.string.pharmacy_address))
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
+                            append(medicationWithNextRefillDate.medication.address) // fix later
                         }
                     }
                 )
@@ -196,7 +199,7 @@ fun MedicationRefillDetail(medication: Medication) {
                             append(stringResource(R.string.quantity))
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
+                            append(medicationWithNextRefillDate.medication.frequency) // fix later
                         }
                     }
                 )
@@ -207,7 +210,7 @@ fun MedicationRefillDetail(medication: Medication) {
                             append(stringResource(R.string.notes))
                         }
                         withStyle(style = SpanStyle(fontSize = 12.sp)) {
-                            append("") // fix later
+                            append(medicationWithNextRefillDate.medication.note) // fix later
                         }
                     }
                 )
@@ -237,11 +240,12 @@ fun MedRefillGoogleMaps(location: LatLng) {
         )
     }
 }
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun MedicationRefillGoogleMaps() {
-    val singapore = LatLng(1.35, 103.87)
+fun MedicationRefillGoogleMaps(medication: Medication) {
+//    val singapore = LatLng(1.35, 103.87)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        position = CameraPosition.fromLatLngZoom(medication.addressLatLng, 10f)
     }
     GoogleMap(
         modifier = Modifier
@@ -250,10 +254,10 @@ fun MedicationRefillGoogleMaps() {
             .height(200.dp),
         cameraPositionState = cameraPositionState
     ) {
-        /*Marker(
-            state = MarkerState(position = singapore),
-            title = "Singapore",
-            snippet = "Marker in Singapore"
-        )*/
+        Marker(
+            state = MarkerState(position = medication.addressLatLng),
+            title = "Pharmacy Name",
+            snippet = "Pharmacy Address"
+        )
     }
 }

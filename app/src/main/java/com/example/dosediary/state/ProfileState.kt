@@ -9,8 +9,9 @@ data class ProfileState (
     val addUserFirstName: String = "",
     val addUserLastName: String = "",
     val isAddingUser: Boolean = false,
-    val editMainUserFirstName: String = "",
-    val editMainUserLastName: String = "",
-    val editMainUserEmail: String = "",
-    val editMainUserPassword: String = ""
+    val editCurrentUserFirstName: String = "",
+    val editCurrentUserLastName: String = "",
+    val editCurrentUserEmail: String = "",
+    val editCurrentUserPassword: String = "",
+    val showDeleteConfirmationDialog: Boolean = false,
 )

@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.google.android.gms.maps.model.LatLng
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,6 +38,17 @@ class TypeConverter {
     fun fromMap(value: Map<Date, Boolean>?): String {
         val mapString = value?.mapKeys { dateFormat.format(it.key) }
         return gson.toJson(mapString)
+    }
+
+    @TypeConverter
+    fun fromLatLng(latLng: String): LatLng {
+        val (latitude, longitude) = latLng.split(",")
+        return LatLng(latitude.toDouble(), longitude.toDouble())
+    }
+
+    @TypeConverter
+    fun toLatLng(latLng: LatLng): String {
+        return "${latLng.latitude},${latLng.longitude}"
     }
 
     @TypeConverter

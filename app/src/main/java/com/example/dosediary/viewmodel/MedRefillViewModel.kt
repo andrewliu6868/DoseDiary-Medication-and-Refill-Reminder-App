@@ -9,6 +9,7 @@ import com.example.dosediary.utils.DoseDiaryDatabase
 import com.example.dosediary.model.entity.User
 import com.example.dosediary.state.UserState
 import com.example.dosediary.state.MedRefillState
+import com.example.dosediary.state.defaultMedication
 import com.example.dosediary.state.MedicationWithNextRefillDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +26,9 @@ class MedRefillViewModel  @Inject constructor(
     application: Application
 ): ViewModel() {
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
-    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
+//    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
+    private val userDao = DoseDiaryDatabase.getInstance(application).userDao
+    private val _currentUser: StateFlow<User?> = userDao.getUserById(1).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), User())
 
     private val _state = MutableStateFlow(MedRefillState())
     val state: StateFlow<MedRefillState> = _state.asStateFlow()
@@ -71,16 +74,38 @@ class MedRefillViewModel  @Inject constructor(
     fun onEvent(event: MedRefillEvent) {
         when(event) {
             is MedRefillEvent.SetRefillCompleted -> {
-                viewModelScope.launch {
-                    medicationDao.updateLastRefillDate(
-                        event.medicationWithNextRefillDate.medication.id,
-                        event.medicationWithNextRefillDate.nextRefillDate ?: Date()
-                    )
-                }
+                _state.value = _state.value.copy(
+                    showRefillConfirmationDialog = true,
+                    selectedRefilledMedication = event.medicationWithNextRefillDate
+                )
             }
             is MedRefillEvent.SetSelectedRefillDetail -> {
                 _state.value = _state.value.copy(
-                    selectedRefillDetail = event.medication
+                    selectedRefillDetail = event.medicationWithNextRefillDate
+                )
+            }
+            MedRefillEvent.ConfirmRefillMedication -> {
+                viewModelScope.launch {
+                    medicationDao.updateLastRefillDate(
+                        _state.value.selectedRefilledMedication.medication.id,
+                        _state.value.selectedRefilledMedication.nextRefillDate ?: Date()
+                    )
+                }
+                _state.value = _state.value.copy(
+                    showRefillConfirmationDialog = false,
+                    selectedRefilledMedication = MedicationWithNextRefillDate(
+                        defaultMedication(),
+                        null
+                    )
+                )
+            }
+            MedRefillEvent.DismissRefillDialog -> {
+                _state.value = _state.value.copy(
+                    showRefillConfirmationDialog = false,
+                    selectedRefilledMedication = MedicationWithNextRefillDate(
+                        defaultMedication(),
+                        null
+                    )
                 )
             }
         }
