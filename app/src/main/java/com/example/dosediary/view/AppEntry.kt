@@ -22,12 +22,24 @@ import com.example.dosediary.viewmodel.MedRefillViewModel
 import com.example.dosediary.viewmodel.MedicationHistoryViewModel
 import com.example.dosediary.viewmodel.MedicationListViewModel
 import com.example.dosediary.viewmodel.ProfileViewModel
+import com.example.dosediary.viewmodel.SignUpViewModel
 import com.example.dosediary.viewmodel.UpsertMedHistoryViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.libraries.places.api.net.PlacesClient
 
 @Composable
-fun AppEntry(loginViewModel: LoginViewModel, profileViewModel: ProfileViewModel , medRefillViewModel: MedRefillViewModel, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient) {
+fun AppEntry(
+    upsertMedHistoryViewModel: UpsertMedHistoryViewModel,
+    medicationHistoryViewModel: MedicationHistoryViewModel,
+    upsertMedicationViewModel: UpsertMedicationViewModel,
+    medicationListViewModel: MedicationListViewModel,
+    signUpViewModel: SignUpViewModel,
+    loginViewModel: LoginViewModel,
+    profileViewModel: ProfileViewModel,
+    medRefillViewModel: MedRefillViewModel,
+    placesClient: PlacesClient,
+    fusedLocationClient: FusedLocationProviderClient
+) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
@@ -44,39 +56,63 @@ fun AppEntry(loginViewModel: LoginViewModel, profileViewModel: ProfileViewModel 
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            MainAppNavigation(loginViewModel, profileViewModel, medRefillViewModel, navController, placesClient, fusedLocationClient)
+            MainAppNavigation(
+                upsertMedHistoryViewModel,
+                medicationHistoryViewModel,
+                upsertMedicationViewModel,
+                medicationListViewModel,
+                signUpViewModel,
+                loginViewModel,
+                profileViewModel,
+                medRefillViewModel,
+                navController,
+                placesClient,
+                fusedLocationClient
+            )
         }
     }
 }
 
 
 @Composable
-fun MainAppNavigation (loginViewModel: LoginViewModel,profileViewModel: ProfileViewModel , medRefillViewModel: MedRefillViewModel, navController: NavHostController, placesClient: PlacesClient, fusedLocationClient: FusedLocationProviderClient){
+fun MainAppNavigation (
+    upsertMedHistoryViewModel: UpsertMedHistoryViewModel,
+    medicationHistoryViewModel: MedicationHistoryViewModel,
+    upsertMedicationViewModel: UpsertMedicationViewModel,
+    medicationListViewModel: MedicationListViewModel,
+    signUpViewModel: SignUpViewModel,
+    loginViewModel: LoginViewModel,
+    profileViewModel: ProfileViewModel ,
+    medRefillViewModel: MedRefillViewModel,
+    navController: NavHostController,
+    placesClient: PlacesClient,
+    fusedLocationClient: FusedLocationProviderClient
+){
     //View Model
-    val addMedicationViewModel = hiltViewModel<UpsertMedicationViewModel>()
-    val medicationHistoryViewModel = hiltViewModel<MedicationHistoryViewModel>()
+//    val addMedicationViewModel = hiltViewModel<UpsertMedicationViewModel>()
+//    val medicationHistoryViewModel = hiltViewModel<MedicationHistoryViewModel>()
 //    val medRefillViewModel = hiltViewModel<MedRefillViewModel>()
 //    val profileViewModel = hiltViewModel<ProfileViewModel, >()
-    val medicationListViewModel = hiltViewModel<MedicationListViewModel>()
-    val addMedHistoryViewModel = hiltViewModel<UpsertMedHistoryViewModel>()
+//    val medicationListViewModel = hiltViewModel<MedicationListViewModel>()
+//    val UpsertMedHistoryViewModel = hiltViewModel<UpsertMedHistoryViewModel>()
 
-    addMedicationViewModel.placesClient = placesClient
-    addMedicationViewModel.fusedLocationClient = fusedLocationClient
+    upsertMedicationViewModel.placesClient = placesClient
+    upsertMedicationViewModel.fusedLocationClient = fusedLocationClient
 
     //State
-    val addMedicationState = addMedicationViewModel.state.collectAsState().value
+    val addMedicationState = upsertMedicationViewModel.state.collectAsState().value
     val medicationHistoryState = medicationHistoryViewModel.state.collectAsState().value
     val medRefillState = medRefillViewModel.state.collectAsState().value
     val profileState = profileViewModel.state.collectAsState().value
     val medicationListState = medicationListViewModel.state.collectAsState().value
-    val addMedHistoryState = addMedHistoryViewModel.state.collectAsState().value
+    val upsertMedHistoryState = upsertMedHistoryViewModel.state.collectAsState().value
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") { LoginPage(loginViewModel, navController)}
-        composable("signup") { SignUpPage(navController)}
+        composable("signup") { SignUpPage(signUpViewModel, navController)}
         composable("home") { HomePage(navController, medicationListState, medRefillState, medicationListViewModel, medRefillViewModel::onEvent, medicationHistoryViewModel)} //Todo
         composable("refill") { MedicationRefillPage(navController, medRefillState, medRefillViewModel::onEvent) }
-        composable("history") { MedicationHistoryPage(navController, medicationHistoryState, medicationHistoryViewModel::onEvent, addTestEntries = medicationHistoryViewModel::addTestEntries)}
+        composable("history") { MedicationHistoryPage(navController, medicationHistoryState, medicationHistoryViewModel::onEvent)}
         composable("profile") { ProfilePage(navController, profileState, profileViewModel::onEvent) }
         composable("medication") { MedicationListPage(navController, medicationListState, medicationListViewModel::onEvent) }
         composable("UpsertMedicationPage?mode={mode}") { backStackEntry ->
@@ -85,15 +121,15 @@ fun MainAppNavigation (loginViewModel: LoginViewModel,profileViewModel: ProfileV
 
             if (mode == "edit" && selectedMedication != null) {
                 LaunchedEffect(selectedMedication) {
-                    addMedicationViewModel.initialize(selectedMedication)
+                    upsertMedicationViewModel.initialize(selectedMedication)
                 }
             } else if (mode == "add") {
                 LaunchedEffect(Unit) {
-                    addMedicationViewModel.initialize(null)
+                    upsertMedicationViewModel.initialize(null)
                 }
             }
 
-            UpsertMedicationPage(navController, addMedicationState, addMedicationViewModel::onEvent)
+            UpsertMedicationPage(navController, addMedicationState, upsertMedicationViewModel::onEvent)
         }
         //RefillDetails: State is the Med Refill State, No Event because this page is just displaying, no input from user.
 //        composable(
@@ -110,15 +146,15 @@ fun MainAppNavigation (loginViewModel: LoginViewModel,profileViewModel: ProfileV
 
             if (mode == "edit" && selectedMedicationHistory != null) {
                 LaunchedEffect(selectedMedicationHistory) {
-                    addMedHistoryViewModel.initialize(selectedMedicationHistory)
+                    upsertMedHistoryViewModel.initialize(selectedMedicationHistory)
                 }
             } else if (mode == "add") {
                 LaunchedEffect(Unit) {
-                    addMedHistoryViewModel.initialize(null)
+                    upsertMedHistoryViewModel.initialize(null)
                 }
             }
 
-            UpsertMedicationHistoryPage(navController, addMedHistoryState, addMedHistoryViewModel::onEvent)
+            UpsertMedicationHistoryPage(navController, upsertMedHistoryState, upsertMedHistoryViewModel::onEvent)
         }
     }
 }

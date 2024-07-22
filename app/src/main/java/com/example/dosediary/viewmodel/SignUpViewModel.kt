@@ -2,6 +2,7 @@ package com.example.dosediary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.state.UserState
 import com.example.dosediary.utils.DoseDiaryDatabase
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val userState: UserState,
-    application: Application): ViewModel(){
+    application: Application
+): ViewModel(){
     private val _userDao = DoseDiaryDatabase.getInstance(application).userDao
     private val userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Idle)
@@ -47,11 +49,12 @@ class SignUpViewModel @Inject constructor(
     }
 
 }
-/*class SignUpViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
+
+class SignUpViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory{
     override fun <T: ViewModel> create(modelClass: Class<T>): T{
         if(modelClass.isAssignableFrom(SignUpViewModel::class.java)){
-            return SignUpViewModel(application) as T
+            return SignUpViewModel(userState, application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}*/
+}

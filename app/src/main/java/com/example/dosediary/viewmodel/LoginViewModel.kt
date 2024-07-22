@@ -37,6 +37,12 @@ class LoginViewModel @Inject constructor(
                     userState.setcurrentUser(currUser)
                     userState.setMainUser(currUser)
                     _loginState.value= LoginState.Success(currUser)
+
+                    val newRelationShips = userRelationshipDao.getUserRelationshipsByMainUserId(currUser.id).firstOrNull() ?: emptyList()
+                    userState.setMangedUsers(listOf(currUser) + newRelationShips.map { userRelationship ->
+                        _userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
+                    })
+
                 } else{
                     _loginState.value = LoginState.Error("User does not exist")
                 }

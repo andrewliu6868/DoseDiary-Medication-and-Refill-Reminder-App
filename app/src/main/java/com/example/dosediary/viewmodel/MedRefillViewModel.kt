@@ -27,9 +27,9 @@ class MedRefillViewModel  @Inject constructor(
     application: Application
 ): ViewModel() {
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
-//    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
-    private val userDao = DoseDiaryDatabase.getInstance(application).userDao
-    private val _currentUser: StateFlow<User?> = userDao.getUserById(1).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), User())
+    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
+//    private val userDao = DoseDiaryDatabase.getInstance(application).userDao
+//    private val _currentUser: StateFlow<User?> = userDao.getUserById(userState.currentUser.value.id).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), User())
 
     private val _state = MutableStateFlow(MedRefillState())
     val state: StateFlow<MedRefillState> = _state.asStateFlow()

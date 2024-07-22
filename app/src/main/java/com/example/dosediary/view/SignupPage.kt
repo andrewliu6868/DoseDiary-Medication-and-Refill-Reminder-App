@@ -48,13 +48,16 @@ import com.example.dosediary.viewmodel.SignUpViewModel
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 
-fun SignUpPage(navHostController: NavHostController){
-    val viewModel = hiltViewModel<SignUpViewModel>()
-    val signUpState by viewModel.signUpState.collectAsState()
+fun SignUpPage(
+    signUpViewModel: SignUpViewModel,
+    navHostController: NavHostController
+){
+
+    val signUpState by signUpViewModel.signUpState.collectAsState()
     when(signUpState){
         is SignUpState.Idle -> {
             SignUpAttempt{firstName, lastName, email, password ->
-                viewModel.addUser(firstName, lastName, email,password)
+                signUpViewModel.addUser(firstName, lastName, email,password)
             }
         }
 
@@ -64,7 +67,7 @@ fun SignUpPage(navHostController: NavHostController){
 
         is SignUpState.Success ->{
             // go back to Login Screen
-            viewModel.resetSignUpState()
+            signUpViewModel.resetSignUpState()
             navHostController.navigate("login")
         }
 
@@ -76,7 +79,7 @@ fun SignUpPage(navHostController: NavHostController){
                 color = Color.Red,
                 text = stringResource(R.string.error, signUpState.error))
             SignUpAttempt{firstName, lastName, email, password ->
-                viewModel.addUser(firstName, lastName, email,password)
+                signUpViewModel.addUser(firstName, lastName, email,password)
             }
         }
     }
