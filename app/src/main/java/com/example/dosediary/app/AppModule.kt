@@ -1,6 +1,7 @@
 package com.example.dosediary.app
 
 import android.content.Context
+import com.example.dosediary.event.UserEvent
 import com.example.dosediary.model.dao.MedicationHistoryDao
 import com.example.dosediary.state.UserState
 import com.example.dosediary.utils.DoseDiaryDatabase
@@ -17,9 +18,16 @@ import javax.inject.Singleton
 object AppModule {
 
     @Provides
+    @Singleton
     fun provideUserState(): UserState {
         return UserState()
     }
+//
+//    @Provides
+//    @Singleton
+//    fun provideUserEventHandler(userState: UserState): (UserEvent) -> Unit {
+//        return { event -> UserEvent(event) }
+//    }
 
     @Provides
     @Singleton

@@ -2,6 +2,7 @@ package com.example.dosediary.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,13 +13,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,60 +41,48 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.dosediary.R
+import com.example.dosediary.event.SignUpEvent
 import com.example.dosediary.state.SignUpState
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
-import com.example.dosediary.viewmodel.SignUpViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 
-fun SignUpPage(navHostController: NavHostController){
-    val viewModel = hiltViewModel<SignUpViewModel>()
-    val signUpState by viewModel.signUpState.collectAsState()
-    when(signUpState){
-        is SignUpState.Idle -> {
-            SignUpAttempt{firstName, lastName, email, password ->
-                viewModel.addUser(firstName, lastName, email,password)
-            }
+fun SignUpPage(
+    navController: NavController,
+    state: SignUpState,
+    onEvent: (SignUpEvent) -> Unit
+){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (state.errorMessage != null) {
+            Text(text = state.errorMessage, color = Color.Red)
         }
-
-        is SignUpState.Loading -> {
-
+        SignUpContent(navController, onEvent, state)
+        if (state.isLoading) {
+            SignUpLoading()
         }
-
-        is SignUpState.Success ->{
-            // go back to Login Screen
-            viewModel.resetSignUpState()
-            navHostController.navigate("login")
-        }
-
-        is SignUpState.Error -> {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                fontWeight = FontWeight.Bold,
-                color = Color.Red,
-                text = stringResource(R.string.error, signUpState.error))
-            SignUpAttempt{firstName, lastName, email, password ->
-                viewModel.addUser(firstName, lastName, email,password)
-            }
+        if (state.isSuccess) {
+            navController.navigate("login")
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
-    val email = remember { mutableStateOf("") }
-    val password = remember{ mutableStateOf("") }
-    val firstName = remember{mutableStateOf("")}
-    val lastName = remember { mutableStateOf("") }
-
-    Surface(
+fun SignUpContent(
+    navController: NavController,
+    onEvent: (SignUpEvent) -> Unit,
+    state: SignUpState
+) {    Surface(
         modifier = Modifier
             .fillMaxSize()
             .padding(50.dp),
@@ -113,9 +105,9 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(4.dp)),
                         label = { Text(text = stringResource(R.string.first_name)) },
-                        value = firstName.value,
+                        value = state.firstName,
                         onValueChange = {newText->
-                            firstName.value = newText
+                            SignUpEvent.OnFirstNameChanged(newText)
                         },
                         keyboardOptions = KeyboardOptions.Default,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -129,9 +121,9 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(4.dp)),
                         label = { Text(text = stringResource(R.string.last_name)) },
-                        value = lastName.value,
+                        value = state.lastName,
                         onValueChange = {newText->
-                            lastName.value = newText
+                            onEvent(SignUpEvent.OnLastNameChanged(newText))
                         },
                         keyboardOptions = KeyboardOptions.Default,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -145,9 +137,9 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(4.dp)),
                         label = { Text(text = stringResource(R.string.email)) },
-                        value = email.value,
-                        onValueChange = {newText->
-                            email.value = newText
+                        value = state.email,
+                        onValueChange = { newText ->
+                            onEvent(SignUpEvent.OnEmailChanged(newText))
                         },
                         keyboardOptions = KeyboardOptions.Default,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -161,9 +153,9 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(4.dp)),
                         label = { Text(text = stringResource(R.string.password)) },
-                        value = password.value,
-                        onValueChange = {newText->
-                            password.value = newText
+                        value = state.password,
+                        onValueChange = { newText ->
+                            onEvent(SignUpEvent.OnPasswordChanged(newText))
                         },
                         keyboardOptions = KeyboardOptions.Default,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -175,7 +167,7 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
             }
             Spacer(modifier = Modifier.height(20.dp))
             Button(
-                onClick = {onSignUp(firstName.value, lastName.value, email.value, password.value)},
+                onClick = { onEvent(SignUpEvent.SignUp) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(48.dp),
@@ -215,5 +207,19 @@ fun SignUpIcon(){
         Image(painter = painterResource(id = R.drawable.icon),
             contentDescription = stringResource(R.string.app_main_icon),
             modifier = Modifier.size(100.dp))
+    }
+}
+
+@Composable
+fun SignUpLoading() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        CircularProgressIndicator(
+            modifier = Modifier.width(32.dp),
+            color = MaterialTheme.colorScheme.secondary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+        )
     }
 }

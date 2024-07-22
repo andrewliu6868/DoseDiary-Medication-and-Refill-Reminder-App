@@ -21,7 +21,6 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class MedRefillViewModel  @Inject constructor(
-    private val userState: UserState,
     application: Application
 ): ViewModel() {
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao

@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.event.MedicationListEvent
 import com.example.dosediary.model.dao.MedicationDao
+import com.example.dosediary.model.entity.Medication
 import com.example.dosediary.state.MedicationListState
+import com.example.dosediary.state.UpsertMedicationState
+import com.example.dosediary.state.UserState
 import com.example.dosediary.utils.DoseDiaryDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,15 +19,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MedicationListViewModel @Inject constructor(
-    application: Application
+    application: Application,
 ) : ViewModel() {
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
     private val _state = MutableStateFlow(MedicationListState())
     val state: StateFlow<MedicationListState> = _state
 
-    init {
+    fun initialize(userId: Int) {
         viewModelScope.launch {
-            medicationDao.getMedicationOrderedByFirstName().collect { medications ->
+            medicationDao.getMedicationOrderedByFirstName(userId).collect { medications ->
                 _state.value = _state.value.copy(medicationList = medications)
             }
         }

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -52,8 +51,10 @@ import androidx.navigation.NavController
 import com.example.dosediary.R
 import com.example.dosediary.components.CustomTopAppBar
 import com.example.dosediary.event.ProfileEvent
+import com.example.dosediary.event.UserEvent
 import com.example.dosediary.model.entity.User
 import com.example.dosediary.state.ProfileState
+import com.example.dosediary.state.UserState
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.OutlineTextField
 import com.example.dosediary.ui.theme.Primary
@@ -70,7 +71,7 @@ fun ProfilePage(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                header = "Profile: ${state.currentUser?.firstName} ${state.currentUser?.lastname}",
+                header = "Profile: ${state.currentUser?.firstName} ${state.currentUser?.lastName}",
                 showNavigationIcon = false,
                 navController = navController,
                 imageResId = R.drawable.icon,  // Customizable icon
@@ -223,7 +224,6 @@ fun ManageUsers(
                     }
                 ) }
             }
-
         }
     }
 }
@@ -251,12 +251,12 @@ fun Users(user: User, onItemClick: () -> Unit = {}) {
                         radius = 80.0f
                     )
                 },
-            text = user.firstName[0].toString() + user.lastname[0].toString(),
+            text = user.firstName[0].toString() + user.lastName[0].toString(),
             style = TextStyle(color = Color.White, fontSize = 20.sp)
         )
         Spacer(modifier = Modifier.height(1.dp))
         BasicText(
-            text = user.firstName + " " + user.lastname,
+            text = user.firstName + " " + user.lastName,
             style = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold, fontSize = 10.sp)
         )
 

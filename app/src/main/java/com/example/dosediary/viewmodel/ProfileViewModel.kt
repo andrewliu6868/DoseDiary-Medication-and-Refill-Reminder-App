@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.dosediary.event.ProfileEvent
 import com.example.dosediary.utils.DoseDiaryDatabase
 import com.example.dosediary.model.entity.User
-import com.example.dosediary.state.UserState
 import com.example.dosediary.model.entity.UserRelationship
 import com.example.dosediary.state.ProfileState
+import com.example.dosediary.state.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -28,21 +28,33 @@ class ProfileViewModel @Inject constructor(
     private val userDao = DoseDiaryDatabase.getInstance(application).userDao
     private val userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
 
-    private val _mainUser: MutableStateFlow<User?> = userState.mainUser
-    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
-    private val _managedUsers: MutableStateFlow<List<User>> = userState.managedUsers
+    private val _mainUser: MutableStateFlow<User?> = MutableStateFlow(User())
+    private val _currentUser: MutableStateFlow<User?> = MutableStateFlow(User())
+    private val _managedUsers: MutableStateFlow<List<User>> = MutableStateFlow(emptyList())
     private val _addUserFirstName: MutableStateFlow<String> = MutableStateFlow("")
     private val _addUserLastName: MutableStateFlow<String> = MutableStateFlow("")
-    private val _editMainUserFirstName: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.firstName ?: "")
-    private val _editMainUserLastName: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.lastname ?: "")
-    private val _editMainUserEmail: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.email ?: "")
-    private val _editMainUserPassword: MutableStateFlow<String> = MutableStateFlow(userState.mainUser.value?.password ?: "")
+    private val _editMainUserFirstName: MutableStateFlow<String> = MutableStateFlow( "")
+    private val _editMainUserLastName: MutableStateFlow<String> = MutableStateFlow( "")
+    private val _editMainUserEmail: MutableStateFlow<String> = MutableStateFlow("")
+    private val _editMainUserPassword: MutableStateFlow<String> = MutableStateFlow("")
+
+    fun initialize(userState: UserState) {
+        _mainUser.value = userState.mainUser
+        _currentUser.value = userState.currentUser
+        _managedUsers.value = userState.managedUsers
+        _addUserFirstName.value = ""
+        _addUserLastName.value = ""
+         _editMainUserFirstName.value =userState.mainUser?.firstName ?: ""
+        _editMainUserLastName.value = userState.mainUser?.lastName ?: ""
+        _editMainUserEmail.value = userState.mainUser?.email ?: ""
+        _editMainUserPassword.value = userState.mainUser?.password ?: ""
+    }
 
     init {
         viewModelScope.launch {
             _mainUser.collect { mainUser ->
                 _editMainUserFirstName.value = mainUser?.firstName ?: ""
-                _editMainUserLastName.value = mainUser?.lastname ?: ""
+                _editMainUserLastName.value = mainUser?.lastName ?: ""
                 _editMainUserEmail.value = mainUser?.email ?: ""
                 _editMainUserPassword.value = mainUser?.password ?: ""
             }
@@ -82,7 +94,7 @@ class ProfileViewModel @Inject constructor(
             ProfileEvent.AddUser -> {
                 val firstName = state.value.addUserFirstName
                 val lastName = state.value.addUserLastName
-                val newUser = User(firstName = firstName, lastname = lastName)
+                val newUser = User(firstName = firstName, lastName = lastName)
 
                 viewModelScope.launch {
                     userDao.upsertUser(newUser)
@@ -92,9 +104,12 @@ class ProfileViewModel @Inject constructor(
                     userRelationshipDao.upsertUserRelationship(newRelationship)
 
                     val newRelationShips = userRelationshipDao.getUserRelationshipsByMainUserId(state.value.mainUser!!.id).firstOrNull() ?: emptyList()
-                    userState.setMangedUsers(listOf(state.value.mainUser ?: User()) + newRelationShips.map { userRelationship ->
+                    _managedUsers.value = listOf(state.value.mainUser ?: User()) + newRelationShips.map { userRelationship ->
                         userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
-                    })
+                    }
+//                    userState.setMangedUsers(listOf(state.value.mainUser ?: User()) + newRelationShips.map { userRelationship ->
+//                        userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
+//                    })
                 }
 
                 _addUserFirstName.value = ""
@@ -109,6 +124,7 @@ class ProfileViewModel @Inject constructor(
             }
             is ProfileEvent.OnChangeUser -> {
                 userState.setcurrentUser(event.user)
+                _user
             }
             is ProfileEvent.OnMainUserFirstNameChanged -> {
                 _editMainUserFirstName.value = event.firstName

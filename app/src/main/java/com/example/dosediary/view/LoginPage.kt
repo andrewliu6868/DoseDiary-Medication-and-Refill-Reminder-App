@@ -2,6 +2,7 @@ package com.example.dosediary.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -54,56 +56,57 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.dosediary.R
+import com.example.dosediary.event.LoginEvent
+import com.example.dosediary.event.UserEvent
+import com.example.dosediary.model.entity.User
 import com.example.dosediary.state.LoginState
+import com.example.dosediary.state.UserState
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.viewmodel.LoginViewModel
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-fun LoginPage(navHostController: NavHostController){
-    val viewModel = hiltViewModel<LoginViewModel>()
-    val loginState by viewModel.loginState.collectAsState()
+fun LoginPage(
+    navController: NavController,
+    state: LoginState,
+    onEvent: (LoginEvent) -> Unit,
+    userState: UserState,
+    userEvent: (UserEvent) -> Unit
+){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-    when(loginState){
-        is LoginState.Idle ->{
-            LoginAttempt( {email, password ->
-                    viewModel.login(email, password) },
-                    navHostController)
+        if (state.errorMessage != null) {
+            Text(text = state.errorMessage, color = Color.Red)
         }
+        LoginContent(navController, onEvent, state)
 
-        is LoginState.Loading -> {
+        if (state.isLoading) {
             LoginLoading()
         }
-
-        is LoginState.Success -> {
-            navHostController.navigate("home")
-
-            }
-
-        is LoginState.Error -> {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                fontWeight = FontWeight.Bold,
-                color = Color.Red,
-                text="Error: ${loginState.error}")
-            LoginAttempt({email, password ->
-                viewModel.login(email, password)},
-                navHostController)
+        if (state.isSuccess) {
+            userEvent(UserEvent.SetCurrentUser(state.loginUser))
+            userEvent(UserEvent.SetMainUser(state.loginUser))
+            userEvent(UserEvent.SetManagedUsers(state.managedUser))
+            navController.navigate("home")
         }
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostController){
-    val email = remember { mutableStateOf("") }
-    val password = remember{ mutableStateOf("") }
-
-    var showPassword by remember { mutableStateOf(value = false) }
-
+fun LoginContent(
+    navController: NavController,
+    onEvent: (LoginEvent) -> Unit,
+    state: LoginState
+) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -119,16 +122,15 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp)
-            ){
+            ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(4.dp),
                         label = { Text(text = stringResource(R.string.email)) },
-                        value = email.value,
-                        onValueChange = {newText->
-                            email.value = newText
+                        value = state.email,
+                        onValueChange = { newText ->
+                            onEvent(LoginEvent.OnEmailChanged(newText))
                         },
                         keyboardOptions = KeyboardOptions.Default,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -138,62 +140,44 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(4.dp),
                         label = { Text(text = stringResource(R.string.password)) },
-                        value = password.value,
-                        onValueChange = {newText->
-                            password.value = newText
+                        value = state.password,
+                        onValueChange = { newText ->
+                            onEvent(LoginEvent.OnPasswordChanged(newText))
                         },
-                        visualTransformation = if (showPassword) {
-
+                        visualTransformation = if (state.showPassword) {
                             VisualTransformation.None
-
                         } else {
-
                             PasswordVisualTransformation()
-
                         },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         trailingIcon = {
-                            if (showPassword) {
-                                IconButton(onClick = { showPassword = false }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Visibility,
-                                        contentDescription = stringResource(R.string.hide_password)
-                                    )
-                                }
-                            }else{
-                                IconButton(onClick = { showPassword = true}) {
-                                    Icon(
-                                        imageVector = Icons.Filled.VisibilityOff,
-                                        contentDescription = stringResource(R.string.show_password)
-                                    )
-
-                                }
-
+                            IconButton(onClick = { onEvent(LoginEvent.TogglePasswordVisibility) }) {
+                                Icon(
+                                    imageVector = if (state.showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                    contentDescription = if (state.showPassword) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
+                                )
                             }
-
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = Color.Blue,
                             cursorColor = Color.Blue
                         )
                     )
-
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
             Button(
-                onClick = {onLogin(email.value,password.value)},
+                onClick = { onEvent(LoginEvent.Login) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(48.dp),
                 contentPadding = PaddingValues(),
                 colors = ButtonDefaults.buttonColors(containerColor = Primary)
-            ){
-                Box (
+            ) {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(48.dp)
@@ -202,9 +186,10 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                             shape = RoundedCornerShape(50.dp)
                         ),
                     contentAlignment = Alignment.Center
-                ){
-                    Text(text = stringResource(R.string.login),
-                        fontSize=18.sp,
+                ) {
+                    Text(
+                        text = stringResource(R.string.login),
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -222,17 +207,14 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                     textDecoration = TextDecoration.Underline,
                     color = Color.Blue
                 ),
-                onClick = {navHostController.navigate("signup")})
-
-
+                onClick = { navController.navigate("signup") }
+            )
         }
-
     }
-
 }
 
+
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun LoginIcon(){
     Box(
         modifier = Modifier
@@ -256,7 +238,6 @@ fun LoginLoading() {
             modifier = Modifier.width(32.dp),
             color = MaterialTheme.colorScheme.secondary,
             trackColor = MaterialTheme.colorScheme.surfaceVariant,
-
             )
     }
 }

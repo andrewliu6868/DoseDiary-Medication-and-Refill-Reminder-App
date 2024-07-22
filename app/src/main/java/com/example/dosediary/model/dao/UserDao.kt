@@ -18,14 +18,14 @@ interface UserDao {
     @Query("SELECT * FROM User WHERE id = :id")
     fun getUserById(id: Int): Flow<User>
 
-    @Query("UPDATE User SET firstName = :firstName, lastname = :lastName, email = :email, password = :password WHERE id = :id")
+    @Query("UPDATE User SET firstName = :firstName, lastName = :lastName, email = :email, password = :password WHERE id = :id")
     suspend fun updateUser(id: Int, firstName: String, lastName: String, email: String, password: String)
 
-    @Query("SELECT * FROM User WHERE firstName = :firstName AND lastname = :lastName")
+    @Query("SELECT * FROM User WHERE firstName = :firstName AND lastName = :lastName")
     fun getUserByFullName(firstName: String, lastName: String): Flow<User>
 
-    @Query("SELECT * FROM User WHERE email = :tryEmail AND password = :tryPassword LIMIT 1")
-    fun validateEmailPassword(tryEmail: String, tryPassword:String): Flow<User?>
+    @Query("SELECT * FROM User WHERE email = :email AND password = :password")
+    fun getUserByEmailAndPassword(email: String, password:String): Flow<User?>
     @Query("SELECT * FROM User WHERE email = :tryEmail")
     fun verifyUserExist(tryEmail:String): Flow<User?>
 }

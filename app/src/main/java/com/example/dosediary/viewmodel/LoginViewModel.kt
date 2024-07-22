@@ -3,59 +3,70 @@ package com.example.dosediary.viewmodel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dosediary.state.UserState
+import com.example.dosediary.event.LoginEvent
+import com.example.dosediary.event.UserEvent
 import com.example.dosediary.model.entity.User
 import com.example.dosediary.state.LoginState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.example.dosediary.state.UserState
 import com.example.dosediary.utils.DoseDiaryDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userState: UserState,
-    application: Application
-): ViewModel(){
-    private val _userDao = DoseDiaryDatabase.getInstance(application).userDao
+    application: Application,
+    ) : ViewModel() {
+    private val userDao = DoseDiaryDatabase.getInstance(application).userDao
     private val userRelationshipDao = DoseDiaryDatabase.getInstance(application).userRelationshipDao
+    private val _state = MutableStateFlow(LoginState())
+    val state: StateFlow<LoginState> = _state
 
-    private val _mainUser: MutableStateFlow<User?> = userState.mainUser
-    private val _currentUser: MutableStateFlow<User?> = userState.currentUser
-    private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
-    val loginState: StateFlow<LoginState> get() = _loginState
-
-    fun login(email : String, password : String){
-        viewModelScope.launch {
-            try{
-                _loginState.value = LoginState.Loading
-                val currUser  = _userDao.validateEmailPassword(email, password).firstOrNull()
-                if(currUser != null){
-                    userState.setcurrentUser(currUser)
-                    userState.setMainUser(currUser)
-                    _loginState.value= LoginState.Success(currUser)
-                } else{
-                    _loginState.value = LoginState.Error("User does not exist")
-                }
-            }catch (e: Exception){
-                _loginState.value = LoginState.Error(e.message ?: "Unknown Error" )
+    fun onEvent(event: LoginEvent) {
+        when (event) {
+            is LoginEvent.OnEmailChanged -> {
+                _state.value = _state.value.copy(email = event.email)
             }
-
+            is LoginEvent.OnPasswordChanged -> {
+                _state.value = _state.value.copy(password = event.password)
+            }
+            is LoginEvent.TogglePasswordVisibility -> {
+                _state.value = _state.value.copy(showPassword = !_state.value.showPassword)
+            }
+            LoginEvent.Login -> {
+                login()
+            }
         }
     }
 
-    fun resetLoginState() {
-        _loginState.value = LoginState.Idle
-    }
+    private fun login() {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true, errorMessage = null)
+            try {
+                val user = userDao.getUserByEmailAndPassword(_state.value.email, _state.value.password).firstOrNull()
+                if (user != null) {
+                    _state.value = _state.value.copy(isSuccess = true)
+                    _state.value = _state.value.copy(loginUser = user)
 
+                    val newRelationShips = userRelationshipDao.getUserRelationshipsByMainUserId(user.id).firstOrNull() ?: emptyList()
+                    _state.value = _state.value.copy(
+                        managedUser =  listOf(user) + newRelationShips.map { userRelationship ->
+                            userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
+                        }
+                    )
+                } else {
+                    _state.value = _state.value.copy(errorMessage = "Invalid email or password")
+                }
+
+            } catch (e: Exception) {
+                _state.value = _state.value.copy(errorMessage = e.message)
+            } finally {
+                _state.value = _state.value.copy(isLoading = false)
+            }
+        }
+    }
 }
-/*class LoginViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
-    override fun <T: ViewModel> create(modelClass: Class<T>): T{
-        if(modelClass.isAssignableFrom(LoginViewModel::class.java)){
-            return LoginViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}*/

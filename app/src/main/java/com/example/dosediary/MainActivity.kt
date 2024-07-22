@@ -7,8 +7,10 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,7 +24,9 @@ import com.example.dosediary.view.LoginPage
 import com.example.dosediary.view.SignUpPage
 import com.example.dosediary.viewmodel.LoginViewModel
 import com.example.dosediary.viewmodel.MedRefillViewModel
+import com.example.dosediary.viewmodel.MedicationListViewModel
 import com.example.dosediary.viewmodel.SignUpViewModel
+import com.example.dosediary.viewmodel.UserViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
@@ -35,8 +39,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var userState: UserState
+//    @Inject
+//    lateinit var userState: UserState
 
     lateinit var placesClient: PlacesClient
     lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -59,10 +63,19 @@ class MainActivity : ComponentActivity() {
     }
     @Composable
     fun LoginNavigation(navController: NavHostController) {
-        NavHost(navController = navController, startDestination = "home") {
-            composable("login") { LoginPage(navController) }
-            composable("home") { AppEntry(placesClient, fusedLocationClient) }
-            composable("signup"){ SignUpPage(navController) }
+        val userViewModel = hiltViewModel<UserViewModel>()
+        val loginViewModel = hiltViewModel<LoginViewModel>()
+        val signUpViewModel = hiltViewModel<SignUpViewModel>()
+
+        val userState = userViewModel.state.collectAsState().value
+        val loginState = loginViewModel.state.collectAsState().value
+        val signUpState = signUpViewModel.state.collectAsState().value
+
+
+        NavHost(navController = navController, startDestination = "login") {
+            composable("login") { LoginPage(navController, loginState, loginViewModel::onEvent, userState, userViewModel::onEvent) }
+            composable("home") { AppEntry(userState,placesClient, fusedLocationClient) }
+            composable("signup"){ SignUpPage(navController, signUpState, signUpViewModel::onEvent) }
         }
     }
 }

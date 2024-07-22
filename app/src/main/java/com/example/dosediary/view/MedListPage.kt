@@ -50,6 +50,7 @@ import com.example.dosediary.state.MedRefillState
 import com.example.dosediary.state.MedicationListState
 
 import com.example.dosediary.state.MedicationWithNextRefillDate
+import com.example.dosediary.state.UserState
 import com.example.dosediary.viewmodel.MedRefillViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -59,7 +60,8 @@ import java.util.Locale
 fun MedicationListPage(
     navController: NavController,
     state: MedicationListState,
-    onEvent: (MedicationListEvent) -> Unit
+    onEvent: (MedicationListEvent) -> Unit,
+    userState: UserState
 ) {
     Scaffold(
         floatingActionButton = {
@@ -96,6 +98,7 @@ fun MedicationListPage(
                     navController.navigate("UpsertMedicationPage?mode=edit")
                 })
             }
+            item { userState.currentUser?.let { Text(text = it.email) } }
         }
     }
 }

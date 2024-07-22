@@ -25,7 +25,6 @@ import javax.inject.Inject
 @HiltViewModel
 class UpsertMedicationViewModel @Inject constructor(
     application: Application,
-    private val userState: UserState
 ) : ViewModel() {
     private val medicationDao = DoseDiaryDatabase.getInstance(application).medicationDao
     private val _state = MutableStateFlow(UpsertMedicationState())
@@ -190,7 +189,7 @@ class UpsertMedicationViewModel @Inject constructor(
             postalCode = this.postalCode,
             postalCodeError = this.postalCodeError,
             lastRefilledDate = this.startDate,
-            owner = 1  // TODO: Change this after User Profile is Ready
+            owner = 3  // TODO: Change this after User Profile is Ready
         )
     }
 }
