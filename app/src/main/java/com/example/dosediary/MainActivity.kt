@@ -44,45 +44,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-//    @Inject
-//    lateinit var userState: UserState
-
     lateinit var placesClient: PlacesClient
     lateinit var fusedLocationClient: FusedLocationProviderClient
-
-//    private val profileViewModel by viewModels<ProfileViewModel> {
-//        ProfileViewModelFactory(application, userState)
-//    }
-//
-//    private val medRefillViewModel by viewModels<MedRefillViewModel> {
-//        MedRefillViewModelFactory(application, userState)
-//    }
-//
-//    private val loginViewModel by viewModels<LoginViewModel> {
-//        LoginViewModelFactory(application, userState)
-//    }
-//
-//    private val signUpViewModel by viewModels<SignUpViewModel> {
-//        SignUpViewModelFactory(application, userState)
-//    }
-//
-//    private val medicationListViewModel by viewModels<MedicationListViewModel> {
-//        MedicationListViewModelFactory(application, userState)
-//    }
-//
-//    private val upsertMedicationViewModel by viewModels<UpsertMedicationViewModel> {
-//        UpsertMedicationViewModelFactory(application, userState)
-//    }
-//
-//    private val medicationHistoryViewModel by viewModels<MedicationHistoryViewModel> {
-//        MedicationHistoryViewModelFactory(application, userState)
-//    }
-//
-//    private val upsertMedHistoryViewModel by viewModels<UpsertMedHistoryViewModel> {
-//        UpsertMedHistoryViewModelFactory(application, userState)
-//    }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,27 +57,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             DoseDiaryTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
-                    val navController = rememberNavController()
-                    LoginNavigation(navController)
+                    AppEntry(placesClient, fusedLocationClient)
                 }
             }
-        }
-    }
-    @Composable
-    fun LoginNavigation(navController: NavHostController) {
-        val userViewModel = hiltViewModel<UserViewModel>()
-        val loginViewModel = hiltViewModel<LoginViewModel>()
-        val signUpViewModel = hiltViewModel<SignUpViewModel>()
-
-        val userState = userViewModel.state.collectAsState().value
-        val loginState = loginViewModel.state.collectAsState().value
-        val signUpState = signUpViewModel.state.collectAsState().value
-
-
-        NavHost(navController = navController, startDestination = "login") {
-            composable("login") { LoginPage(navController, loginState, loginViewModel::onEvent, userState, userViewModel::onEvent) }
-            composable("home") { AppEntry(userState,placesClient, fusedLocationClient) }
-            composable("signup"){ SignUpPage(navController, signUpState, signUpViewModel::onEvent) }
         }
     }
 }

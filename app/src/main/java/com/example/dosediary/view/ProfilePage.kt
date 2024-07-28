@@ -73,7 +73,9 @@ import java.util.Locale
 fun ProfilePage(
     navController: NavController,
     state: ProfileState,
-    onEvent: (ProfileEvent) -> Unit
+    onEvent: (ProfileEvent) -> Unit,
+    userState: UserState,
+    onUserEvent: (UserEvent) -> Unit,
 ) {
     var isAddingUser by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }

@@ -239,8 +239,8 @@ fun LoginLoading() {
         CircularProgressIndicator(
             modifier = Modifier.width(32.dp),
             color = MaterialTheme.colorScheme.secondary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
-            )
+            trackColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     }
 }
 
