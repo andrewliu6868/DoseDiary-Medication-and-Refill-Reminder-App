@@ -50,6 +50,40 @@ class MainActivity : ComponentActivity() {
     lateinit var placesClient: PlacesClient
     lateinit var fusedLocationClient: FusedLocationProviderClient
 
+//    private val profileViewModel by viewModels<ProfileViewModel> {
+//        ProfileViewModelFactory(application, userState)
+//    }
+//
+//    private val medRefillViewModel by viewModels<MedRefillViewModel> {
+//        MedRefillViewModelFactory(application, userState)
+//    }
+//
+//    private val loginViewModel by viewModels<LoginViewModel> {
+//        LoginViewModelFactory(application, userState)
+//    }
+//
+//    private val signUpViewModel by viewModels<SignUpViewModel> {
+//        SignUpViewModelFactory(application, userState)
+//    }
+//
+//    private val medicationListViewModel by viewModels<MedicationListViewModel> {
+//        MedicationListViewModelFactory(application, userState)
+//    }
+//
+//    private val upsertMedicationViewModel by viewModels<UpsertMedicationViewModel> {
+//        UpsertMedicationViewModelFactory(application, userState)
+//    }
+//
+//    private val medicationHistoryViewModel by viewModels<MedicationHistoryViewModel> {
+//        MedicationHistoryViewModelFactory(application, userState)
+//    }
+//
+//    private val upsertMedHistoryViewModel by viewModels<UpsertMedHistoryViewModel> {
+//        UpsertMedHistoryViewModelFactory(application, userState)
+//    }
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fusedLocationClient =

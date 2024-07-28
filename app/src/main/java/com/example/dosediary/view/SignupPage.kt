@@ -41,12 +41,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.dosediary.R
-import com.example.dosediary.event.SignUpEvent
 import com.example.dosediary.state.SignUpState
 import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
+import com.example.dosediary.viewmodel.SignUpViewModel
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

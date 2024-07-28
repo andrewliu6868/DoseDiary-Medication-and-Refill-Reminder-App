@@ -67,7 +67,8 @@ fun UpsertMedicationHistoryPage(
         ) {
             MedicationNameField(
                 value = state.name,
-                onValueChange = { onEvent(UpsertMedHistoryEvent.OnMedicationNameChanged(it)) }
+                onValueChange = { onEvent(UpsertMedHistoryEvent.OnMedicationNameChanged(it)) },
+                mode = mode
             )
             Spacer(modifier = Modifier.height(16.dp))
             EffectivenessDropdown(
@@ -81,21 +82,26 @@ fun UpsertMedicationHistoryPage(
                 onEffectivenessChange = { onEvent(UpsertMedHistoryEvent.OnEffectivenessChanged(it)) }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            DatePicker(
-                date = parseDate(state.dateTaken),
-                placeholder = stringResource(id = R.string.select_date),
-                onDateSelected = { onEvent(UpsertMedHistoryEvent.OnDateChanged(it.toString())) }
-            )
+            if (mode != "edit") {
+                DatePicker(
+                    date = parseDate(state.dateTaken),
+                    placeholder = stringResource(id = R.string.select_date),
+                    onDateSelected = { onEvent(UpsertMedHistoryEvent.OnDateChanged(it.toString())) }
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
-            TimePicker(
-                time = parseTime(state.timeTaken),
-                placeholder = stringResource(id = R.string.select_time),
-                onTimeSelected = { onEvent(UpsertMedHistoryEvent.OnTimeChanged(it.toString())) }
-            )
+            if (mode != "edit") {
+                TimePicker(
+                    time = parseTime(state.timeTaken),
+                    placeholder = stringResource(id = R.string.select_time),
+                    onTimeSelected = { onEvent(UpsertMedHistoryEvent.OnTimeChanged(it.toString())) }
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             AdditionalDetailsField(
                 value = TextFieldValue(state.additionalDetails),
-                onValueChange = { onEvent(UpsertMedHistoryEvent.OnAdditionalDetailsChanged(it.text)) }
+                onValueChange = { onEvent(UpsertMedHistoryEvent.OnAdditionalDetailsChanged(it.text)) },
+                mode = mode
             )
             Spacer(modifier = Modifier.height(16.dp))
             ButtonRow(
@@ -106,17 +112,20 @@ fun UpsertMedicationHistoryPage(
     }
 }
 
+
 @Composable
 fun MedicationNameField(
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    mode: String
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(stringResource(id = R.string.medication_name)) },
         placeholder = { Text(stringResource(id = R.string.enter_medication_name)) },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        readOnly = mode == "edit"
     )
 }
 
@@ -167,7 +176,8 @@ fun EffectivenessDropdown(
 @Composable
 fun AdditionalDetailsField(
     value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit
+    onValueChange: (TextFieldValue) -> Unit,
+    mode: String
 ) {
     OutlinedTextField(
         value = value,
@@ -175,7 +185,8 @@ fun AdditionalDetailsField(
         label = { Text(stringResource(id = R.string.additional_details)) },
         placeholder = { Text(stringResource(id = R.string.enter_additional_details)) },
         modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
+        readOnly = mode == "edit"
     )
 }
 

@@ -18,6 +18,7 @@ class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent:Intent){
         val medName = intent.getStringExtra("Name")
         val message = intent.getStringExtra("Message")
+        val note = intent.getStringExtra("Note")
 
         Log.d("ReminderReceiver", "Received reminder for: $medName")
 
@@ -25,10 +26,11 @@ class ReminderReceiver : BroadcastReceiver() {
             context,0,Intent(context, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+
         val notification = NotificationCompat.Builder(context, "REMINDER_CHANNEL")
             .setSmallIcon(R.drawable.notification)
-            .setContentTitle("Medication Reminder")
-            .setContentText("$medName: $message")
+            .setContentTitle("$message")
+            .setContentText("$medName")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(false)
@@ -45,6 +47,7 @@ class ReminderReceiver : BroadcastReceiver() {
         val localIntent = Intent("com.example.dosediary.REMINDER_ALERT").apply{
             putExtra("Name", medName)
             putExtra("Message", message)
+            putExtra("Note", note)
         }
         LocalBroadcastManager.getInstance(context).sendBroadcast(localIntent)
 

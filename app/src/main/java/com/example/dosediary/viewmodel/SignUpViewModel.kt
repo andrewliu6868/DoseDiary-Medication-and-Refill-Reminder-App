@@ -2,6 +2,7 @@ package com.example.dosediary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.event.SignUpEvent
 import com.example.dosediary.state.UserState

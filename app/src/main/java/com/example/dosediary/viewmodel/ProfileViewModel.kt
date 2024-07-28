@@ -2,6 +2,7 @@ package com.example.dosediary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.dosediary.event.ProfileEvent
 import com.example.dosediary.utils.DoseDiaryDatabase
@@ -49,13 +50,24 @@ class ProfileViewModel @Inject constructor(
          _editCurrentUserFirstName.value =userState.mainUser?.firstName ?: ""
         _editCurrentUserLastName.value = userState.mainUser?.lastName ?: ""
         _editCurrentUserEmail.value = userState.mainUser?.email ?: ""
-        _editCurrentUserPassword.value = userState.mainUser?.password ?: "",
+        _editCurrentUserPassword.value = userState.mainUser?.password ?: ""
         _showDeleteConfirmationDialog.value = false
 
     }
 
     init {
         viewModelScope.launch {
+//            val user1 = userDao.getUserById(1).firstOrNull() ?: User()
+//            _mainUser.value = user1
+//            _currentUser.value = user1
+//
+//            val newRelationShips = userRelationshipDao.getUserRelationshipsByMainUserId(1).first()
+//            val managedUsers = (listOf(_mainUser.value) + newRelationShips.map { userRelationship ->
+//                userDao.getUserById(userRelationship.subUserId).firstOrNull() ?: User()
+//            }).filterIsInstance<User>()
+//
+//            _managedUsers.value = managedUsers
+
             _currentUser.collect { currentUser ->
                 _editCurrentUserFirstName.value = currentUser?.firstName ?: ""
                 _editCurrentUserLastName.value = currentUser?.lastName ?: ""
@@ -87,8 +99,7 @@ class ProfileViewModel @Inject constructor(
             editCurrentUserLastName = list[6] as String,
             editCurrentUserEmail = list[7] as String,
             editCurrentUserPassword = list[8] as String,
-            showDeleteConfirmationDialog = list[9] as Boolean
-        )
+            showDeleteConfirmationDialog = list[9] as Boolean)
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
@@ -130,7 +141,6 @@ class ProfileViewModel @Inject constructor(
             }
             is ProfileEvent.OnChangeUser -> {
                 userState.setcurrentUser(event.user)
-                _user
             }
             is ProfileEvent.OnCurrentUserFirstNameChanged -> {
                 _editCurrentUserFirstName.value = event.firstName
@@ -194,4 +204,14 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+}
+
+class ProfileViewModelFactory(private val application: Application, private val userState: UserState) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            return ProfileViewModel(userState, application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

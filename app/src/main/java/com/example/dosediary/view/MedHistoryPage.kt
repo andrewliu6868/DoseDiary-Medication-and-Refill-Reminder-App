@@ -57,7 +57,6 @@ fun MedicationHistoryPage(
     navController: NavHostController,
     state: MedicationHistoryState,
     onEvent: (MedicationHistoryEvent) -> Unit,
-    addTestEntries: () -> Unit
 ) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
@@ -240,6 +239,5 @@ fun MedHistoryPreview() {
         navController = navController,
         state = state,
         onEvent = onEvent,
-        addTestEntries = {}
     )
 }

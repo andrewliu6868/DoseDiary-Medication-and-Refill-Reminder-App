@@ -68,6 +68,7 @@ import com.example.dosediary.ui.theme.ContainerBackground
 import com.example.dosediary.ui.theme.Primary
 import com.example.dosediary.ui.theme.PurpleGrey80
 import com.example.dosediary.viewmodel.LoginViewModel
+import com.example.dosediary.viewmodel.ProfileViewModel
 
 @Composable
 fun LoginPage(
