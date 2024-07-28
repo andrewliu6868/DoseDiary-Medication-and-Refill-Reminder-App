@@ -86,7 +86,7 @@ class UpsertMedHistoryViewModel @Inject constructor(
     private fun saveMedicationHistory() {
         viewModelScope.launch {
             val medicationHistory = MedicationHistory(
-                id = state.value.id,
+                id = _state.value.id,
                 ownerId = _state.value.ownerId,
                 name = _state.value.name,
                 effectiveness = _state.value.effectiveness,
