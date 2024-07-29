@@ -37,6 +37,9 @@ fun UpsertMedicationHistoryPage(
 ) {
     val mode = navController.currentBackStackEntry?.arguments?.getString("mode") ?: "edit"
 
+    val dateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+    val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+
     if (state.showConfirmDialog) {
         EditMedicationConfirmationDialog(
             onDismiss = { onEvent(UpsertMedHistoryEvent.OnConfirmDialogDismissed) },
@@ -86,15 +89,19 @@ fun UpsertMedicationHistoryPage(
                 DatePicker(
                     date = parseDate(state.dateTaken),
                     placeholder = stringResource(id = R.string.select_date),
-                    onDateSelected = { onEvent(UpsertMedHistoryEvent.OnDateChanged(it.toString())) }
+                    onDateSelected = { date ->
+                        onEvent(UpsertMedHistoryEvent.OnDateChanged(dateFormat.format(date)))
+                    }
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
             if (mode != "edit") {
                 TimePicker(
-                    time = parseTime(state.timeTaken),
+                    time = parseTime(state.timeTaken) ,
                     placeholder = stringResource(id = R.string.select_time),
-                    onTimeSelected = { onEvent(UpsertMedHistoryEvent.OnTimeChanged(it.toString())) }
+                    onTimeSelected = { time ->
+                        onEvent(UpsertMedHistoryEvent.OnTimeChanged(timeFormat.format(time)))
+                    }
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
