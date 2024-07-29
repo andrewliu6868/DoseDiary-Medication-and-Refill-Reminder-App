@@ -226,8 +226,6 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                     color = Color.Blue
                 ),
                 onClick = {navHostController.navigate("signup")})
-
-
         }
 
     }
