@@ -106,8 +106,8 @@ fun UpsertMedicationHistoryPage(
             }
             Spacer(modifier = Modifier.height(16.dp))
             AdditionalDetailsField(
-                value = TextFieldValue(state.additionalDetails),
-                onValueChange = { onEvent(UpsertMedHistoryEvent.OnAdditionalDetailsChanged(it.text)) },
+                value = state.additionalDetails,
+                onValueChange = { onEvent(UpsertMedHistoryEvent.OnAdditionalDetailsChanged(it)) },
                 mode = mode
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -182,8 +182,8 @@ fun EffectivenessDropdown(
 
 @Composable
 fun AdditionalDetailsField(
-    value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
+    value: String,
+    onValueChange: (String) -> Unit,
     mode: String
 ) {
     OutlinedTextField(
@@ -196,6 +196,7 @@ fun AdditionalDetailsField(
         readOnly = mode == "edit"
     )
 }
+
 
 @Composable
 fun ButtonRow(onSave: () -> Unit, onDiscard: () -> Unit) {
