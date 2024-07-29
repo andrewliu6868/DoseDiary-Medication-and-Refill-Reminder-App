@@ -83,8 +83,8 @@ fun LoginPage(viewModel: LoginViewModel, navHostController: NavHostController){
 
         is LoginState.Success -> {
             navHostController.navigate("home")
-
-            }
+            viewModel.resetLoginState() // Reset state after navigation
+        }
 
         is LoginState.Error -> {
             Text(
@@ -226,8 +226,6 @@ fun LoginAttempt(onLogin: (String, String) -> Unit, navHostController: NavHostCo
                     color = Color.Blue
                 ),
                 onClick = {navHostController.navigate("signup")})
-
-
         }
 
     }

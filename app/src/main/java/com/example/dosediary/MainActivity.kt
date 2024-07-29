@@ -92,7 +92,6 @@ class MainActivity : ComponentActivity() {
     }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fusedLocationClient =
@@ -103,18 +102,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DoseDiaryTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = Background) {
-                    val navController = rememberNavController()
-                    LoginNavigation(navController)
-                }
-            }
-        }
-    }
-    @Composable
-    fun LoginNavigation(navController: NavHostController) {
-        NavHost(navController = navController, startDestination = "home") {
-            composable("login") { LoginPage(loginViewModel, navController) }
-            composable("home") {
-                AppEntry(
+                    AppEntry(
                     upsertMedHistoryViewModel,
                     medicationHistoryViewModel,
                     upsertMedicationViewModel,
@@ -125,12 +113,34 @@ class MainActivity : ComponentActivity() {
                     medRefillViewModel,
                     placesClient,
                     fusedLocationClient
-                )
+                    )
+                }
             }
-            composable("signup"){ SignUpPage(signUpViewModel,navController) }
         }
     }
 }
+//    @Composable
+//    fun LoginNavigation(navController: NavHostController) {
+//        NavHost(navController = navController, startDestination = "home") {
+//            composable("login") { LoginPage(loginViewModel, navController) }
+//            composable("home") {
+//                AppEntry(
+//                    upsertMedHistoryViewModel,
+//                    medicationHistoryViewModel,
+//                    upsertMedicationViewModel,
+//                    medicationListViewModel,
+//                    signUpViewModel,
+//                    loginViewModel,
+//                    profileViewModel,
+//                    medRefillViewModel,
+//                    placesClient,
+//                    fusedLocationClient
+//                )
+//            }
+//            composable("signup"){ SignUpPage(signUpViewModel,navController) }
+//        }
+//    }
+//}
 
 
 

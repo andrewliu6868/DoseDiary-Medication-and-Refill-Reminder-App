@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,10 +35,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.dosediary.R
 import com.example.dosediary.state.SignUpState
@@ -50,13 +56,13 @@ import com.example.dosediary.viewmodel.SignUpViewModel
 
 fun SignUpPage(
     signUpViewModel: SignUpViewModel,
-    navHostController: NavHostController
+    navController: NavController
 ){
 
     val signUpState by signUpViewModel.signUpState.collectAsState()
     when(signUpState){
         is SignUpState.Idle -> {
-            SignUpAttempt{firstName, lastName, email, password ->
+            SignUpAttempt(navController){firstName, lastName, email, password ->
                 signUpViewModel.addUser(firstName, lastName, email,password)
             }
         }
@@ -68,7 +74,7 @@ fun SignUpPage(
         is SignUpState.Success ->{
             // go back to Login Screen
             signUpViewModel.resetSignUpState()
-            navHostController.navigate("login")
+            navController.navigate("login")
         }
 
         is SignUpState.Error -> {
@@ -78,7 +84,7 @@ fun SignUpPage(
                 fontWeight = FontWeight.Bold,
                 color = Color.Red,
                 text = stringResource(R.string.error, signUpState.error))
-            SignUpAttempt{firstName, lastName, email, password ->
+            SignUpAttempt(navController){firstName, lastName, email, password ->
                 signUpViewModel.addUser(firstName, lastName, email,password)
             }
         }
@@ -87,7 +93,7 @@ fun SignUpPage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
+fun SignUpAttempt(navController: NavController, onSignUp: (String, String, String, String) -> Unit){
     val email = remember { mutableStateOf("") }
     val password = remember{ mutableStateOf("") }
     val firstName = remember{mutableStateOf("")}
@@ -200,11 +206,24 @@ fun SignUpAttempt(onSignUp: (String, String, String, String) -> Unit){
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(20.dp))
+            ClickableText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                text = AnnotatedString(stringResource(R.string.login)),
+                style = TextStyle(
+                    textAlign = TextAlign.Center,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textDecoration = TextDecoration.Underline,
+                    color = Color.Blue
+                ),
+                onClick = {navController.navigate("login")})
+            }
         }
 
     }
-
-}
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
