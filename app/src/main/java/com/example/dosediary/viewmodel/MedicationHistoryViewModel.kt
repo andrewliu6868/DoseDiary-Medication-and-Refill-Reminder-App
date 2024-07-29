@@ -78,9 +78,10 @@ class MedicationHistoryViewModel @Inject constructor(
 
     private fun fetchMedicationHistories() {
         viewModelScope.launch {
-            val ownerId = 1
-            medicationHistoryDao.getMedicationHistoriesByOwner(ownerId).collect { histories ->
-                _state.value = _state.value.copy(medicationHistories = histories)
+            _currentUser.value?.let {
+                medicationHistoryDao.getMedicationHistoriesByOwner(it.id).collect { histories ->
+                    _state.value = _state.value.copy(medicationHistories = histories)
+                }
             }
         }
     }
