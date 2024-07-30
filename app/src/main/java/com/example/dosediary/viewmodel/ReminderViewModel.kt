@@ -47,6 +47,7 @@ class ReminderViewModel @Inject constructor(
     val reminderState: StateFlow<ReminderState> get() = _reminderState
 
     fun scheduleMedReminders(medName: String, times: List<Date>, startDate: Date, endDate: Date, note:String){
+        // schedule medication reminders and send to Alarm Manager API
         viewModelScope.launch{
             //val medication = _medDao.getMedicationByID(medID).firstOrNull()
             try {
@@ -58,7 +59,7 @@ class ReminderViewModel @Inject constructor(
                             putExtra("Message", "Medication Reminder")
                             putExtra("Note", note)
                         }
-                        // must use a unique ID for the intent
+                        // generate a unique ID for intent
                         val requestCode = _generateUniqueRequestCode()
                         val pendingIntent = PendingIntent.getBroadcast(
                             context,
@@ -67,6 +68,7 @@ class ReminderViewModel @Inject constructor(
                             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                         )
 
+                        // schedule in alarm manager
                         _alarmManager.setExact(
                             AlarmManager.RTC_WAKEUP,
                             nextReminderTime,
@@ -77,8 +79,10 @@ class ReminderViewModel @Inject constructor(
 
                     }
                 }
+                // on success
                 _reminderState.value = ReminderState.Success("Reminders set successfully")
             }catch(e:Exception){
+                // on error
                 _reminderState.value = ReminderState.Error(e.message ?: "Unknown Error")
             }
 
@@ -87,6 +91,7 @@ class ReminderViewModel @Inject constructor(
 
     @SuppressLint("SuspiciousIndentation")
     fun scheduleRefill(medName: String, refillDays: Int, note:String){
+        // schedule upcoming refills
         viewModelScope.launch{
             //val medication = _medDao.getMedicationByID(medID).firstOrNull()
             try {
@@ -119,8 +124,21 @@ class ReminderViewModel @Inject constructor(
 
     private fun _calculateNextReminder(nextDate:Date, startDate: Date, endDate: Date): List<Long> {
         val reminderDates = mutableListOf<Long>()
+        // convert today's time to milliseconds
         val calendar = Calendar.getInstance().apply {
-            time = startDate
+            // retrieve today's date
+            set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR))
+            set(Calendar.MONTH, Calendar.getInstance().get(Calendar.MONTH))
+            set(Calendar.DAY_OF_MONTH, Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+
+            // apply the start time from startDate
+            val startDateTime = Calendar.getInstance().apply{
+                time = startDate
+            }
+            set(Calendar.HOUR_OF_DAY, startDateTime.get(Calendar.HOUR_OF_DAY))
+            set(Calendar.MINUTE, startDateTime.get(Calendar.MINUTE))
+
+            // convert to milliseconds
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
         }
@@ -130,14 +148,14 @@ class ReminderViewModel @Inject constructor(
         }
 
         while (!calendar.time.after(endDate)) {
-            // Set the reminder time (hours and minutes) for the current day
+            // set the reminder time (hours and minutes) for the current day
             calendar.set(Calendar.HOUR_OF_DAY, reminderTimeCalendar.get(Calendar.HOUR_OF_DAY))
             calendar.set(Calendar.MINUTE, reminderTimeCalendar.get(Calendar.MINUTE))
 
-            // Add the calculated time in milliseconds to the list
+            // add the calculated time in milliseconds to the list
             reminderDates.add(calendar.timeInMillis)
 
-            // Move to the next day
+            // move to the next day
             calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
 
@@ -156,10 +174,6 @@ class ReminderViewModel @Inject constructor(
 
     private fun _generateUniqueRequestCode(): Int{
         return UUID.randomUUID().hashCode()
-    }
-
-    fun cancelReminder(pendingIntent: PendingIntent){
-        _alarmManager.cancel(pendingIntent)
     }
 
 }
